@@ -392,24 +392,28 @@
 
     </main>
 
-    <!-- Modal 1: Onboarding Direct Dispatcher -->
-    <div id="onboardSuccessModal" style="display: none;" class="fixed inset-0 bg-slate-950/70 z-50 items-center justify-center p-4">
+    <!-- Modal 1: Onboarding Direct Dispatcher (Instant WhatsApp & PDF Download) -->
+    <div id="onboardSuccessModal" style="display: none;" class="fixed inset-0 bg-slate-950/75 z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 text-center">
-            <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+            <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
                 <i class="fa-solid fa-check"></i>
             </div>
             <div>
                 <h3 class="font-black text-slate-900 text-base">Customer Successfully Onboarded!</h3>
-                <p class="text-xs text-slate-500 mt-1">Security Deposit & Week 1 Advance Rent সফলভাবে রেকর্ড করা হয়েছে।</p>
+                <p class="text-xs text-slate-500 mt-1">Security Deposit ও Week 1 Advance Rent সফলভাবে রেকর্ড করা হয়েছে।</p>
             </div>
-            <div class="bg-slate-50 p-3 rounded-xl border text-left text-xs space-y-1">
+            <div class="bg-slate-50 p-3.5 rounded-xl border text-left text-xs space-y-1.5 font-medium">
                 <p><strong class="text-slate-800">Customer:</strong> <span id="succCustName">-</span></p>
                 <p><strong class="text-slate-800">Assigned Bike:</strong> <span id="succCustVeh" class="font-bold text-amber-700">-</span></p>
                 <p><strong class="text-slate-800">WhatsApp:</strong> <span id="succCustPhone">-</span></p>
+                <p><strong class="text-slate-800">Total Collected:</strong> <span id="succCustPaid" class="font-black text-emerald-700">-</span></p>
             </div>
             <div class="flex flex-col gap-2 pt-2">
-                <button type="button" id="succOpenBillBtn" class="w-full bg-slate-950 hover:bg-slate-800 text-amber-400 font-black p-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-receipt"></i> View, Download PDF & Send WhatsApp Bill
+                <button type="button" id="succSendWhatsAppDirectBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black p-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> Download PDF Bill & Send to WhatsApp
+                </button>
+                <button type="button" id="succOpenBillBtn" class="w-full bg-slate-950 hover:bg-slate-800 text-amber-400 font-bold p-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-receipt"></i> Open Receipt Preview
                 </button>
                 <button type="button" onclick="closeOnboardModal()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold p-2 rounded-xl text-xs">
                     Close & Go to Admin Panel
@@ -786,8 +790,6 @@
             bookingsList.forEach(function(b) {
                 if (!b.paymentHistory) b.paymentHistory = [];
 
-                // Deduplicate and ensure Week 1 is present
-                var hasSec = b.paymentHistory.some(function(p){ return p.type.indexOf('Security') !== -1; });
                 var hasWeek1 = b.paymentHistory.some(function(p){ return p.type.indexOf('Week 1') !== -1; });
 
                 if (!hasWeek1) {
@@ -801,7 +803,7 @@
                     changed = true;
                 }
 
-                // Sort history properly: Security Deposit (0), Week 1 (1), Week 2 (2)...
+                // Strict Order Sorting: Security Deposit (week 0) -> Week 1 (week 1) -> Week 2...
                 b.paymentHistory.sort(function(a, b) {
                     return (a.week !== undefined ? a.week : 0) - (b.week !== undefined ? b.week : 0);
                 });
@@ -814,7 +816,7 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('kd_captain_final_stable_v15', JSON.stringify({
+            localStorage.setItem('kd_captain_final_stable_v16', JSON.stringify({
                 fleet: state.fleet,
                 bookings: state.bookings,
                 recycleBin: state.recycleBin
@@ -870,7 +872,7 @@
             updateIdFieldValidation();
             updateSelfSlabDetails();
 
-            var saved = localStorage.getItem('kd_captain_final_stable_v15') || localStorage.getItem('kd_captain_final_stable_v14') || localStorage.getItem('kd_captain_final_stable_v12') || localStorage.getItem('kd_captain_final_stable_v11') || localStorage.getItem('kd_captain_final_stable_v9');
+            var saved = localStorage.getItem('kd_captain_final_stable_v16') || localStorage.getItem('kd_captain_final_stable_v15') || localStorage.getItem('kd_captain_final_stable_v14') || localStorage.getItem('kd_captain_final_stable_v12') || localStorage.getItem('kd_captain_final_stable_v11') || localStorage.getItem('kd_captain_final_stable_v9');
             if (saved) {
                 try {
                     var parsed = JSON.parse(saved);
@@ -1159,9 +1161,19 @@
         }
 
         function showOnboardSuccess(b) {
+            var totalInitial = (b.paymentHistory || []).reduce((acc, p) => acc + p.amount, 0);
             document.getElementById('succCustName').innerText = b.name;
             document.getElementById('succCustVeh').innerText = b.veh;
             document.getElementById('succCustPhone').innerText = '+91 ' + b.phone;
+            document.getElementById('succCustPaid').innerText = '₹' + totalInitial + ' (Sec: ₹' + b.securityDeposit + ' + Week 1: ₹' + (totalInitial - b.securityDeposit) + ')';
+
+            // Direct WhatsApp button on Onboarding popup
+            document.getElementById('succSendWhatsAppDirectBtn').onclick = function() {
+                openReceiptModal(b.id, 1);
+                setTimeout(function() {
+                    downloadPdfAndSendWhatsApp();
+                }, 300);
+            };
 
             document.getElementById('succOpenBillBtn').onclick = function() {
                 closeOnboardModal();
@@ -1381,7 +1393,7 @@
                 var waMsg = `*OFFICIAL PAYMENT BILL & STATEMENT - KD CAPTAIN*\n` +
                             `*OM GANANAYAKA (O.G) LLP*\n\n` +
                             `Dear ${b.name},\n` +
-                            `Here is your official verified payment invoice for vehicle *${b.veh}*.\n\n` +
+                            `Here is your official verified rental invoice for vehicle *${b.veh}*.\n\n` +
                             `• *Total Received So Far:* ₹${totalPaid}\n` +
                             `• *Current Running Week:* Week ${runningWk}\n` +
                             `• *Next Week Due:* ₹${b.due}\n` +
