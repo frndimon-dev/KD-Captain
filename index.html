@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KD Captain - OM GANANAYAKA (O.G) LLP</title>
-    <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -16,7 +14,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-16 font-sans">
 
-    <!-- Header (Yellow & White Theme) -->
     <header id="mainHeader" class="bg-amber-500 border-b border-amber-600 p-4 sticky top-0 z-40 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
             <div class="flex items-center gap-3">
@@ -30,22 +27,22 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-2">
-                <button onclick="switchView('admin')" id="btnTabAdmin" class="bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition">
+                <button type="button" onclick="switchView('admin')" id="btnTabAdmin" class="bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition">
                     <i class="fa-solid fa-gauge-high mr-1 text-amber-400"></i> Admin Panel
                 </button>
-                <button onclick="switchView('customer')" id="btnTabCust" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+                <button type="button" onclick="switchView('customer')" id="btnTabCust" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
                     <i class="fa-solid fa-user-pen text-amber-600"></i> Customer Form
                 </button>
-                <button onclick="switchView('directory')" id="btnTabDir" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+                <button type="button" onclick="switchView('directory')" id="btnTabDir" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
                     <i class="fa-solid fa-address-book text-amber-600"></i> Customer CRM
                 </button>
-                <button onclick="copyCustomerShareLink()" class="bg-slate-900 hover:bg-slate-800 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
+                <button type="button" onclick="copyCustomerShareLink()" class="bg-slate-900 hover:bg-slate-800 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
                     <i class="fa-solid fa-share-nodes"></i> Copy Form Link
                 </button>
-                <button onclick="fetchCloudData()" class="bg-white hover:bg-slate-100 text-amber-700 px-2.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition" title="Sync Cloud Data">
+                <button type="button" onclick="fetchCloudData()" class="bg-white hover:bg-slate-100 text-amber-700 px-2.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition" title="Sync Cloud Data">
                     <i id="syncIcon" class="fa-solid fa-rotate"></i>
                 </button>
-                <button onclick="exportToCSV()" class="bg-white hover:bg-slate-100 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
+                <button type="button" onclick="exportToCSV()" class="bg-white hover:bg-slate-100 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
                     <i class="fa-solid fa-file-excel"></i> Export
                 </button>
             </div>
@@ -54,7 +51,6 @@
 
     <main class="max-w-7xl mx-auto p-4 space-y-6">
 
-        <!-- Top Metrics Cards -->
         <section id="metricsSection" class="grid grid-cols-2 md:grid-cols-5 gap-3">
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-[11px] text-slate-500 uppercase font-bold tracking-wider">Total Fleet</p>
@@ -78,10 +74,8 @@
             </div>
         </section>
 
-        <!-- ================= VIEW 1: ADMIN DASHBOARD ================= -->
         <div id="viewAdmin" class="space-y-6">
 
-            <!-- Chart & Overdue Alerts -->
             <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center">
                     <h4 class="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wide">Collection vs Due Breakdown</h4>
@@ -101,14 +95,13 @@
                 </div>
             </section>
 
-            <!-- Master Fleet Inventory Manager -->
             <section class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 border-b border-slate-100 pb-3">
                     <div>
                         <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                            <i class="fa-solid fa-warehouse text-amber-500"></i> Master Fleet Inventory (গাড়ি তালিকা ও স্ট্যাটাস)
+                            <i class="fa-solid fa-warehouse text-amber-500"></i> Master Fleet Inventory (গাড়ি তালিকা ও স্ট্যাটাস)
                         </h2>
-                        <p class="text-xs text-slate-500">নতুন গাড়ি যুক্ত করুন, গাড়ির নম্বর এডিট করুন অথবা স্ট্যাটাস সুইচ করুন</p>
+                        <p class="text-xs text-slate-500">নতুন গাড়ি যুক্ত করুন, গাড়ির নম্বর এডিট করুন অথবা স্ট্যাটাস সুইচ করুন</p>
                     </div>
                     <form id="addVehicleForm" class="flex gap-2 w-full sm:w-auto">
                         <input type="text" id="newVehNo" required placeholder="Vehicle No (e.g. WB-01-AB1234)" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 uppercase focus:outline-none focus:border-amber-500 w-full sm:w-56 font-semibold">
@@ -120,145 +113,7 @@
                 <div id="fleetInventoryContainer" class="flex flex-wrap gap-2.5 max-h-36 overflow-y-auto custom-scroll p-1"></div>
             </section>
 
-            <!-- Admin Bookings & Review Table -->
             <section class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 border-b border-slate-100 pb-3">
-                    <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-amber-500"></i> Active Bookings & Financial Records
-                    </h2>
-                    <input type="text" id="searchInput" placeholder="Search name, vehicle, phone or ID..." class="w-full sm:w-64 bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-amber-500">
-                </div>
-
-                <div class="overflow-x-auto custom-scroll">
-                    <table class="w-full text-left text-xs text-slate-700">
-                        <thead class="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
-                            <tr>
-                                <th class="p-3">Customer & Vehicle</th>
-                                <th class="p-3">ID & Present Proof</th>
-                                <th class="p-3">Slab & Rate Tier</th>
-                                <th class="p-3">Paid / Weekly Due</th>
-                                <th class="p-3">Next Due Date</th>
-                                <th class="p-3">Status</th>
-                                <th class="p-3 text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fleetTable" class="divide-y divide-slate-100">
-                            <tr>
-                                <td colspan="7" class="p-6 text-center text-slate-400">Loading live data from Cloud...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-        </div>
-
-        <!-- ================= VIEW 2: CUSTOMER SELF-ONBOARDING & CONSENT ================= -->
-        <div id="viewCustomerForm" class="hidden max-w-3xl mx-auto space-y-6">
-            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-lg space-y-6">
-                
-                <div class="border-b border-slate-100 pb-4 text-center">
-                    <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">OM GANANAYAKA (O.G) LLP</span>
-                    <h2 class="text-xl font-black text-slate-900 mt-2">KD Captain — Vehicle Rental Registration</h2>
-                    <p class="text-xs text-slate-500 mt-1">Please fill out your verified identification, addresses, and accept the legal conditions below.</p>
-                </div>
-
-                <form id="customerSelfForm" class="space-y-4">
-                    
-                    <!-- Basic Info -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Customer Full Name (গ্রাহকের পুরো নাম) *</label>
-                            <input type="text" id="selfName" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="e.g. Rahul Sharma">
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Phone Number (ফোন নম্বর) *</label>
-                            <input type="tel" id="selfPhone" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="98XXXXXXXX">
-                        </div>
-                    </div>
-
-                    <!-- Dynamic Primary Gov ID Selection -->
-                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3">
-                        <label class="text-xs font-bold text-slate-900 uppercase block text-amber-800">
-                            <i class="fa-solid fa-id-card"></i> Primary Identity Proof (যেকোনো একটি পরিচয়পত্র নির্বাচন করুন) *
-                        </label>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="text-[11px] font-semibold text-slate-600 block mb-1">Select ID Document Type *</label>
-                                <select id="selfIdType" onchange="updateIdFieldValidation()" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
-                                    <option value="Aadhaar">Aadhaar Card (১২ ডিজিট আধার)</option>
-                                    <option value="PAN">PAN Card (১০ ডিজিট প্যান কার্ড)</option>
-                                    <option value="Voter">Voter ID / EPIC Card (ভোটার কার্ড)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[11px] font-semibold text-slate-600 block mb-1" id="lblIdNumber">Enter Aadhaar Card Number *</label>
-                                <input type="text" id="selfIdNumber" required maxlength="12" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium uppercase" placeholder="Enter 12 Digit Number">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Addresses & Present Address Proof Selection -->
-                    <div class="space-y-3">
-                        <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Permanent Address (স্থায়ী ঠিকানা - বাড়ির ঠিকানা) *</label>
-                            <input type="text" id="selfPermAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="গ্রাম/শহর, থানা, জেলা, পিন কোড">
-                        </div>
-
-                        <div>
-                            <div class="flex justify-between items-center mb-1">
-                                <label class="text-xs font-bold text-slate-700">Present Address (কলকাতার বর্তমান বাসস্থান/ভাড়া ঠিকানা) *</label>
-                                <label class="text-xs text-amber-600 font-bold cursor-pointer flex items-center gap-1">
-                                    <input type="checkbox" id="selfSameAddr" onchange="copySelfAddress()" class="rounded text-amber-500 focus:ring-0"> Same as Permanent
-                                </label>
-                            </div>
-                            <input type="text" id="selfCurrAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="ফ্ল্যাট/মেস নং, এলাকা, কলকাতা পিন কোড">
-                        </div>
-
-                        <!-- Present Address Proof Selector -->
-                        <div class="bg-amber-50/50 p-3.5 rounded-xl border border-amber-200 space-y-3">
-                            <label class="text-xs font-bold text-slate-900 uppercase block text-amber-900">
-                                <i class="fa-solid fa-house-chimney-user"></i> Present Address Proof (বর্তমান ঠিকানার প্রমাণপত্র) *
-                            </label>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div>
-                                    <label class="text-[11px] font-semibold text-slate-600 block mb-1">Select Proof Document Type *</label>
-                                    <select id="selfAddrProofType" class="w-full bg-white border border-amber-300 rounded-lg p-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
-                                        <option value="Electricity Bill">Electricity Bill (বিদ্যুৎ বিল)</option>
-                                        <option value="LPG Gas Book">LPG Gas Book / Connection Slip (গ্যাস বুক)</option>
-                                        <option value="Bank Passbook">Bank Passbook / Statement (ব্যাংক পাসবুক)</option>
-                                        <option value="Rent Agreement">Rent Agreement (ভাড়া চুক্তিপত্র)</option>
-                                        <option value="Mess/Landlord Slip">Mess / Landlord Declaration (মালিকের সম্মতিপত্র)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="text-[11px] font-semibold text-slate-600 block mb-1">Consumer / Document Ref No. *</label>
-                                    <input type="text" id="selfAddrProofNo" required class="w-full bg-white border border-amber-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="e.g. Consumer ID, Account No, or Bill No">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Date & Slab Selection -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Rental Start Date (শুরুর তারিখ) *</label>
-                            <input type="date" id="selfStartDate" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Upload Customer Photo (ছবি আপলোড) *</label>
-                            <input type="file" id="selfPhoto" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-600">
-                        </div>
-                    </div>
-
-                    <div class="bg-amber-50/70 p-4 rounded-xl border border-amber-200 space-y-3">
-                        <label class="text-xs font-black text-amber-900 uppercase block">Select Initial Rental Slab (১ম মাসের ভাড়ার স্ল্যাব) *</label>
-                        <select id="selfSlab" onchange="updateSelfSlabDetails()" class="w-full bg-white border border-amber-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
-                            <option value="1">Slab 1 (Security: ₹1500 | Month 1 Daily: ₹200 | Weekly Due: ₹1400)</option>
-                            <option value="2">Slab 2 (Security: ₹700 | Month 1 Daily: ₹220 | Weekly Due: ₹1540)</option>
-                            <option value="3">Slab 3 (Security: ₹500 | Month 1 Daily: ₹230 | Weekly Due: ₹1610)</option>
-                        </select>
-                        <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold bg-white p-2.5 rounded-lg border border-amber-200">
-                            <div class="text-slate-600">Security Deposit: <span id="selfSec" class="text-amber-700 font-black">&#8377;1500</span></div>
-                            <div class="text-slate-600">Daily Rent (Month 1): <span id="selfDaily" class="text-amber-700 font-black">&#8377;200</span></div>
-                            <div class="text-slat
+                    <h2 class="text-sm font-bold text-slate-
+                        
