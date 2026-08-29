@@ -10,7 +10,7 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- Firebase SDK (Compat Version) -->
+    <!-- Firebase SDK (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -151,7 +151,7 @@
         </div>
 
         <!-- ================= VIEW 2: CUSTOMER FORM ================= -->
-        <div id="viewCustomerForm" class="hidden max-w-3xl mx-auto space-y-6">
+        <div id="viewCustomerForm" style="display: none;" class="max-w-3xl mx-auto space-y-6">
             <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-lg space-y-6">
                 <div class="border-b border-slate-100 pb-4 text-center">
                     <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">OM GANANAYAKA (O.G) LLP</span>
@@ -178,7 +178,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label class="text-[11px] font-semibold text-slate-600 block mb-1">Document Type *</label>
-                                <select id="selfIdType" onchange="updateIdFieldValidation()" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
+                                <select id="selfIdType" onchange="updateIdFieldValidation()" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 cursor-pointer">
                                     <option value="Aadhaar">Aadhaar Card (12 Digit)</option>
                                     <option value="PAN">PAN Card (10 Digit)</option>
                                     <option value="Voter">Voter ID / EPIC Card</option>
@@ -212,7 +212,7 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
                                     <label class="text-[11px] font-semibold text-slate-600 block mb-1">Proof Type *</label>
-                                    <select id="selfAddrProofType" class="w-full bg-white border border-amber-300 rounded-lg p-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
+                                    <select id="selfAddrProofType" class="w-full bg-white border border-amber-300 rounded-lg p-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 cursor-pointer">
                                         <option value="Electricity Bill">Electricity Bill</option>
                                         <option value="LPG Gas Book">LPG Gas Book</option>
                                         <option value="Bank Passbook">Bank Passbook / Statement</option>
@@ -235,13 +235,13 @@
                         </div>
                         <div>
                             <label class="text-xs font-bold text-slate-700 block mb-1">Assign Available Vehicle *</label>
-                            <select id="selfAssignVeh" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500"></select>
+                            <select id="selfAssignVeh" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 cursor-pointer"></select>
                         </div>
                     </div>
 
                     <div class="bg-amber-50/70 p-4 rounded-xl border border-amber-200 space-y-3">
                         <label class="text-xs font-black text-amber-900 uppercase block">Select Initial Rental Slab (১ম মাসের স্ল্যাব) *</label>
-                        <select id="selfSlab" onchange="updateSelfSlabDetails()" class="w-full bg-white border border-amber-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
+                        <select id="selfSlab" onchange="updateSelfSlabDetails()" class="w-full bg-white border border-amber-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 cursor-pointer">
                             <option value="1">Slab 1 (Security: ₹1500 | Month 1 Daily: ₹200 | Week 1 Due: ₹1400)</option>
                             <option value="2">Slab 2 (Security: ₹700 | Month 1 Daily: ₹220 | Week 1 Due: ₹1540)</option>
                             <option value="3">Slab 3 (Security: ₹500 | Month 1 Daily: ₹230 | Week 1 Due: ₹1610)</option>
@@ -254,7 +254,7 @@
                         <p class="text-[11px] text-amber-800 font-semibold">* ১ম মাস (৪ সপ্তাহ) পর ৫ম সপ্তাহ থেকে সবার জন্য ফ্ল্যাট ₹২০০/দিন (সাপ্তাহিক ₹১৪০০) কার্যকর হবে।</p>
                     </div>
 
-                    <button type="submit" id="btnSubmitForm" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black p-3.5 rounded-xl text-sm shadow-md transition cursor-pointer">
+                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black p-3.5 rounded-xl text-sm shadow-md transition cursor-pointer">
                         Submit & Onboard Customer
                     </button>
                 </form>
@@ -262,7 +262,807 @@
         </div>
 
         <!-- ================= VIEW 3: CRM DIRECTORY ================= -->
-        <div id="viewDirectory" class="hidden space-y-6">
+        <div id="viewDirectory" style="display: none;" class="space-y-6">
             <section class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-sm font
+                    <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-users text-amber-500"></i> Customer CRM Directory & Payment Portfolios
+                    </h2>
+                </div>
+                <div id="crmListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- Modal 1: Add Weekly Payment -->
+    <div id="paymentModal" style="display: none;" class="fixed inset-0 bg-slate-950/60 z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-black text-slate-900 text-sm">Add Installment / Weekly Payment</h3>
+                <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-700 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="paymentRecordForm" onsubmit="savePaymentInstallment(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="payCustId">
+                <div class="bg-slate-50 p-3 rounded-xl border space-y-1">
+                    <p class="font-bold text-slate-900" id="payCustName">-</p>
+                    <p class="text-slate-600" id="payCustDetails">-</p>
+                </div>
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">Payment Received Date *</label>
+                    <input type="date" id="payDate" required class="w-full border rounded-lg p-2 bg-slate-50">
+                </div>
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">Amount Paid (₹) *</label>
+                    <input type="number" id="payAmount" required class="w-full border rounded-lg p-2 bg-slate-50 font-bold text-emerald-700 text-sm">
+                </div>
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">Payment Note</label>
+                    <input type="text" id="payNote" class="w-full border rounded-lg p-2 bg-slate-50" placeholder="e.g. Week 2 Full Payment">
+                </div>
+                <div class="flex justify-end gap-2 pt-2 border-t">
+                    <button type="button" onclick="closePaymentModal()" class="px-3 py-1.5 rounded-lg bg-slate-200 text-slate-700 font-bold">Cancel</button>
+                    <button type="submit" class="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-bold">Save & Advance Week</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Edit Customer Details -->
+    <div id="editCustomerModal" style="display: none;" class="fixed inset-0 bg-slate-950/60 z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-black text-slate-900 text-sm">Edit Customer Details</h3>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-700 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="editCustomerForm" onsubmit="saveCustomerEdit(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="editCustId">
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">Customer Full Name</label>
+                    <input type="text" id="editCustName" required class="w-full border rounded-lg p-2 bg-slate-50">
+                </div>
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">Phone Number</label>
+                    <input type="tel" id="editCustPhone" required class="w-full border rounded-lg p-2 bg-slate-50">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">ID Type</label>
+                        <input type="text" id="editCustIdType" required class="w-full border rounded-lg p-2 bg-slate-50">
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">ID Number</label>
+                        <input type="text" id="editCustIdNo" required class="w-full border rounded-lg p-2 bg-slate-50">
+                    </div>
+                </div>
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">Assigned Vehicle</label>
+                    <select id="editCustVeh" class="w-full border rounded-lg p-2 bg-slate-50 font-semibold"></select>
+                </div>
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">Permanent Address</label>
+                    <input type="text" id="editCustPermAddr" class="w-full border rounded-lg p-2 bg-slate-50">
+                </div>
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">Present Address</label>
+                    <input type="text" id="editCustCurrAddr" class="w-full border rounded-lg p-2 bg-slate-50">
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">Rental Slab</label>
+                        <select id="editCustSlab" class="w-full border rounded-lg p-2 bg-slate-50">
+                            <option value="1">Slab 1 (₹200/d)</option>
+                            <option value="2">Slab 2 (₹220/d)</option>
+                            <option value="3">Slab 3 (₹230/d)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">Current Week</label>
+                        <input type="number" id="editCustWeek" min="1" required class="w-full border rounded-lg p-2 bg-slate-50">
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">Status</label>
+                        <select id="editCustStatus" class="w-full border rounded-lg p-2 bg-slate-50">
+                            <option value="Active">Active</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">Current Due (₹)</label>
+                        <input type="number" id="editCustDue" required class="w-full border rounded-lg p-2 bg-slate-50">
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">Next Due Date</label>
+                        <input type="date" id="editCustDueDate" required class="w-full border rounded-lg p-2 bg-slate-50">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-3 border-t">
+                    <button type="button" onclick="closeEditModal()" class="px-3 py-1.5 rounded-lg bg-slate-200 text-slate-700 font-bold">Cancel</button>
+                    <button type="submit" class="px-4 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-black">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Execution Logic -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBciPcjLQGXwFY03eR8pnkf",
+            authDomain: "kd-captain.firebaseapp.com",
+            projectId: "kd-captain",
+            storageBucket: "kd-captain.firebasestorage.app",
+            messagingSenderId: "102605632732",
+            appId: "1:102605632732:web:980105320a"
+        };
+
+        let db = null;
+        try {
+            if (typeof firebase !== 'undefined') {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+            }
+        } catch(e) {
+            console.log("Firebase init locally fallback.");
+        }
+
+        var state = {
+            fleet: [
+                { no: "WB-01-AB1234", status: "Active" },
+                { no: "WB-02-CD5678", status: "Garage" },
+                { no: "WB-03-EF9012", status: "Garage" }
+            ],
+            bookings: [],
+            chartInstance: null
+        };
+
+        function calculateWeeklyRate(slab, weekNumber) {
+            var daily = 200;
+            if (weekNumber <= 4) {
+                if (slab === 2) daily = 220;
+                else if (slab === 3) daily = 230;
+                else daily = 200;
+            } else {
+                daily = 200;
+            }
+            return { daily: daily, weekly: daily * 7 };
+        }
+
+        function add7Days(dateStr) {
+            var d = new Date(dateStr);
+            d.setDate(d.getDate() + 7);
+            return d.toISOString().split('T')[0];
+        }
+
+        function calculateDaysActive(startDate) {
+            if (!startDate) return 0;
+            var start = new Date(startDate);
+            var now = new Date();
+            var diffTime = Math.abs(now - start);
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function saveLocalData() {
+            localStorage.setItem('kd_captain_final_stable', JSON.stringify({
+                fleet: state.fleet,
+                bookings: state.bookings
+            }));
+        }
+
+        window.onload = function() {
+            var dateInput = document.getElementById('selfStartDate');
+            if (dateInput) {
+                dateInput.value = new Date().toISOString().split('T')[0];
+            }
+            updateIdFieldValidation();
+            updateSelfSlabDetails();
+
+            // Load Local Data first immediately
+            var saved = localStorage.getItem('kd_captain_final_stable');
+            if (saved) {
+                try {
+                    var parsed = JSON.parse(saved);
+                    if (parsed.fleet && parsed.fleet.length > 0) state.fleet = parsed.fleet;
+                    if (parsed.bookings) state.bookings = parsed.bookings;
+                } catch(e){}
+            }
+            renderAll();
+            populateVehicleSelect();
+
+            // Background Firebase Realtime Sync
+            if (db) {
+                db.collection("kd_fleet").onSnapshot(function(snapshot) {
+                    if (!snapshot.empty) {
+                        var items = [];
+                        snapshot.forEach(function(doc) { items.push(doc.data()); });
+                        state.fleet = items;
+                        saveLocalData();
+                        renderAll();
+                        populateVehicleSelect();
+                    }
+                }, function(err){});
+
+                db.collection("kd_bookings").onSnapshot(function(snapshot) {
+                    if (!snapshot.empty) {
+                        var items = [];
+                        snapshot.forEach(function(doc) { items.push(doc.data()); });
+                        state.bookings = items;
+                        saveLocalData();
+                        renderAll();
+                    }
+                }, function(err){});
+            }
+        };
+
+        function switchView(view) {
+            document.getElementById('viewAdmin').style.display = 'none';
+            document.getElementById('viewCustomerForm').style.display = 'none';
+            document.getElementById('viewDirectory').style.display = 'none';
+
+            var btnAdmin = document.getElementById('btnTabAdmin');
+            var btnCust = document.getElementById('btnTabCust');
+            var btnDir = document.getElementById('btnTabDir');
+
+            var inactiveClass = "bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+            btnAdmin.className = inactiveClass;
+            btnCust.className = inactiveClass;
+            btnDir.className = inactiveClass;
+
+            if (view === 'admin') {
+                document.getElementById('viewAdmin').style.display = 'block';
+                btnAdmin.className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+                renderAll();
+            } else if (view === 'customer') {
+                document.getElementById('viewCustomerForm').style.display = 'block';
+                btnCust.className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+                populateVehicleSelect();
+            } else if (view === 'directory') {
+                document.getElementById('viewDirectory').style.display = 'block';
+                btnDir.className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+                renderCRM();
+            }
+        }
+
+        function updateIdFieldValidation() {
+            var type = document.getElementById('selfIdType').value;
+            var lbl = document.getElementById('lblIdNumber');
+            var input = document.getElementById('selfIdNumber');
+
+            if (type === 'Aadhaar') {
+                lbl.innerText = 'Enter Aadhaar Card Number *';
+                input.maxLength = 12;
+                input.placeholder = 'Enter 12 Digit Number';
+            } else if (type === 'PAN') {
+                lbl.innerText = 'Enter PAN Card Number *';
+                input.maxLength = 10;
+                input.placeholder = 'ABCDE1234F';
+            } else {
+                lbl.innerText = 'Enter Voter ID (EPIC) Number *';
+                input.maxLength = 16;
+                input.placeholder = 'WBF1234567';
+            }
+        }
+
+        function updateSelfSlabDetails() {
+            var slab = parseInt(document.getElementById('selfSlab').value);
+            var sec = document.getElementById('selfSec');
+            var daily = document.getElementById('selfDaily');
+            var weekly = document.getElementById('selfWeekly');
+
+            var rates = calculateWeeklyRate(slab, 1);
+            var secAmt = slab === 1 ? 1500 : slab === 2 ? 700 : 500;
+
+            sec.innerText = '₹' + secAmt;
+            daily.innerText = '₹' + rates.daily;
+            weekly.innerText = '₹' + rates.weekly;
+        }
+
+        function copySelfAddress() {
+            var same = document.getElementById('selfSameAddr').checked;
+            if (same) {
+                document.getElementById('selfCurrAddr').value = document.getElementById('selfPermAddr').value;
+            }
+        }
+
+        function populateVehicleSelect() {
+            var sel = document.getElementById('selfAssignVeh');
+            if (!sel) return;
+            sel.innerHTML = '';
+            var available = state.fleet.filter(function(v) { return v.status === 'Garage'; });
+            if (available.length === 0) {
+                sel.innerHTML = '<option value="">No vehicles currently in Garage</option>';
+            } else {
+                available.forEach(function(v) {
+                    sel.innerHTML += '<option value="' + v.no + '">' + v.no + '</option>';
+                });
+            }
+        }
+
+        function handleAddVehicle(e) {
+            e.preventDefault();
+            var val = document.getElementById('newVehNo').value.trim().toUpperCase();
+            if (val) {
+                var exists = state.fleet.some(function(v) { return v.no === val; });
+                if (exists) {
+                    alert('Vehicle already exists in fleet!');
+                    return;
+                }
+                var item = { no: val, status: 'Garage' };
+                state.fleet.push(item);
+                saveLocalData();
+                if (db) db.collection("kd_fleet").doc(val).set(item).catch(function(){});
+                document.getElementById('newVehNo').value = '';
+                renderAll();
+                populateVehicleSelect();
+            }
+        }
+
+        function setVehicleStatus(no, newStatus) {
+            var v = state.fleet.find(function(item) { return item.no === no; });
+            if (v) {
+                v.status = newStatus;
+                saveLocalData();
+                if (db) db.collection("kd_fleet").doc(no).set(v).catch(function(){});
+                renderAll();
+                populateVehicleSelect();
+            }
+        }
+
+        function editVehicleNo(oldNo) {
+            var newNo = prompt('Edit vehicle number:', oldNo);
+            if (newNo && newNo.trim() !== '') {
+                newNo = newNo.trim().toUpperCase();
+                var v = state.fleet.find(function(item) { return item.no === oldNo; });
+                if (v) {
+                    if (db) db.collection("kd_fleet").doc(oldNo).delete().catch(function(){});
+                    v.no = newNo;
+                    if (db) db.collection("kd_fleet").doc(newNo).set(v).catch(function(){});
+
+                    state.bookings.forEach(function(b) {
+                        if (b.veh === oldNo) {
+                            b.veh = newNo;
+                            if (db) db.collection("kd_bookings").doc(String(b.id)).set(b).catch(function(){});
+                        }
+                    });
+                    saveLocalData();
+                    renderAll();
+                }
+            }
+        }
+
+        function deleteVehicle(no) {
+            if (confirm('Are you sure you want to delete vehicle ' + no + '?')) {
+                state.fleet = state.fleet.filter(function(v) { return v.no !== no; });
+                if (db) db.collection("kd_fleet").doc(no).delete().catch(function(){});
+                saveLocalData();
+                renderAll();
+                populateVehicleSelect();
+            }
+        }
+
+        function handleCustomerSubmit(e) {
+            e.preventDefault();
+            var assignedVeh = document.getElementById('selfAssignVeh').value;
+            if (!assignedVeh) {
+                alert('Please ensure an available vehicle is selected from garage.');
+                return;
+            }
+
+            var startDt = document.getElementById('selfStartDate').value;
+            var slab = parseInt(document.getElementById('selfSlab').value) || 1;
+            var rates = calculateWeeklyRate(slab, 1);
+            var sec = slab === 1 ? 1500 : slab === 2 ? 700 : 500;
+            var nextDue = add7Days(startDt);
+
+            var newBooking = {
+                id: Date.now(),
+                name: document.getElementById('selfName').value,
+                phone: document.getElementById('selfPhone').value,
+                veh: assignedVeh,
+                idType: document.getElementById('selfIdType').value,
+                idNo: document.getElementById('selfIdNumber').value,
+                permAddr: document.getElementById('selfPermAddr').value,
+                currAddr: document.getElementById('selfCurrAddr').value,
+                addrProofType: document.getElementById('selfAddrProofType').value,
+                addrProofNo: document.getElementById('selfAddrProofNo').value,
+                startDate: startDt,
+                slab: slab,
+                currentWeek: 1,
+                dailyRate: rates.daily,
+                securityDeposit: sec,
+                due: rates.weekly,
+                dueDate: nextDue,
+                status: 'Active',
+                paymentHistory: [
+                    { week: 0, amount: sec, type: "Security Deposit", date: startDt }
+                ]
+            };
+
+            // Switch Vehicle to Active
+            var v = state.fleet.find(function(item) { return item.no === assignedVeh; });
+            if (v) {
+                v.status = 'Active';
+                if (db) db.collection("kd_fleet").doc(assignedVeh).set(v).catch(function(){});
+            }
+
+            state.bookings.push(newBooking);
+            saveLocalData();
+            if (db) db.collection("kd_bookings").doc(String(newBooking.id)).set(newBooking).catch(function(){});
+
+            alert('Customer Onboarding Successful!');
+            document.getElementById('customerSelfForm').reset();
+            switchView('admin');
+        }
+
+        function openPaymentModal(id) {
+            var b = state.bookings.find(function(item) { return item.id == id; });
+            if (!b) return;
+
+            document.getElementById('payCustId').value = b.id;
+            document.getElementById('payCustName').innerText = b.name + ' (' + b.veh + ')';
+            document.getElementById('payCustDetails').innerText = 'Current Week: ' + b.currentWeek + ' | Due: ₹' + b.due + ' on ' + b.dueDate;
+            document.getElementById('payDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('payAmount').value = b.due;
+            document.getElementById('payNote').value = 'Week ' + b.currentWeek + ' Rent';
+
+            var m = document.getElementById('paymentModal');
+            m.style.display = 'flex';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        function savePaymentInstallment(e) {
+            e.preventDefault();
+            var id = document.getElementById('payCustId').value;
+            var b = state.bookings.find(function(item) { return item.id == id; });
+            if (!b) return;
+
+            var amt = parseFloat(document.getElementById('payAmount').value) || 0;
+            var date = document.getElementById('payDate').value;
+            var note = document.getElementById('payNote').value || ('Week ' + b.currentWeek + ' Payment');
+
+            if (!b.paymentHistory) b.paymentHistory = [];
+            b.paymentHistory.push({
+                week: b.currentWeek,
+                amount: amt,
+                type: note,
+                date: date
+            });
+
+            b.currentWeek += 1;
+            var nextRates = calculateWeeklyRate(b.slab, b.currentWeek);
+            b.dailyRate = nextRates.daily;
+            b.due = nextRates.weekly;
+            b.dueDate = add7Days(b.dueDate);
+
+            saveLocalData();
+            if (db) db.collection("kd_bookings").doc(String(b.id)).set(b).catch(function(){});
+
+            closePaymentModal();
+            renderAll();
+            alert('Payment recorded successfully! Next week due: ₹' + b.due + ' on ' + b.dueDate);
+        }
+
+        function openEditModal(id) {
+            var b = state.bookings.find(function(item) { return item.id == id; });
+            if (!b) return;
+
+            document.getElementById('editCustId').value = b.id;
+            document.getElementById('editCustName').value = b.name;
+            document.getElementById('editCustPhone').value = b.phone;
+            document.getElementById('editCustIdType').value = b.idType;
+            document.getElementById('editCustIdNo').value = b.idNo;
+            document.getElementById('editCustPermAddr').value = b.permAddr || '';
+            document.getElementById('editCustCurrAddr').value = b.currAddr || '';
+            document.getElementById('editCustSlab').value = b.slab || 1;
+            document.getElementById('editCustWeek').value = b.currentWeek || 1;
+            document.getElementById('editCustDue').value = b.due || 0;
+            document.getElementById('editCustDueDate').value = b.dueDate || '';
+            document.getElementById('editCustStatus').value = b.status || 'Active';
+
+            var vehSelect = document.getElementById('editCustVeh');
+            vehSelect.innerHTML = '';
+            state.fleet.forEach(function(v) {
+                var isSelected = v.no === b.veh ? 'selected' : '';
+                vehSelect.innerHTML += '<option value="' + v.no + '" ' + isSelected + '>' + v.no + ' (' + v.status + ')</option>';
+            });
+
+            var m = document.getElementById('editCustomerModal');
+            m.style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editCustomerModal').style.display = 'none';
+        }
+
+        function saveCustomerEdit(e) {
+            e.preventDefault();
+            var id = document.getElementById('editCustId').value;
+            var b = state.bookings.find(function(item) { return item.id == id; });
+            if (!b) return;
+
+            var oldVeh = b.veh;
+            var newVeh = document.getElementById('editCustVeh').value;
+
+            b.name = document.getElementById('editCustName').value;
+            b.phone = document.getElementById('editCustPhone').value;
+            b.idType = document.getElementById('editCustIdType').value;
+            b.idNo = document.getElementById('editCustIdNo').value;
+            b.permAddr = document.getElementById('editCustPermAddr').value;
+            b.currAddr = document.getElementById('editCustCurrAddr').value;
+            b.slab = parseInt(document.getElementById('editCustSlab').value);
+            b.currentWeek = parseInt(document.getElementById('editCustWeek').value);
+            b.due = parseFloat(document.getElementById('editCustDue').value) || 0;
+            b.dueDate = document.getElementById('editCustDueDate').value;
+            b.status = document.getElementById('editCustStatus').value;
+            b.veh = newVeh;
+
+            var rateInfo = calculateWeeklyRate(b.slab, b.currentWeek);
+            b.dailyRate = rateInfo.daily;
+
+            if (oldVeh !== newVeh) {
+                var prevVeh = state.fleet.find(function(v) { return v.no === oldVeh; });
+                if (prevVeh) { 
+                    prevVeh.status = 'Garage'; 
+                    if (db) db.collection("kd_fleet").doc(oldVeh).set(prevVeh).catch(function(){});
+                }
+
+                var nextVeh = state.fleet.find(function(v) { return v.no === newVeh; });
+                if (nextVeh) { 
+                    nextVeh.status = 'Active'; 
+                    if (db) db.collection("kd_fleet").doc(newVeh).set(nextVeh).catch(function(){});
+                }
+            }
+
+            saveLocalData();
+            if (db) db.collection("kd_bookings").doc(String(b.id)).set(b).catch(function(){});
+
+            closeEditModal();
+            renderAll();
+            alert('Customer updated successfully!');
+        }
+
+        function deleteBooking(id) {
+            if (confirm('Are you sure you want to delete this customer record?')) {
+                var b = state.bookings.find(function(item) { return item.id == id; });
+                if (b) {
+                    var v = state.fleet.find(function(v) { return v.no === b.veh; });
+                    if (v) { 
+                        v.status = 'Garage'; 
+                        if (db) db.collection("kd_fleet").doc(v.no).set(v).catch(function(){});
+                    }
+                }
+                state.bookings = state.bookings.filter(function(item) { return item.id != id; });
+                saveLocalData();
+                if (db) db.collection("kd_bookings").doc(String(id)).delete().catch(function(){});
+                renderAll();
+            }
+        }
+
+        function renderAll() {
+            renderMetrics();
+            renderFleetBadges();
+            renderBookingsTable();
+            renderAlerts();
+            renderChart();
+            renderCRM();
+        }
+
+        function renderMetrics() {
+            var total = state.fleet.length;
+            var active = state.fleet.filter(function(f) { return f.status === 'Active'; }).length;
+            var garage = state.fleet.filter(function(f) { return f.status === 'Garage'; }).length;
+
+            var totalCollected = 0;
+            state.bookings.forEach(function(b) {
+                if (b.paymentHistory) {
+                    b.paymentHistory.forEach(function(p) { totalCollected += (p.amount || 0); });
+                }
+            });
+
+            var totalDues = state.bookings.reduce(function(sum, b) { return sum + (b.due || 0); }, 0);
+
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statActive').innerText = active;
+            document.getElementById('statGarage').innerText = garage;
+            document.getElementById('statCollected').innerText = '₹' + totalCollected;
+            document.getElementById('statPendingRent').innerText = '₹' + totalDues;
+        }
+
+        function renderFleetBadges() {
+            var container = document.getElementById('fleetInventoryContainer');
+            if (state.fleet.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400">No vehicles in fleet. Add vehicle above.</p>';
+                return;
+            }
+            container.innerHTML = state.fleet.map(function(v) {
+                var isAct = v.status === 'Active';
+                return '<div class="flex items-center gap-1.5 border px-2.5 py-1.5 rounded-lg text-xs font-semibold ' + (isAct ? 'bg-emerald-50 border-emerald-300 text-emerald-800' : 'bg-slate-100 border-slate-300 text-slate-700') + '">' +
+                    '<span>' + v.no + '</span>' +
+                    '<select onchange="setVehicleStatus(\'' + v.no + '\', this.value)" class="text-[11px] font-bold py-0.5 px-1 rounded border bg-white cursor-pointer focus:outline-none">' +
+                        '<option value="Active" ' + (isAct ? 'selected' : '') + '>Active</option>' +
+                        '<option value="Garage" ' + (!isAct ? 'selected' : '') + '>Garage</option>' +
+                    '</select>' +
+                    '<button type="button" onclick="editVehicleNo(\'' + v.no + '\')" class="text-slate-500 hover:text-amber-600 p-1 cursor-pointer"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                    '<button type="button" onclick="deleteVehicle(\'' + v.no + '\')" class="text-slate-400 hover:text-rose-600 p-1 cursor-pointer"><i class="fa-solid fa-trash-can"></i></button>' +
+                '</div>';
+            }).join('');
+        }
+
+        function renderBookingsTable() {
+            var q = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase();
+            var table = document.getElementById('fleetTable');
+            var filtered = state.bookings.filter(function(b) { 
+                return b.name.toLowerCase().indexOf(q) !== -1 || 
+                       b.veh.toLowerCase().indexOf(q) !== -1 || 
+                       b.phone.indexOf(q) !== -1;
+            });
+
+            if (filtered.length === 0) {
+                table.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-slate-400">No bookings recorded yet.</td></tr>';
+                return;
+            }
+
+            table.innerHTML = filtered.map(function(b) {
+                var rates = calculateWeeklyRate(b.slab, b.currentWeek);
+                var totalCustPaid = 0;
+                if (b.paymentHistory) {
+                    b.paymentHistory.forEach(function(p) { totalCustPaid += p.amount; });
+                }
+
+                return '<tr class="hover:bg-slate-50 transition">' +
+                    '<td class="p-3"><div class="font-bold text-slate-900">' + b.name + '</div><div class="text-[11px] text-slate-500 font-semibold">' + b.veh + ' &bull; ' + b.phone + '</div></td>' +
+                    '<td class="p-3"><span class="font-bold text-amber-800">Week ' + b.currentWeek + '</span> <span class="text-[10px] bg-slate-200 text-slate-800 px-1.5 py-0.5 rounded font-bold">Slab ' + b.slab + '</span></td>' +
+                    '<td class="p-3 font-semibold text-slate-800">₹' + rates.daily + '/day <span class="text-[10px] text-slate-500 block">(₹' + rates.weekly + '/wk)</span></td>' +
+                    '<td class="p-3"><span class="text-emerald-700 font-bold">Paid: ₹' + totalCustPaid + '</span> / <span class="text-rose-600 font-bold">Due: ₹' + b.due + '</span></td>' +
+                    '<td class="p-3 font-bold text-slate-800">' + b.dueDate + '</td>' +
+                    '<td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ' + (b.status === 'Active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700') + '">' + b.status + '</span></td>' +
+                    '<td class="p-3 text-right flex items-center justify-end gap-1.5">' +
+                        '<button onclick="openPaymentModal(' + b.id + ')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded text-[11px] font-bold shadow-sm flex items-center gap-1"><i class="fa-solid fa-plus"></i> Add Pay</button>' +
+                        '<button onclick="openEditModal(' + b.id + ')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-1.5 rounded text-xs"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                        '<button onclick="deleteBooking(' + b.id + ')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 p-1.5 rounded text-xs"><i class="fa-solid fa-trash"></i></button>' +
+                        '<a href="https://wa.me/91' + b.phone + '?text=Hello%20' + encodeURIComponent(b.name) + ',%20Week%20' + b.currentWeek + '%20vehicle%20rent%20due%20₹' + b.due + '%20on%20' + b.dueDate + '" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded text-xs"><i class="fa-brands fa-whatsapp"></i></a>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function renderAlerts() {
+            var list = document.getElementById('dueAlertList');
+            var pending = state.bookings.filter(function(b) { return b.due > 0; });
+            if (pending.length === 0) {
+                list.innerHTML = '<p class="text-xs text-slate-500">No active overdue payments.</p>';
+                return;
+            }
+            list.innerHTML = pending.map(function(b) {
+                return '<div class="flex justify-between items-center bg-white p-2.5 rounded-lg border border-rose-200 text-xs">' +
+                    '<div><span class="font-bold text-slate-800">' + b.name + '</span> (' + b.veh + ') &bull; Week ' + b.currentWeek + ' Due: <span class="text-rose-600 font-bold">₹' + b.due + '</span> on ' + b.dueDate + '</div>' +
+                    '<div class="flex items-center gap-2">' +
+                        '<button onclick="openPaymentModal(' + b.id + ')" class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300 font-bold hover:bg-emerald-100">+ Receive Pay</button>' +
+                        '<a href="https://wa.me/91' + b.phone + '?text=Dear%20' + encodeURIComponent(b.name) + ',%20reminder%20for%20Week%20' + b.currentWeek + '%20rent%20due%20₹' + b.due + '%20on%20' + b.dueDate + '" target="_blank" class="text-emerald-700 font-bold flex items-center gap-1 hover:underline"><i class="fa-brands fa-whatsapp"></i> Remind</a>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function renderChart() {
+            var ctx = document.getElementById('paymentPieChart');
+            if (!ctx) return;
+
+            var collected = 0;
+            state.bookings.forEach(function(b) {
+                if (b.paymentHistory) {
+                    b.paymentHistory.forEach(function(p) { totalCollected += (p.amount || 0); });
+                }
+            });
+
+            var due = state.bookings.reduce(function(sum, b) { return sum + (b.due || 0); }, 0);
+
+            if (state.chartInstance) {
+                state.chartInstance.destroy();
+            }
+
+            var cVal = collected === 0 && due === 0 ? 1 : collected;
+            var dVal = collected === 0 && due === 0 ? 0 : due;
+
+            state.chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Collected', 'Due'],
+                    datasets: [{
+                        data: [cVal, dVal],
+                        backgroundColor: ['#10b981', '#f43f5e']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderCRM() {
+            var crm = document.getElementById('crmListContainer');
+            if (state.bookings.length === 0) {
+                crm.innerHTML = '<p class="text-xs text-slate-500 col-span-3">No customer profiles found.</p>';
+                return;
+            }
+            crm.innerHTML = state.bookings.map(function(b) {
+                var rates = calculateWeeklyRate(b.slab, b.currentWeek);
+                var totalDays = calculateDaysActive(b.startDate);
+                var totalPaid = 0;
+                var historyHtml = '';
+                
+                if (b.paymentHistory && b.paymentHistory.length > 0) {
+                    historyHtml = b.paymentHistory.map(function(p) {
+                        totalPaid += p.amount;
+                        return '<div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]">' +
+                            '<span><i class="fa-solid fa-check text-emerald-600 mr-1"></i>' + p.type + ' (' + p.date + ')</span>' +
+                            '<span class="font-bold text-emerald-700">+₹' + p.amount + '</span>' +
+                        '</div>';
+                    }).join('');
+                }
+
+                return '<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3 relative">' +
+                    '<div class="flex justify-between items-start border-b pb-2">' +
+                        '<div>' +
+                            '<h4 class="font-black text-slate-900 text-sm">' + b.name + '</h4>' +
+                            '<p class="text-xs text-slate-500"><i class="fa-solid fa-phone mr-1"></i>' + b.phone + '</p>' +
+                        '</div>' +
+                        '<div class="flex items-center gap-1">' +
+                            '<span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">' + b.veh + '</span>' +
+                            '<button onclick="openEditModal(' + b.id + ')" class="text-amber-600 hover:text-amber-800 p-1 text-xs"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                            '<button onclick="deleteBooking(' + b.id + ')" class="text-rose-500 hover:text-rose-700 p-1 text-xs"><i class="fa-solid fa-trash"></i></button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="text-xs text-slate-600 space-y-1">' +
+                        '<div class="grid grid-cols-2 gap-1 bg-slate-50 p-2 rounded-lg">' +
+                            '<div><strong>Start:</strong> ' + b.startDate + '</div>' +
+                            '<div><strong>Days Active:</strong> ' + totalDays + ' Days</div>' +
+                            '<div><strong>Current Tier:</strong> Slab ' + b.slab + '</div>' +
+                            '<div><strong>Daily Rent:</strong> ₹' + rates.daily + '/day</div>' +
+                        '</div>' +
+                        '<p><strong>Perm Addr:</strong> ' + (b.permAddr || 'N/A') + '</p>' +
+                        '<p><strong>Present Addr:</strong> ' + (b.currAddr || 'N/A') + '</p>' +
+                        '<p><strong>ID Proof:</strong> ' + b.idType + ' (' + b.idNo + ')</p>' +
+                        '<div class="flex justify-between items-center pt-2 font-bold text-xs">' +
+                            '<span class="text-emerald-700 font-black">Total Paid: ₹' + totalPaid + '</span>' +
+                            '<span class="text-rose-600 font-black">Current Due: ₹' + b.due + '</span>' +
+                        '</div>' +
+                        '<div class="text-[11px] font-semibold text-slate-700">Next Payment Due Date: <span class="text-rose-700 font-bold">' + b.dueDate + '</span></div>' +
+                    '</div>' +
+                    '<div class="pt-2 border-t border-slate-100">' +
+                        '<div class="flex justify-between items-center mb-1">' +
+                            '<p class="text-[11px] font-black text-slate-800 uppercase tracking-wide">Installment History:</p>' +
+                            '<button onclick="openPaymentModal(' + b.id + ')" class="text-[10px] font-bold text-emerald-700 hover:underline">+ Add Week ' + b.currentWeek + ' Pay</button>' +
+                        '</div>' +
+                        '<div class="max-h-28 overflow-y-auto custom-scroll pr-1">' + (historyHtml || '<span class="text-[10px] text-slate-400">No installments logged</span>') + '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function copyCustomerShareLink() {
+            navigator.clipboard.writeText(window.location.href);
+            alert('Customer Form link copied!');
+        }
+
+        function exportToCSV() {
+            var csv = "Name,Phone,Vehicle,ID Type,ID No,Permanent Address,Present Address,Current Week,Daily Rate,Weekly Due,Next Due Date,Status\n";
+            state.bookings.forEach(function(b) {
+                csv += '"' + b.name + '","' + b.phone + '","' + b.veh + '","' + b.idType + '","' + b.idNo + '","' + (b.permAddr || '') + '","' + (b.currAddr || '') + '","' + b.currentWeek + '","' + b.dailyRate + '","' + b.due + '","' + b.dueDate + '","' + b.status + '"\n';
+            });
+            var blob = new Blob([csv], { type: 'text/csv' });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'kd_captain_records.csv');
+            a.click();
+        }
+    </script>
+</body>
+</html>
