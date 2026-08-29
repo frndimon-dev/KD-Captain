@@ -30,22 +30,19 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-2">
-                <button onclick="switchView('admin')" id="btnTabAdmin" class="bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition">
+                <button type="button" onclick="switchView('admin')" id="btnTabAdmin" class="bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition">
                     <i class="fa-solid fa-gauge-high mr-1 text-amber-400"></i> Admin Panel
                 </button>
-                <button onclick="switchView('customer')" id="btnTabCust" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+                <button type="button" onclick="switchView('customer')" id="btnTabCust" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
                     <i class="fa-solid fa-user-pen text-amber-600"></i> Customer Form
                 </button>
-                <button onclick="switchView('directory')" id="btnTabDir" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+                <button type="button" onclick="switchView('directory')" id="btnTabDir" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
                     <i class="fa-solid fa-address-book text-amber-600"></i> Customer CRM
                 </button>
-                <button onclick="copyCustomerShareLink()" class="bg-slate-900 hover:bg-slate-800 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
-                    <i class="fa-solid fa-share-nodes"></i> Copy Form Link
+                <button type="button" onclick="copyCustomerShareLink()" class="bg-slate-900 hover:bg-slate-800 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
+                    <i class="fa-solid fa-share-nodes"></i> Copy Link
                 </button>
-                <button onclick="fetchCloudData()" class="bg-white hover:bg-slate-100 text-amber-700 px-2.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition" title="Sync Cloud Data">
-                    <i id="syncIcon" class="fa-solid fa-rotate"></i>
-                </button>
-                <button onclick="exportToCSV()" class="bg-white hover:bg-slate-100 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
+                <button type="button" onclick="exportToCSV()" class="bg-white hover:bg-slate-100 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
                     <i class="fa-solid fa-file-excel"></i> Export
                 </button>
             </div>
@@ -70,11 +67,11 @@
             </div>
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-[11px] text-slate-600 uppercase font-bold tracking-wider">Total Collected</p>
-                <h3 class="text-2xl font-black text-slate-900 mt-1" id="statCollected">&#8377;0</h3>
+                <h3 class="text-2xl font-black text-slate-900 mt-1" id="statCollected">₹0</h3>
             </div>
             <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 shadow-sm col-span-2 md:col-span-1">
                 <p class="text-[11px] text-rose-600 uppercase font-bold tracking-wider">Total Weekly Due</p>
-                <h3 class="text-2xl font-black text-rose-600 mt-1" id="statPendingRent">&#8377;0</h3>
+                <h3 class="text-2xl font-black text-rose-600 mt-1" id="statPendingRent">₹0</h3>
             </div>
         </section>
 
@@ -83,9 +80,9 @@
 
             <!-- Chart & Overdue Alerts -->
             <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center min-h-[220px]">
                     <h4 class="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wide">Collection vs Due Breakdown</h4>
-                    <div class="w-44 h-44">
+                    <div class="w-40 h-40 relative flex items-center justify-center">
                         <canvas id="paymentPieChart"></canvas>
                     </div>
                 </div>
@@ -93,11 +90,11 @@
                 <div class="md:col-span-2 bg-rose-50 border border-rose-200 rounded-xl p-4 shadow-sm flex flex-col justify-between">
                     <div>
                         <h3 class="text-rose-700 font-bold text-xs uppercase tracking-wide flex items-center gap-2 mb-3">
-                            <i class="fa-solid fa-bell animate-bounce text-sm"></i> Payment Due & Overdue Alerts
+                            <i class="fa-solid fa-bell text-sm"></i> Payment Due & Overdue Alerts
                         </h3>
                         <div id="dueAlertList" class="space-y-2 max-h-40 overflow-y-auto custom-scroll pr-1"></div>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-2">* WhatsApp Reminder বাটনে ক্লিক করে গ্রাহককে তাৎক্ষণিক বকেয়া নোটিফিকেশন পাঠান।</p>
+                    <p class="text-[11px] text-slate-500 mt-2">* WhatsApp Reminder বাটনে ক্লিক করে গ্রাহককে মেসেজ পাঠান।</p>
                 </div>
             </section>
 
@@ -106,12 +103,12 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 border-b border-slate-100 pb-3">
                     <div>
                         <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                            <i class="fa-solid fa-warehouse text-amber-500"></i> Master Fleet Inventory (গাড়ি তালিকা ও স্ট্যাটাস)
+                            <i class="fa-solid fa-warehouse text-amber-500"></i> Master Fleet Inventory (গাড়ির তালিকা)
                         </h2>
-                        <p class="text-xs text-slate-500">নতুন গাড়ি যুক্ত করুন, গাড়ির নম্বর এডিট করুন অথবা স্ট্যাটাস সুইচ করুন</p>
+                        <p class="text-xs text-slate-500">নতুন গাড়ি যুক্ত করুন অথবা স্ট্যাটাস পরিবর্তন করুন</p>
                     </div>
                     <form id="addVehicleForm" onsubmit="handleAddVehicle(event)" class="flex gap-2 w-full sm:w-auto">
-                        <input type="text" id="newVehNo" required placeholder="Vehicle No (e.g. WB-01-AB1234)" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 uppercase focus:outline-none focus:border-amber-500 w-full sm:w-56 font-semibold">
+                        <input type="text" id="newVehNo" required placeholder="WB-01-AB1234" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 uppercase focus:outline-none focus:border-amber-500 w-full sm:w-56 font-semibold">
                         <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs whitespace-nowrap shadow-sm">
                             <i class="fa-solid fa-plus"></i> Add Vehicle
                         </button>
@@ -120,13 +117,13 @@
                 <div id="fleetInventoryContainer" class="flex flex-wrap gap-2.5 max-h-36 overflow-y-auto custom-scroll p-1"></div>
             </section>
 
-            <!-- Admin Bookings & Review Table -->
+            <!-- Active Bookings & Financial Records -->
             <section class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 border-b border-slate-100 pb-3">
                     <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-amber-500"></i> Active Bookings & Financial Records
+                        <i class="fa-solid fa-list-check text-amber-500"></i> Active Bookings & Records
                     </h2>
-                    <input type="text" id="searchInput" oninput="renderBookingsTable()" placeholder="Search name, vehicle, phone or ID..." class="w-full sm:w-64 bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-amber-500">
+                    <input type="text" id="searchInput" oninput="renderBookingsTable()" placeholder="Search name, vehicle or phone..." class="w-full sm:w-64 bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-amber-500">
                 </div>
 
                 <div class="overflow-x-auto custom-scroll">
@@ -134,10 +131,10 @@
                         <thead class="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
                             <tr>
                                 <th class="p-3">Customer & Vehicle</th>
-                                <th class="p-3">ID & Present Proof</th>
-                                <th class="p-3">Slab & Rate Tier</th>
-                                <th class="p-3">Paid / Weekly Due</th>
-                                <th class="p-3">Next Due Date</th>
+                                <th class="p-3">Identity Proof</th>
+                                <th class="p-3">Slab Details</th>
+                                <th class="p-3">Paid / Due</th>
+                                <th class="p-3">Next Due</th>
                                 <th class="p-3">Status</th>
                                 <th class="p-3 text-right">Actions</th>
                             </tr>
@@ -148,117 +145,477 @@
             </section>
         </div>
 
-        <!-- ================= VIEW 2: CUSTOMER SELF-ONBOARDING ================= -->
+        <!-- ================= VIEW 2: CUSTOMER REGISTRATION ================= -->
         <div id="viewCustomerForm" class="hidden max-w-3xl mx-auto space-y-6">
             <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-lg space-y-6">
                 
                 <div class="border-b border-slate-100 pb-4 text-center">
                     <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">OM GANANAYAKA (O.G) LLP</span>
                     <h2 class="text-xl font-black text-slate-900 mt-2">KD Captain — Vehicle Rental Registration</h2>
-                    <p class="text-xs text-slate-500 mt-1">Please fill out your verified identification, addresses, and accept the legal conditions below.</p>
+                    <p class="text-xs text-slate-500 mt-1">Fill out customer identity, address and select rental tier.</p>
                 </div>
 
                 <form id="customerSelfForm" onsubmit="handleCustomerSubmit(event)" class="space-y-4">
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Customer Full Name (গ্রাহকের পুরো নাম) *</label>
-                            <input type="text" id="selfName" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="e.g. Rahul Sharma">
+                            <label class="text-xs font-bold text-slate-700 block mb-1">Customer Full Name *</label>
+                            <input type="text" id="selfName" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="Rahul Sharma">
                         </div>
                         <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Phone Number (ফোন নম্বর) *</label>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">Phone Number *</label>
                             <input type="tel" id="selfPhone" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="98XXXXXXXX">
                         </div>
                     </div>
 
-                    <!-- Dynamic Primary Gov ID Selection -->
+                    <!-- Primary Identity Proof -->
                     <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3">
                         <label class="text-xs font-bold text-slate-900 uppercase block text-amber-800">
-                            <i class="fa-solid fa-id-card"></i> Primary Identity Proof (যেকোনো একটি পরিচয়পত্র নির্বাচন করুন) *
+                            <i class="fa-solid fa-id-card"></i> Primary Identity Proof *
                         </label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <label class="text-[11px] font-semibold text-slate-600 block mb-1">Select ID Document Type *</label>
+                                <label class="text-[11px] font-semibold text-slate-600 block mb-1">Document Type *</label>
                                 <select id="selfIdType" onchange="updateIdFieldValidation()" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
-                                    <option value="Aadhaar">Aadhaar Card (১২ ডিজিট আধার)</option>
-                                    <option value="PAN">PAN Card (১০ ডিজিট প্যান কার্ড)</option>
-                                    <option value="Voter">Voter ID / EPIC Card (ভোটার কার্ড)</option>
+                                    <option value="Aadhaar">Aadhaar Card (12 Digit)</option>
+                                    <option value="PAN">PAN Card (10 Digit)</option>
+                                    <option value="Voter">Voter ID / EPIC Card</option>
                                 </select>
                             </div>
                             <div>
                                 <label class="text-[11px] font-semibold text-slate-600 block mb-1" id="lblIdNumber">Enter Aadhaar Card Number *</label>
-                                <input type="text" id="selfIdNumber" required maxlength="12" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium uppercase" placeholder="Enter 12 Digit Number">
+                                <input type="text" id="selfIdNumber" required maxlength="12" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium uppercase" placeholder="12 Digit Number">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Addresses & Present Address Proof Selection -->
+                    <!-- Addresses -->
                     <div class="space-y-3">
                         <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Permanent Address (স্থায়ী ঠিকানা - বাড়ির ঠিকানা) *</label>
-                            <input type="text" id="selfPermAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="গ্রাম/শহর, থানা, জেলা, পিন কোড">
+                            <label class="text-xs font-bold text-slate-700 block mb-1">Permanent Address *</label>
+                            <input type="text" id="selfPermAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="Village/Town, Police Station, District, PIN">
                         </div>
 
                         <div>
                             <div class="flex justify-between items-center mb-1">
-                                <label class="text-xs font-bold text-slate-700">Present Address (কলকাতার বর্তমান বাসস্থান/ভাড়া ঠিকানা) *</label>
+                                <label class="text-xs font-bold text-slate-700">Present Address (Kolkata) *</label>
                                 <label class="text-xs text-amber-600 font-bold cursor-pointer flex items-center gap-1">
                                     <input type="checkbox" id="selfSameAddr" onchange="copySelfAddress()" class="rounded text-amber-500 focus:ring-0"> Same as Permanent
                                 </label>
                             </div>
-                            <input type="text" id="selfCurrAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="ফ্ল্যাট/মেস নং, এলাকা, কলকাতা পিন কোড">
+                            <input type="text" id="selfCurrAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="Flat/Mess No, Street, City, PIN">
                         </div>
 
-                        <!-- Present Address Proof Selector -->
+                        <!-- Present Address Proof -->
                         <div class="bg-amber-50/50 p-3.5 rounded-xl border border-amber-200 space-y-3">
                             <label class="text-xs font-bold text-slate-900 uppercase block text-amber-900">
-                                <i class="fa-solid fa-house-chimney-user"></i> Present Address Proof (বর্তমান ঠিকানার প্রমাণপত্র) *
+                                <i class="fa-solid fa-house-chimney-user"></i> Present Address Proof *
                             </label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
-                                    <label class="text-[11px] font-semibold text-slate-600 block mb-1">Select Proof Document Type *</label>
+                                    <label class="text-[11px] font-semibold text-slate-600 block mb-1">Proof Type *</label>
                                     <select id="selfAddrProofType" class="w-full bg-white border border-amber-300 rounded-lg p-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
-                                        <option value="Electricity Bill">Electricity Bill (বিদ্যুৎ বিল)</option>
-                                        <option value="LPG Gas Book">LPG Gas Book / Connection Slip (গ্যাস বুক)</option>
-                                        <option value="Bank Passbook">Bank Passbook / Statement (ব্যাংক পাসবুক)</option>
-                                        <option value="Rent Agreement">Rent Agreement (ভাড়া চুক্তিপত্র)</option>
-                                        <option value="Mess/Landlord Slip">Mess / Landlord Declaration (মালিকের সম্মতিপত্র)</option>
+                                        <option value="Electricity Bill">Electricity Bill</option>
+                                        <option value="LPG Gas Book">LPG Gas Book</option>
+                                        <option value="Bank Passbook">Bank Passbook / Statement</option>
+                                        <option value="Rent Agreement">Rent Agreement</option>
+                                        <option value="Mess/Landlord Slip">Mess / Landlord Declaration</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="text-[11px] font-semibold text-slate-600 block mb-1">Consumer / Document Ref No. *</label>
-                                    <input type="text" id="selfAddrProofNo" required class="w-full bg-white border border-amber-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="e.g. Consumer ID, Account No, or Bill No">
+                                    <label class="text-[11px] font-semibold text-slate-600 block mb-1">Document Reference No *</label>
+                                    <input type="text" id="selfAddrProofNo" required class="w-full bg-white border border-amber-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="Consumer / Acc / Ref ID">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Date & Slab Selection -->
+                    <!-- Date & Vehicle -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Rental Start Date (শুরুর তারিখ) *</label>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">Rental Start Date *</label>
                             <input type="date" id="selfStartDate" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
                         </div>
                         <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Assign Available Vehicle *</label>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">Assign Garage Vehicle *</label>
                             <select id="selfAssignVeh" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
-                                <!-- Populated dynamically -->
                             </select>
                         </div>
                     </div>
 
+                    <!-- Slab Breakdown -->
                     <div class="bg-amber-50/70 p-4 rounded-xl border border-amber-200 space-y-3">
-                        <label class="text-xs font-black text-amber-900 uppercase block">Select Initial Rental Slab (১ম মাসের ভাড়ার স্ল্যাব) *</label>
+                        <label class="text-xs font-black text-amber-900 uppercase block">Select Rental Slab *</label>
                         <select id="selfSlab" onchange="updateSelfSlabDetails()" class="w-full bg-white border border-amber-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
                             <option value="1">Slab 1 (Security: ₹1500 | Daily: ₹200 | Weekly: ₹1400)</option>
                             <option value="2">Slab 2 (Security: ₹700 | Daily: ₹220 | Weekly: ₹1540)</option>
                             <option value="3">Slab 3 (Security: ₹500 | Daily: ₹230 | Weekly: ₹1610)</option>
                         </select>
                         <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold bg-white p-2.5 rounded-lg border border-amber-200">
-                            <div class="text-slate-600">Security: <span id="selfSec" class="text-amber-700 font-black">&#8377;1500</span></div>
-                            <div class="text-slate-600">Daily Rent: <span id="selfDaily" class="text-amber-700 font-black">&#8377;200</span></div>
-                            <div class="text-slate-600">Weekly Due: <span id="selfWeekly" class="text-amber-700 font-black">&#8377;1400</span></div>
+                            <div class="text-slate-600">Security: <span id="selfSec" class="text-amber-700 font-black">₹1500</span></div>
+                            <div class="text-slate-600">Daily Rent: <span id="selfDaily" class="text-amber-700 font-black">₹200</span></div>
+                            <div class="text-slate-600">Weekly Due: <span id="selfWeekly" class="text-amber-700 font-black">₹1400</span></div>
                         </div>
                     </div>
 
-                    <button type="submit" class="w-full 
+                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black p-3 rounded-xl text-sm shadow-md transition cursor-pointer">
+                        Submit & Register Customer
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= VIEW 3: CRM DIRECTORY ================= -->
+        <div id="viewDirectory" class="hidden space-y-6">
+            <section class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-users text-amber-500"></i> Customer CRM Directory
+                </h2>
+                <div id="crmListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- JavaScript Execution Logic -->
+    <script>
+        var state = {
+            fleet: [
+                { no: "WB-01-AB1234", status: "Active" },
+                { no: "WB-02-CD5678", status: "Garage" },
+                { no: "WB-03-EF9012", status: "Garage" }
+            ],
+            bookings: [
+                {
+                    id: 1,
+                    name: "Rahul Sharma",
+                    phone: "9876543210",
+                    veh: "WB-01-AB1234",
+                    idType: "Aadhaar",
+                    idNo: "XXXX-XXXX-1234",
+                    addrProofType: "Electricity Bill",
+                    addrProofNo: "EB-98765",
+                    slab: 1,
+                    daily: 200,
+                    paid: 1500,
+                    due: 1400,
+                    dueDate: "2026-09-05",
+                    status: "Active"
+                }
+            ],
+            chartInstance: null
+        };
+
+        window.onload = function() {
+            var saved = localStorage.getItem('kd_captain_state_v2');
+            if (saved) {
+                try { 
+                    var parsed = JSON.parse(saved);
+                    if(parsed && parsed.fleet) state = parsed;
+                } catch(e) {}
+            }
+            var dateInput = document.getElementById('selfStartDate');
+            if (dateInput) {
+                dateInput.value = new Date().toISOString().split('T')[0];
+            }
+            updateIdFieldValidation();
+            updateSelfSlabDetails();
+            renderAll();
+        };
+
+        function saveState() {
+            localStorage.setItem('kd_captain_state_v2', JSON.stringify(state));
+        }
+
+        function switchView(view) {
+            document.getElementById('viewAdmin').classList.add('hidden');
+            document.getElementById('viewCustomerForm').classList.add('hidden');
+            document.getElementById('viewDirectory').classList.add('hidden');
+
+            var btnAdmin = document.getElementById('btnTabAdmin');
+            var btnCust = document.getElementById('btnTabCust');
+            var btnDir = document.getElementById('btnTabDir');
+
+            var inactiveClass = "bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+            btnAdmin.className = inactiveClass;
+            btnCust.className = inactiveClass;
+            btnDir.className = inactiveClass;
+
+            if (view === 'admin') {
+                document.getElementById('viewAdmin').classList.remove('hidden');
+                btnAdmin.className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+                renderAll();
+            } else if (view === 'customer') {
+                document.getElementById('viewCustomerForm').classList.remove('hidden');
+                btnCust.className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+                populateVehicleSelect();
+            } else if (view === 'directory') {
+                document.getElementById('viewDirectory').classList.remove('hidden');
+                btnDir.className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+                renderCRM();
+            }
+        }
+
+        function updateIdFieldValidation() {
+            var type = document.getElementById('selfIdType').value;
+            var lbl = document.getElementById('lblIdNumber');
+            var input = document.getElementById('selfIdNumber');
+
+            if (type === 'Aadhaar') {
+                lbl.innerText = 'Enter Aadhaar Card Number *';
+                input.maxLength = 12;
+                input.placeholder = '12 Digit Number';
+            } else if (type === 'PAN') {
+                lbl.innerText = 'Enter PAN Card Number *';
+                input.maxLength = 10;
+                input.placeholder = 'ABCDE1234F';
+            } else {
+                lbl.innerText = 'Enter Voter ID (EPIC) Number *';
+                input.maxLength = 16;
+                input.placeholder = 'WBF1234567';
+            }
+        }
+
+        function updateSelfSlabDetails() {
+            var slab = document.getElementById('selfSlab').value;
+            var sec = document.getElementById('selfSec');
+            var daily = document.getElementById('selfDaily');
+            var weekly = document.getElementById('selfWeekly');
+
+            if (slab === '1') {
+                sec.innerText = '₹1500'; daily.innerText = '₹200'; weekly.innerText = '₹1400';
+            } else if (slab === '2') {
+                sec.innerText = '₹700'; daily.innerText = '₹220'; weekly.innerText = '₹1540';
+            } else {
+                sec.innerText = '₹500'; daily.innerText = '₹230'; weekly.innerText = '₹1610';
+            }
+        }
+
+        function copySelfAddress() {
+            var same = document.getElementById('selfSameAddr').checked;
+            if (same) {
+                document.getElementById('selfCurrAddr').value = document.getElementById('selfPermAddr').value;
+            }
+        }
+
+        function populateVehicleSelect() {
+            var sel = document.getElementById('selfAssignVeh');
+            sel.innerHTML = '';
+            var available = state.fleet.filter(function(v) { return v.status === 'Garage'; });
+            if (available.length === 0) {
+                sel.innerHTML = '<option value="">No vehicles currently in Garage</option>';
+            } else {
+                available.forEach(function(v) {
+                    sel.innerHTML += '<option value="' + v.no + '">' + v.no + '</option>';
+                });
+            }
+        }
+
+        function handleAddVehicle(e) {
+            e.preventDefault();
+            var val = document.getElementById('newVehNo').value.trim().toUpperCase();
+            if (val) {
+                var exists = state.fleet.some(function(v) { return v.no === val; });
+                if (exists) {
+                    alert('Vehicle already exists!');
+                    return;
+                }
+                state.fleet.push({ no: val, status: 'Garage' });
+                document.getElementById('newVehNo').value = '';
+                saveState();
+                renderAll();
+            }
+        }
+
+        function toggleVehicleStatus(no) {
+            var v = state.fleet.find(function(item) { return item.no === no; });
+            if (v) {
+                v.status = v.status === 'Active' ? 'Garage' : 'Active';
+                saveState();
+                renderAll();
+            }
+        }
+
+        function handleCustomerSubmit(e) {
+            e.preventDefault();
+            var assignedVeh = document.getElementById('selfAssignVeh').value;
+            if (!assignedVeh) {
+                alert('Please ensure a vehicle is available and selected.');
+                return;
+            }
+
+            var slab = parseInt(document.getElementById('selfSlab').value);
+            var daily = slab === 1 ? 200 : slab === 2 ? 220 : 230;
+            var due = slab === 1 ? 1400 : slab === 2 ? 1540 : 1610;
+            var sec = slab === 1 ? 1500 : slab === 2 ? 700 : 500;
+
+            var newBooking = {
+                id: Date.now(),
+                name: document.getElementById('selfName').value,
+                phone: document.getElementById('selfPhone').value,
+                veh: assignedVeh,
+                idType: document.getElementById('selfIdType').value,
+                idNo: document.getElementById('selfIdNumber').value,
+                addrProofType: document.getElementById('selfAddrProofType').value,
+                addrProofNo: document.getElementById('selfAddrProofNo').value,
+                slab: slab,
+                daily: daily,
+                paid: sec,
+                due: due,
+                dueDate: new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0],
+                status: 'Active'
+            };
+
+            var v = state.fleet.find(function(item) { return item.no === assignedVeh; });
+            if (v) v.status = 'Active';
+
+            state.bookings.push(newBooking);
+            saveState();
+            alert('Customer registered successfully!');
+            document.getElementById('customerSelfForm').reset();
+            switchView('admin');
+        }
+
+        function renderAll() {
+            renderMetrics();
+            renderFleetBadges();
+            renderBookingsTable();
+            renderAlerts();
+            renderChart();
+        }
+
+        function renderMetrics() {
+            var total = state.fleet.length;
+            var active = state.fleet.filter(function(f) { return f.status === 'Active'; }).length;
+            var garage = state.fleet.filter(function(f) { return f.status === 'Garage'; }).length;
+            var collected = state.bookings.reduce(function(sum, b) { return sum + (b.paid || 0); }, 0);
+            var dues = state.bookings.reduce(function(sum, b) { return sum + (b.due || 0); }, 0);
+
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statActive').innerText = active;
+            document.getElementById('statGarage').innerText = garage;
+            document.getElementById('statCollected').innerText = '₹' + collected;
+            document.getElementById('statPendingRent').innerText = '₹' + dues;
+        }
+
+        function renderFleetBadges() {
+            var container = document.getElementById('fleetInventoryContainer');
+            if (state.fleet.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400">No vehicles added yet.</p>';
+                return;
+            }
+            container.innerHTML = state.fleet.map(function(v) {
+                var isAct = v.status === 'Active';
+                return '<div class="flex items-center gap-2 border px-3 py-1.5 rounded-lg text-xs font-semibold ' + (isAct ? 'bg-emerald-50 border-emerald-300 text-emerald-800' : 'bg-slate-100 border-slate-300 text-slate-700') + '">' +
+                    '<span>' + v.no + '</span>' +
+                    '<button type="button" onclick="toggleVehicleStatus(\'' + v.no + '\')" class="text-[10px] px-1.5 py-0.5 rounded bg-white shadow-sm border font-bold cursor-pointer">' + v.status + '</button>' +
+                '</div>';
+            }).join('');
+        }
+
+        function renderBookingsTable() {
+            var q = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase();
+            var table = document.getElementById('fleetTable');
+            var filtered = state.bookings.filter(function(b) { 
+                return b.name.toLowerCase().indexOf(q) !== -1 || 
+                       b.veh.toLowerCase().indexOf(q) !== -1 || 
+                       b.phone.indexOf(q) !== -1;
+            });
+
+            if (filtered.length === 0) {
+                table.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-slate-400">No records found.</td></tr>';
+                return;
+            }
+
+            table.innerHTML = filtered.map(function(b) {
+                return '<tr class="hover:bg-slate-50 transition">' +
+                    '<td class="p-3"><div class="font-bold text-slate-900">' + b.name + '</div><div class="text-[11px] text-slate-500 font-semibold">' + b.veh + ' &bull; ' + b.phone + '</div></td>' +
+                    '<td class="p-3"><div class="font-semibold text-slate-800">' + b.idType + ': ' + b.idNo + '</div><div class="text-[10px] text-slate-500">' + b.addrProofType + ' (' + b.addrProofNo + ')</div></td>' +
+                    '<td class="p-3"><span class="font-bold text-amber-700">Slab ' + b.slab + '</span><span class="text-[11px] text-slate-500 block">₹' + b.daily + '/day</span></td>' +
+                    '<td class="p-3"><span class="text-emerald-700 font-bold">₹' + b.paid + '</span> / <span class="text-rose-600 font-bold">₹' + b.due + '</span></td>' +
+                    '<td class="p-3 font-semibold text-slate-700">' + b.dueDate + '</td>' +
+                    '<td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ' + (b.status === 'Active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700') + '">' + b.status + '</span></td>' +
+                    '<td class="p-3 text-right"><a href="https://wa.me/91' + b.phone + '?text=Hello%20' + encodeURIComponent(b.name) + ',%20vehicle%20rent%20due%20₹' + b.due + '" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[11px] font-bold inline-flex items-center gap-1 shadow-sm"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function renderAlerts() {
+            var list = document.getElementById('dueAlertList');
+            var pending = state.bookings.filter(function(b) { return b.due > 0; });
+            if (pending.length === 0) {
+                list.innerHTML = '<p class="text-xs text-slate-500">No overdue payments found.</p>';
+                return;
+            }
+            list.innerHTML = pending.map(function(b) {
+                return '<div class="flex justify-between items-center bg-white p-2.5 rounded-lg border border-rose-200 text-xs">' +
+                    '<div><span class="font-bold text-slate-800">' + b.name + '</span> (' + b.veh + ') &bull; Due: <span class="text-rose-600 font-bold">₹' + b.due + '</span></div>' +
+                    '<a href="https://wa.me/91' + b.phone + '?text=Reminder%20for%20due%20₹' + b.due + '" target="_blank" class="text-emerald-700 font-bold flex items-center gap-1 hover:underline"><i class="fa-brands fa-whatsapp"></i> Remind</a>' +
+                '</div>';
+            }).join('');
+        }
+
+        function renderChart() {
+            var ctx = document.getElementById('paymentPieChart');
+            if (!ctx) return;
+            var collected = state.bookings.reduce(function(sum, b) { return sum + (b.paid || 0); }, 0);
+            var due = state.bookings.reduce(function(sum, b) { return sum + (b.due || 0); }, 0);
+
+            if (state.chartInstance) {
+                state.chartInstance.destroy();
+            }
+
+            var cVal = collected === 0 && due === 0 ? 1 : collected;
+            var dVal = collected === 0 && due === 0 ? 0 : due;
+
+            state.chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Collected', 'Due'],
+                    datasets: [{
+                        data: [cVal, dVal],
+                        backgroundColor: ['#10b981', '#f43f5e']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderCRM() {
+            var crm = document.getElementById('crmListContainer');
+            if (state.bookings.length === 0) {
+                crm.innerHTML = '<p class="text-xs text-slate-500">No customer records registered.</p>';
+                return;
+            }
+            crm.innerHTML = state.bookings.map(function(b) {
+                return '<div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">' +
+                    '<div class="flex justify-between items-start"><div><h4 class="font-bold text-slate-900">' + b.name + '</h4><p class="text-xs text-slate-500"><i class="fa-solid fa-phone mr-1"></i>' + b.phone + '</p></div><span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">' + b.veh + '</span></div>' +
+                    '<div class="text-xs text-slate-600 space-y-1 pt-2 border-t border-slate-200"><p><strong>Doc:</strong> ' + b.idType + ' (' + b.idNo + ')</p><p><strong>Address Ref:</strong> ' + b.addrProofType + ' (' + b.addrProofNo + ')</p><p><strong>Slab:</strong> Slab ' + b.slab + ' (₹' + b.daily + '/day)</p></div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function copyCustomerShareLink() {
+            navigator.clipboard.writeText(window.location.href);
+            alert('Customer Form link copied!');
+        }
+
+        function exportToCSV() {
+            var csv = "Name,Phone,Vehicle,ID Type,ID No,Slab,Paid,Due,Due Date,Status\n";
+            state.bookings.forEach(function(b) {
+                csv += '"' + b.name + '","' + b.phone + '","' + b.veh + '","' + b.idType + '","' + b.idNo + '","' + b.slab + '","' + b.paid + '","' + b.due + '","' + b.dueDate + '","' + b.status + '"\n';
+            });
+            var blob = new Blob([csv], { type: 'text/csv' });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'kd_captain_records.csv');
+            a.click();
+        }
+    </script>
+</body>
+</html>
