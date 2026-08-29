@@ -169,7 +169,7 @@
                 <div class="border-b border-slate-100 pb-4 text-center">
                     <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">OM GANANAYAKA (O.G) LLP</span>
                     <h2 class="text-xl font-black text-slate-900 mt-2">KD Captain — Vehicle Rental Registration</h2>
-                    <p class="text-xs text-slate-500 mt-1">কাস্টমার ভেরিফিকেশন, ছবি আপলোড ও প্রাথমিক পেমেন্ট অনবোর্ডিং।</p>
+                    <p class="text-xs text-slate-500 mt-1">কাস্টমার ভেরিফিকেশন, ছবি আপলোড, টার্মস সাইন ও অনবোর্ডিং।</p>
                 </div>
 
                 <form id="customerSelfForm" onsubmit="handleCustomerSubmit(event)" class="space-y-4">
@@ -279,6 +279,81 @@
                             <div class="text-slate-600">Total Collected Now: <span id="selfInitialTotal" class="text-emerald-700 font-black">₹2900</span></div>
                         </div>
                         <p class="text-[11px] text-amber-800 font-semibold">* অনবোর্ডিংয়ের সময় সিকিউরিটি ডিপোজিট ও ১ম সপ্তাহের অগ্রিম ভাড়া এক সাথে জমা হবে। পরবর্তী বকেয়া হবে Week 2-এর জন্য।</p>
+                    </div>
+
+                    <!-- Mandatory Legal Terms & Conditions Box (Full Agreement) -->
+                    <div class="bg-slate-900 text-slate-200 p-4 rounded-xl border border-slate-700 space-y-3 text-xs">
+                        <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                            <h4 class="font-bold text-amber-400 uppercase text-xs flex items-center gap-1.5">
+                                <i class="fa-solid fa-scale-balanced"></i> Operational, Battery Care & Legal Compliance Agreement
+                            </h4>
+                            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-bold">Mandatory</span>
+                        </div>
+                        
+                        <div class="max-h-48 overflow-y-auto custom-scroll pr-2 space-y-2.5 text-[11px] text-slate-300 leading-relaxed">
+                            <p><strong>Section 2: Battery Care & Charging Protocol</strong><br>
+                            Authorized Charging Only: I agree to charge the EV scooter using only the official OEM charger provided by KD Captain. I will strictly avoid third-party, modified, or unauthorized charging points.<br>
+                            No Extreme Discharge: I will not let the battery drop below 15–20% State of Charge (SoC) to prevent deep discharge degradation.<br>
+                            Temperature & Water Safety: I will never charge the battery immediately after high-speed or heavy-load riding (will allow 15–30 minutes cooldown) and will never plug in charging connectors when wet or exposed to heavy rain/waterlogging.<br>
+                            Tampering Prohibition: I will not attempt to open, bypass, modify, or repair the battery pack, charging socket, or onboard wiring. Any unauthorized tampering will lead to immediate confiscation and financial liability for replacement costs.</p>
+
+                            <p><strong>Section 3: Vehicle Maintenance & Physical Safety</strong><br>
+                            Daily Pre-Ride Check: I am responsible for inspecting tire pressure, brake responsiveness, headlights, indicators, and rearview mirrors before starting my daily shift.<br>
+                            Weight & Passenger Restrictions: I understand that the scooter is strictly rated for a maximum payload (rider + cargo not exceeding 130–150 kg). Overloading or unauthorized triple riding is strictly prohibited.<br>
+                            Waterlogged Roads: During Kolkata monsoons, I will not ride the EV through water submerged above wheel-hub level to protect the hub motor and controller.<br>
+                            Damage Reporting: Any mechanical failure, flat tire, or structural damage must be reported via the KD Captain support channel within 2 hours.<br>
+                            Routine Servicing: I agree to bring the vehicle to the designated KD Captain service point on scheduled dates for mandatory periodic health checks.</p>
+
+                            <p><strong>Section 6: Rental Payments & Deposit Terms</strong><br>
+                            On-Time Settlement: Daily/weekly rental fees must be cleared before the cutoff time. Failure to pay will result in remote vehicle immobilization.<br>
+                            Security Deposit Deduction: KD Captain reserves the right to deduct costs from the deposit for unpaid fines, battery damages due to negligence, physical dents, or unpaid rent balances.</p>
+
+                            <p><strong>Section 7: Advanced Battery Care & Electrical Safeguards</strong><br>
+                            Approved Power Sockets Only: Standard 3-pin 16A/6A power outlet only. Multi-plugs and loose sockets are prohibited.<br>
+                            Thermal Management: Never charge in direct sunlight during extreme summer heat or in poorly ventilated spaces.<br>
+                            Overnight Charging Safeguard: Unplug once 100% full; do not connect for more than 8 continuous hours.<br>
+                            Zero Drop Rule: Detachable batteries must be handled with both hands. Dropped or dented battery usage is forbidden.<br>
+                            No Unofficial Fast Chargers: Unauthorized fast charging burnout will be billed at 100% replacement cost.</p>
+
+                            <p><strong>Section 8: Fleet Mishandling, Stunts & Abuse</strong><br>
+                            Zero Reckless Driving & Stunts: Stunts, wheelies, aggressive hard braking, or racing are strictly banned.<br>
+                            Footboard Restrictions: No overloading sacks, gas cylinders, or iron rods that damage the chassis.<br>
+                            No Modifications: Adding extra electrical bars or altering mirrors/panels is prohibited.<br>
+                            Tire and Rim Protection: Never ride on flat/deflated tires. Full rim/motor repair costs will be deducted for flat riding.<br>
+                            Washing Protocol: Clean using damp cloth only. Direct high-pressure water jet washing on battery/controller is prohibited.</p>
+
+                            <p><strong>Section 9: Legal Prohibitions, Contraband & Crime Compliance</strong><br>
+                            Absolute Contraband Prohibition (NDPS & Arms Act): Under Section 60(3) of the NDPS Act and BNS, I declare I will NEVER use the vehicle to carry or deliver narcotic drugs, psychotropic substances, illegal alcohol, smuggled goods, weapons, explosives, or banned tobacco.<br>
+                            No Criminal Involvement: The vehicle will not be used in theft, robbery, illegal rallies, or transporting unticketed third-party packages.<br>
+                            Zero-Connivance Indemnity: If impounded by police/excise due to my illegal acts, I am fully liable for all legal costs, fines, and commercial scooter value with immediate criminal prosecution.<br>
+                            Commercial Documentation: Ensure valid platform digital manifests or e-way bills as mandated.</p>
+
+                            <p><strong>Section 10: Responsible Delivery & Public Safety</strong><br>
+                            Safe Cargo Balancing: Mount bags securely using bungee cords without obstructing handlebars or mirrors.<br>
+                            No Headphone / Phone Distraction: Use handlebar mount; holding phone or wearing dual earphones while riding is prohibited.<br>
+                            Traffic Courtesy: Respect pedestrian crossings and no-entry zones. No wrong-way driving.<br>
+                            Public Representation: Maintain respectful conduct. Road rage leads to immediate retrieval and blacklisting.</p>
+
+                            <p><strong>Section 11: Geofencing, Telematics & Inspection</strong><br>
+                            Geographic Boundary: Authorized strictly within Kolkata Metropolitan Area (KMA). Exceeding boundary triggers automatic remote motor shut-down.<br>
+                            Right to Spot Inspection: Officials may inspect physical condition, battery, and GPS at any time.<br>
+                            Immediate Surrender Notice: Return vehicle within 4 hours if requested due to payment default or safety breaches.</p>
+
+                            <p class="border-t border-slate-700 pt-1 text-amber-300"><strong>Section 12: Final Consent Declaration</strong><br>
+                            "I hereby confirm that I have read, understood, and agreed to all operational, safety, maintenance, and traffic compliance terms listed above by KD Captain. I understand that the scooter remains the sole property of KD Captain, and any violation gives KD Captain the full right to immobilize/repossess the scooter and take appropriate legal action."</p>
+                        </div>
+
+                        <!-- Checkboxes -->
+                        <div class="space-y-2 pt-2 border-t border-slate-700">
+                            <label class="flex items-start gap-2 cursor-pointer">
+                                <input type="checkbox" id="termsCheck1" required class="mt-0.5 rounded text-amber-500 focus:ring-0">
+                                <span class="text-[11px] font-semibold text-slate-200">I Accept and Agree to all Terms and Conditions. *</span>
+                            </label>
+                            <label class="flex items-start gap-2 cursor-pointer">
+                                <input type="checkbox" id="termsCheck2" required class="mt-0.5 rounded text-amber-500 focus:ring-0">
+                                <span class="text-[11px] font-semibold text-slate-200">I have read every clause above and fully understand that KD Captain operates a zero-tolerance policy regarding vehicle abuse, battery damage, and illegal activities. I accept complete civil and criminal liability. *</span>
+                            </label>
+                        </div>
                     </div>
 
                     <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black p-3.5 rounded-xl text-sm shadow-md transition cursor-pointer">
@@ -394,7 +469,7 @@
                 <div><strong>Assigned Vehicle:</strong> <span id="pvVeh" class="font-black text-amber-800">-</span></div>
                 <div><strong>Rental Start:</strong> <span id="pvStartDate">-</span></div>
                 <div><strong>Current Tier:</strong> <span id="pvSlab">-</span></div>
-                <div><strong>Current Week:</strong> <span id="pvWeek">-</span></div>
+                <div><strong>Running Week:</strong> <span id="pvWeek">-</span></div>
                 <div><strong>Daily Rent:</strong> <span id="pvDaily">-</span></div>
                 <div><strong>Days Active:</strong> <span id="pvDays">-</span></div>
             </div>
@@ -404,6 +479,7 @@
                 <p><strong>Permanent Address:</strong> <span id="pvPermAddr">-</span></p>
                 <p><strong>Present Address:</strong> <span id="pvCurrAddr">-</span></p>
                 <p><strong>Address Proof:</strong> <span id="pvAddrProof">-</span></p>
+                <p><strong>Legal Agreement:</strong> <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-check"></i> Accepted & Digitally Signed</span></p>
             </div>
 
             <div class="flex justify-between items-center bg-slate-100 p-3 rounded-xl font-bold text-xs">
@@ -414,9 +490,9 @@
             <div>
                 <div class="flex justify-between items-center mb-1">
                     <h4 class="text-xs font-bold text-slate-900 uppercase">Payment Logs & Individual Slips</h4>
-                    <span class="text-[10px] text-slate-500 font-semibold">* ক্লিক করে নির্দিষ্ট স্লিপ পান</span>
+                    <span class="text-[10px] text-slate-500 font-semibold">* যেকোনো এন্ট্রির পাশে Slip বাটনে চাপুন</span>
                 </div>
-                <div id="pvHistoryList" class="space-y-1.5 max-h-40 overflow-y-auto custom-scroll border p-2 rounded-xl text-xs bg-slate-50"></div>
+                <div id="pvHistoryList" class="space-y-1.5 max-h-44 overflow-y-auto custom-scroll border p-2 rounded-xl text-xs bg-slate-50"></div>
             </div>
 
             <div class="flex justify-between items-center gap-2 pt-3 border-t">
@@ -501,7 +577,7 @@
                     <input type="text" id="editCustCurrAddr" class="w-full border rounded-lg p-2 bg-slate-50">
                 </div>
 
-                <div class="grid grid-cols-3 gap-2">
+                <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="font-bold text-slate-700 block mb-1">Rental Slab</label>
                         <select id="editCustSlab" class="w-full border rounded-lg p-2 bg-slate-50">
@@ -509,10 +585,6 @@
                             <option value="2">Slab 2 (₹220/d)</option>
                             <option value="3">Slab 3 (₹230/d)</option>
                         </select>
-                    </div>
-                    <div>
-                        <label class="font-bold text-slate-700 block mb-1">Current Week</label>
-                        <input type="number" id="editCustWeek" min="1" required class="w-full border rounded-lg p-2 bg-slate-50">
                     </div>
                     <div>
                         <label class="font-bold text-slate-700 block mb-1">Status</label>
@@ -544,7 +616,7 @@
 
     <!-- Modal 6: Official Printable & Downloadable Digital Receipt -->
     <div id="receiptModal" style="display: none;" class="fixed inset-0 bg-slate-950/75 z-50 items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-black text-slate-900 text-sm">Official Rental Statement & Receipt</h3>
                 <button onclick="closeReceiptModal()" class="text-slate-400 hover:text-slate-700 text-lg"><i class="fa-solid fa-xmark"></i></button>
@@ -589,7 +661,16 @@
                     <span class="text-rose-700">Current Next Due: <strong id="recNextDueAmt">₹0</strong></span>
                 </div>
 
-                <div class="text-[9px] text-slate-400 text-center pt-2">
+                <!-- Legal Agreement Summary Section in Receipt -->
+                <div id="recTermsSection" class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-[9px] text-slate-600 space-y-1">
+                    <p class="font-bold text-slate-900 uppercase">Digitally Signed Compliance Declaration:</p>
+                    <p>• <strong>Battery & Charger:</strong> OEM charging only. No deep discharge (&lt;15%) or unauthorized chargers.</p>
+                    <p>• <strong>Legal Compliance (NDPS Act & BNS):</strong> Strict prohibition of transporting narcotics, liquor, weapons, or contraband.</p>
+                    <p>• <strong>Geofencing:</strong> Operation authorized strictly within Kolkata Metropolitan Area (KMA).</p>
+                    <p class="text-emerald-700 font-bold">✔ Status: Rider accepted and digitally signed all 12 sections during onboarding.</p>
+                </div>
+
+                <div class="text-[9px] text-slate-400 text-center pt-2 border-t border-slate-100">
                     * Computer generated verified statement. OM GANANAYAKA (O.G) LLP.
                 </div>
             </div>
@@ -641,6 +722,18 @@
             editTempPhotoBase64: ""
         };
 
+        // Automatic calendar-based Running Week calculation based on Onboarding Date
+        function getCalendarRunningWeek(startDateStr) {
+            if (!startDateStr) return 1;
+            var start = new Date(startDateStr);
+            start.setHours(0, 0, 0, 0);
+            var now = new Date();
+            now.setHours(0, 0, 0, 0);
+            var diffDays = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+            if (diffDays < 0) diffDays = 0;
+            return Math.floor(diffDays / 7) + 1;
+        }
+
         function calculateWeeklyRate(slab, weekNumber) {
             var daily = 200;
             if (weekNumber <= 4) {
@@ -688,7 +781,7 @@
             return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         }
 
-        // Automatic legacy data migration to ensure previous saved bookings include Week 1 advance rent
+        // Automatic legacy data migration to ensure previous bookings include Week 1 Advance Rent
         function migrateLegacyBookings(bookingsList) {
             var changed = false;
             bookingsList.forEach(function(b) {
@@ -700,12 +793,9 @@
                         type: "Week 1 Advance Rent",
                         date: b.startDate
                     });
-                    if (b.currentWeek === 1) {
-                        b.currentWeek = 2;
-                        var r2 = calculateWeeklyRate(b.slab || 1, 2);
-                        b.dailyRate = r2.daily;
-                        b.due = r2.weekly;
-                    }
+                    var r2 = calculateWeeklyRate(b.slab || 1, 2);
+                    b.dailyRate = r2.daily;
+                    b.due = r2.weekly;
                     changed = true;
                 }
             });
@@ -713,7 +803,7 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('kd_captain_final_stable_v11', JSON.stringify({
+            localStorage.setItem('kd_captain_final_stable_v12', JSON.stringify({
                 fleet: state.fleet,
                 bookings: state.bookings,
                 recycleBin: state.recycleBin
@@ -769,7 +859,7 @@
             updateIdFieldValidation();
             updateSelfSlabDetails();
 
-            var saved = localStorage.getItem('kd_captain_final_stable_v11') || localStorage.getItem('kd_captain_final_stable_v9');
+            var saved = localStorage.getItem('kd_captain_final_stable_v12') || localStorage.getItem('kd_captain_final_stable_v11') || localStorage.getItem('kd_captain_final_stable_v9');
             if (saved) {
                 try {
                     var parsed = JSON.parse(saved);
@@ -777,7 +867,6 @@
                     if (parsed.bookings) state.bookings = parsed.bookings;
                     if (parsed.recycleBin) state.recycleBin = parsed.recycleBin;
 
-                    // Migrate old profiles to include Week 1 advance payment
                     if (migrateLegacyBookings(state.bookings)) {
                         saveLocalData();
                     }
@@ -999,6 +1088,13 @@
                 return;
             }
 
+            var c1 = document.getElementById('termsCheck1').checked;
+            var c2 = document.getElementById('termsCheck2').checked;
+            if (!c1 || !c2) {
+                alert('Please accept and agree to all terms and conditions before onboarding.');
+                return;
+            }
+
             var startDt = document.getElementById('selfStartDate').value;
             var slab = parseInt(document.getElementById('selfSlab').value) || 1;
             var ratesM1 = calculateWeeklyRate(slab, 1);
@@ -1023,12 +1119,12 @@
                 addrProofNo: document.getElementById('selfAddrProofNo').value,
                 startDate: startDt,
                 slab: slab,
-                currentWeek: 2,
-                dailyRate: ratesM2.daily,
+                dailyRate: ratesM1.daily,
                 securityDeposit: sec,
-                due: ratesM2.weekly,
+                due: ratesM2.weekly, // Next due is Week 2 rent
                 dueDate: nextDue,
                 status: 'Active',
+                termsAccepted: true,
                 paymentHistory: [
                     { week: 0, amount: sec, type: "Security Deposit", date: startDt },
                     { week: 1, amount: ratesM1.weekly, type: "Week 1 Advance Rent", date: startDt }
@@ -1075,14 +1171,17 @@
             var b = state.bookings.find(function(item) { return item.id == id; });
             if (!b) return;
 
+            var runningWk = getCalendarRunningWeek(b.startDate);
+            var rates = calculateWeeklyRate(b.slab, runningWk);
+
             document.getElementById('pvPhoto').src = b.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.name)}&background=f59e0b&color=fff&size=128`;
             document.getElementById('pvName').innerText = b.name;
             document.getElementById('pvPhone').innerText = '+91 ' + b.phone;
             document.getElementById('pvVeh').innerText = b.veh;
             document.getElementById('pvStartDate').innerText = b.startDate;
             document.getElementById('pvSlab').innerText = 'Slab ' + b.slab;
-            document.getElementById('pvWeek').innerText = 'Week ' + b.currentWeek;
-            document.getElementById('pvDaily').innerText = '₹' + b.dailyRate + '/day';
+            document.getElementById('pvWeek').innerText = 'Week ' + runningWk;
+            document.getElementById('pvDaily').innerText = '₹' + rates.daily + '/day';
             document.getElementById('pvDays').innerText = calculateDaysActive(b.startDate) + ' Days';
             document.getElementById('pvIdProof').innerText = b.idType + ' (' + b.idNo + ')';
             document.getElementById('pvPermAddr').innerText = b.permAddr || 'N/A';
@@ -1130,12 +1229,18 @@
             var b = state.bookings.find(function(item) { return item.id == id; });
             if (!b) return;
 
+            var runningWk = getCalendarRunningWeek(b.startDate);
+
+            // Determine which week installment is being cleared based on payment logs
+            var paidWeeks = (b.paymentHistory || []).filter(function(p){ return p.week > 0; }).map(function(p){ return p.week; });
+            var nextPayWeek = paidWeeks.length > 0 ? Math.max.apply(null, paidWeeks) + 1 : 2;
+
             document.getElementById('payCustId').value = b.id;
             document.getElementById('payCustName').innerText = b.name + ' (' + b.veh + ')';
-            document.getElementById('payCustDetails').innerText = 'Current Week: ' + b.currentWeek + ' | Due: ₹' + b.due + ' on ' + b.dueDate;
+            document.getElementById('payCustDetails').innerText = 'Running Week: ' + runningWk + ' | Paying for Week ' + nextPayWeek + ' | Due: ₹' + b.due + ' on ' + b.dueDate;
             document.getElementById('payDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('payAmount').value = b.due;
-            document.getElementById('payNote').value = 'Week ' + b.currentWeek + ' Rent Payment';
+            document.getElementById('payNote').value = 'Week ' + nextPayWeek + ' Rent Payment';
 
             var m = document.getElementById('paymentModal');
             m.style.display = 'flex';
@@ -1153,21 +1258,22 @@
 
             var amt = parseFloat(document.getElementById('payAmount').value) || 0;
             var date = document.getElementById('payDate').value;
-            var paidWeek = b.currentWeek;
-            var note = document.getElementById('payNote').value || ('Week ' + paidWeek + ' Rent Payment');
+
+            var paidWeeks = (b.paymentHistory || []).filter(function(p){ return p.week > 0; }).map(function(p){ return p.week; });
+            var paidWeekNo = paidWeeks.length > 0 ? Math.max.apply(null, paidWeeks) + 1 : 2;
+            var note = document.getElementById('payNote').value || ('Week ' + paidWeekNo + ' Rent Payment');
 
             if (!b.paymentHistory) b.paymentHistory = [];
             b.paymentHistory.push({
-                week: paidWeek,
+                week: paidWeekNo,
                 amount: amt,
                 type: note,
                 date: date
             });
 
             var newIndex = b.paymentHistory.length - 1;
-
-            b.currentWeek += 1;
-            var nextRates = calculateWeeklyRate(b.slab, b.currentWeek);
+            var followingWeek = paidWeekNo + 1;
+            var nextRates = calculateWeeklyRate(b.slab, followingWeek);
             b.dailyRate = nextRates.daily;
             b.due = nextRates.weekly;
             b.dueDate = add7Days(b.dueDate);
@@ -1192,7 +1298,7 @@
             document.getElementById('recCustName').innerText = b.name;
             document.getElementById('recCustPhone').innerText = '+91 ' + b.phone;
             document.getElementById('recCustVeh').innerText = b.veh;
-            document.getElementById('recCustSlab').innerText = 'Slab ' + b.slab + ' (₹' + b.dailyRate + '/day)';
+            document.getElementById('recCustSlab').innerText = 'Slab ' + b.slab;
             document.getElementById('recNextDueDate').innerText = b.dueDate;
             document.getElementById('recNextDueAmt').innerText = '₹' + b.due;
 
@@ -1200,6 +1306,8 @@
             body.innerHTML = '';
 
             var entriesToShow = b.paymentHistory || [];
+            var isWeek1Onboard = (paymentHistoryIndex === 0 || paymentHistoryIndex === 1 || (paymentHistoryIndex === null && entriesToShow.length <= 2));
+
             if (paymentHistoryIndex !== null && paymentHistoryIndex !== undefined && entriesToShow[paymentHistoryIndex]) {
                 document.getElementById('recBadgeTitle').innerText = `${entriesToShow[paymentHistoryIndex].type.toUpperCase()}`;
                 entriesToShow = entriesToShow.slice(0, paymentHistoryIndex + 1);
@@ -1214,6 +1322,13 @@
                 </tr>`;
             });
 
+            var termsSec = document.getElementById('recTermsSection');
+            if (isWeek1Onboard) {
+                termsSec.style.display = 'block';
+            } else {
+                termsSec.style.display = 'none';
+            }
+
             var modal = document.getElementById('receiptModal');
             modal.style.display = 'flex';
         }
@@ -1225,6 +1340,7 @@
         function downloadPdfAndSendWhatsApp() {
             if (!state.activeReceiptCustomer) return;
             var b = state.activeReceiptCustomer;
+            var runningWk = getCalendarRunningWeek(b.startDate);
             var cleanCustName = b.name.replace(/[^a-zA-Z0-9]/g, '_');
             var pIndex = state.activeReceiptPaymentIndex;
             var tag = (pIndex !== null && pIndex !== undefined && b.paymentHistory[pIndex]) ? b.paymentHistory[pIndex].type.replace(/[^a-zA-Z0-9]/g, '_') : 'Full_Statement';
@@ -1247,7 +1363,7 @@
                             `Dear ${b.name},\n` +
                             `Here is your official verified payment invoice for vehicle *${b.veh}*.\n\n` +
                             `• *Total Received So Far:* ₹${totalPaid}\n` +
-                            `• *Current Running Week:* Week ${b.currentWeek}\n` +
+                            `• *Current Running Week:* Week ${runningWk}\n` +
                             `• *Next Week Due:* ₹${b.due}\n` +
                             `• *Next Payment Due Date:* ${b.dueDate}\n\n` +
                             `*(Your official PDF Bill is generated and ready to attach)*\n` +
@@ -1283,7 +1399,6 @@
             document.getElementById('editCustPermAddr').value = b.permAddr || '';
             document.getElementById('editCustCurrAddr').value = b.currAddr || '';
             document.getElementById('editCustSlab').value = b.slab || 1;
-            document.getElementById('editCustWeek').value = b.currentWeek || 1;
             document.getElementById('editCustDue').value = b.due || 0;
             document.getElementById('editCustDueDate').value = b.dueDate || '';
             document.getElementById('editCustStatus').value = b.status || 'Active';
@@ -1323,7 +1438,6 @@
             b.permAddr = document.getElementById('editCustPermAddr').value;
             b.currAddr = document.getElementById('editCustCurrAddr').value;
             b.slab = parseInt(document.getElementById('editCustSlab').value);
-            b.currentWeek = parseInt(document.getElementById('editCustWeek').value);
             b.due = parseFloat(document.getElementById('editCustDue').value) || 0;
             b.dueDate = document.getElementById('editCustDueDate').value;
             b.status = document.getElementById('editCustStatus').value;
@@ -1333,7 +1447,8 @@
                 b.photo = state.editTempPhotoBase64;
             }
 
-            var rateInfo = calculateWeeklyRate(b.slab, b.currentWeek);
+            var runningWk = getCalendarRunningWeek(b.startDate);
+            var rateInfo = calculateWeeklyRate(b.slab, runningWk);
             b.dailyRate = rateInfo.daily;
 
             if (oldVeh !== newVeh) {
@@ -1426,6 +1541,7 @@
                 var daysLeft = 30 - Math.floor((now - (b.deletedAt || now)) / (1000 * 60 * 60 * 24));
                 if (daysLeft < 0) daysLeft = 0;
                 var userImg = b.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.name)}&background=f59e0b&color=fff&size=128`;
+                var runningWk = getCalendarRunningWeek(b.startDate);
 
                 return `<div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm space-y-3">
                     <div class="flex justify-between items-start border-b pb-2">
@@ -1439,7 +1555,7 @@
                         <span class="text-[10px] bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded-full">${daysLeft} days left</span>
                     </div>
                     <div class="text-xs text-slate-600 bg-slate-50 p-2 rounded-lg">
-                        <p><strong>Tier:</strong> Slab ${b.slab} (Week ${b.currentWeek})</p>
+                        <p><strong>Tier:</strong> Slab ${b.slab} (Running Week ${runningWk})</p>
                         <p><strong>Due:</strong> ₹${b.due} on ${b.dueDate}</p>
                     </div>
                     <div class="flex justify-between items-center pt-2 border-t text-xs">
@@ -1518,7 +1634,8 @@
             }
 
             table.innerHTML = filtered.map(function(b) {
-                var rates = calculateWeeklyRate(b.slab, b.currentWeek);
+                var runningWk = getCalendarRunningWeek(b.startDate);
+                var rates = calculateWeeklyRate(b.slab, runningWk);
                 var rem = calculateDaysRemaining(b.dueDate);
                 var totalCustPaid = 0;
                 if (b.paymentHistory) {
@@ -1528,7 +1645,7 @@
                 var badgeClass = rem.isOverdue ? 'bg-rose-100 text-rose-700 font-black' : (rem.isUrgent ? 'bg-amber-100 text-amber-800 font-bold' : 'bg-slate-100 text-slate-700');
                 var userImg = b.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.name)}&background=f59e0b&color=fff&size=128`;
 
-                var waMsg = `Hello ${b.name}, reminder from KD Captain: Week ${b.currentWeek} vehicle rent ₹${b.due} is due on ${b.dueDate} (${rem.text}). Please pay on time.`;
+                var waMsg = `Hello ${b.name}, reminder from KD Captain: Week ${runningWk} vehicle rent ₹${b.due} is due on ${b.dueDate} (${rem.text}). Please pay on time.`;
 
                 return '<tr class="hover:bg-slate-50 transition">' +
                     '<td class="p-3 flex items-center gap-2.5">' +
@@ -1538,7 +1655,7 @@
                             '<div class="text-[11px] text-slate-500 font-semibold">' + b.veh + ' &bull; +91 ' + b.phone + '</div>' +
                         '</div>' +
                     '</td>' +
-                    '<td class="p-3"><span class="font-bold text-amber-800">Week ' + b.currentWeek + '</span> <span class="text-[10px] bg-slate-200 text-slate-800 px-1.5 py-0.5 rounded font-bold">Slab ' + b.slab + '</span></td>' +
+                    '<td class="p-3"><span class="font-bold text-amber-800">Week ' + runningWk + '</span> <span class="text-[10px] bg-slate-200 text-slate-800 px-1.5 py-0.5 rounded font-bold">Slab ' + b.slab + '</span></td>' +
                     '<td class="p-3 font-semibold text-slate-800">₹' + rates.daily + '/day <span class="text-[10px] text-slate-500 block">(₹' + rates.weekly + '/wk)</span></td>' +
                     '<td class="p-3"><span class="text-emerald-700 font-bold">Paid: ₹' + totalCustPaid + '</span> / <span class="text-rose-600 font-bold">Due: ₹' + b.due + '</span></td>' +
                     '<td class="p-3"><div class="font-bold text-slate-800">' + b.dueDate + '</div><span class="text-[10px] px-2 py-0.5 rounded-full inline-block mt-0.5 ' + badgeClass + '">' + rem.text + '</span></td>' +
@@ -1571,10 +1688,11 @@
                 var rem = calculateDaysRemaining(b.dueDate);
                 var alertBg = rem.isOverdue ? 'bg-rose-50 border-rose-300' : 'bg-amber-50 border-amber-300';
                 var textHighlight = rem.isOverdue ? 'text-rose-700' : 'text-amber-800';
+                var runningWk = getCalendarRunningWeek(b.startDate);
 
                 var remMsg = `*PAYMENT REMINDER - KD CAPTAIN*\n\n` +
                              `Dear ${b.name},\nThis is an automated reminder regarding your rental bike (${b.veh}).\n` +
-                             `*Week ${b.currentWeek} Due:* ₹${b.due}\n` +
+                             `*Week ${runningWk} Due:* ₹${b.due}\n` +
                              `*Due Date:* ${b.dueDate} (${rem.text})\n\n` +
                              `Please make the payment on time to avoid service disruption.`;
 
@@ -1635,7 +1753,8 @@
                 return;
             }
             crm.innerHTML = state.bookings.map(function(b) {
-                var rates = calculateWeeklyRate(b.slab, b.currentWeek);
+                var runningWk = getCalendarRunningWeek(b.startDate);
+                var rates = calculateWeeklyRate(b.slab, runningWk);
                 var rem = calculateDaysRemaining(b.dueDate);
                 var totalPaid = 0;
                 
@@ -1689,9 +1808,11 @@
         }
 
         function exportToCSV() {
-            var csv = "Name,WhatsApp Phone,Vehicle,ID Type,ID No,Permanent Address,Present Address,Current Week,Daily Rate,Weekly Due,Next Due Date,Status\n";
+            var csv = "Name,WhatsApp Phone,Vehicle,ID Type,ID No,Permanent Address,Present Address,Running Week,Daily Rate,Weekly Due,Next Due Date,Status\n";
             state.bookings.forEach(function(b) {
-                csv += '"' + b.name + '","' + b.phone + '","' + b.veh + '","' + b.idType + '","' + b.idNo + '","' + (b.permAddr || '') + '","' + (b.currAddr || '') + '","' + b.currentWeek + '","' + b.dailyRate + '","' + b.due + '","' + b.dueDate + '","' + b.status + '"\n';
+                var runningWk = getCalendarRunningWeek(b.startDate);
+                var rates = calculateWeeklyRate(b.slab, runningWk);
+                csv += '"' + b.name + '","' + b.phone + '","' + b.veh + '","' + b.idType + '","' + b.idNo + '","' + (b.permAddr || '') + '","' + (b.currAddr || '') + '","' + runningWk + '","' + rates.daily + '","' + b.due + '","' + b.dueDate + '","' + b.status + '"\n';
             });
             var blob = new Blob([csv], { type: 'text/csv' });
             var url = window.URL.createObjectURL(blob);
