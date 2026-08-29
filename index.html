@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KD Captain - Fleet & Customer Portal</title>
+    <title>KD Captain - OM GANANAYAKA (O.G) LLP</title>
     <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,7 +17,7 @@
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-16 font-sans">
 
     <!-- Header (Yellow & White Theme) -->
-    <header class="bg-amber-500 border-b border-amber-600 p-4 sticky top-0 z-40 shadow-md">
+    <header id="mainHeader" class="bg-amber-500 border-b border-amber-600 p-4 sticky top-0 z-40 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
             <div class="flex items-center gap-3">
                 <div class="bg-white text-amber-600 p-2 rounded-xl shadow-sm text-xl">
@@ -25,7 +25,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-black tracking-wide text-slate-950">KD CAPTAIN</h1>
-                    <p class="text-[11px] text-slate-900 font-semibold">Realtime Fleet Management & KYC Engine</p>
+                    <p class="text-[11px] text-slate-900 font-bold uppercase tracking-wider">A Unit of Om Gananayaka (O.G) LLP</p>
                 </div>
             </div>
             
@@ -34,10 +34,13 @@
                     <i class="fa-solid fa-gauge-high mr-1 text-amber-400"></i> Admin Panel
                 </button>
                 <button onclick="switchView('customer')" id="btnTabCust" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-user-pen text-amber-600"></i> Customer Self-Form
+                    <i class="fa-solid fa-user-pen text-amber-600"></i> Customer Form
                 </button>
                 <button onclick="switchView('directory')" id="btnTabDir" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
                     <i class="fa-solid fa-address-book text-amber-600"></i> Customer CRM
+                </button>
+                <button onclick="copyCustomerShareLink()" class="bg-slate-900 hover:bg-slate-800 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
+                    <i class="fa-solid fa-share-nodes"></i> Copy Form Link
                 </button>
                 <button onclick="exportToCSV()" class="bg-white hover:bg-slate-100 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
                     <i class="fa-solid fa-file-excel"></i> Export
@@ -49,7 +52,7 @@
     <main class="max-w-7xl mx-auto p-4 space-y-6">
 
         <!-- Top Metrics Cards -->
-        <section class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <section id="metricsSection" class="grid grid-cols-2 md:grid-cols-5 gap-3">
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-[11px] text-slate-500 uppercase font-bold tracking-wider">Total Fleet</p>
                 <h3 class="text-2xl font-black text-slate-900 mt-1" id="statTotal">0</h3>
@@ -151,9 +154,9 @@
             <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-lg space-y-6">
                 
                 <div class="border-b border-slate-100 pb-4 text-center">
-                    <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">KYC & Consent Registration</span>
-                    <h2 class="text-xl font-black text-slate-900 mt-2">KD Captain - Rental Registration Form</h2>
-                    <p class="text-xs text-slate-500 mt-1">অনুগ্রহ করে নিচের সমস্ত তথ্য সঠিকভাবে পূরণ করে কনসেন্ট ফর্মে সম্মতি প্রদান করুন।</p>
+                    <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">OM GANANAYAKA (O.G) LLP</span>
+                    <h2 class="text-xl font-black text-slate-900 mt-2">KD Captain — Vehicle Rental Registration</h2>
+                    <p class="text-xs text-slate-500 mt-1">Please fill out your details and accept the operational terms & legal conditions below.</p>
                 </div>
 
                 <form id="customerSelfForm" class="space-y-4">
@@ -161,84 +164,150 @@
                     <!-- Basic Info -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">গ্রাহকের পুরো নাম (Customer Name) *</label>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">Customer Full Name (নাম) *</label>
                             <input type="text" id="selfName" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="e.g. Rahul Sharma">
                         </div>
                         <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">ফোন নম্বর (Phone Number) *</label>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">Phone Number (ফোন নম্বর) *</label>
                             <input type="tel" id="selfPhone" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="98XXXXXXXX">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">আধার কার্ড নম্বর (Aadhaar Number) *</label>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">Aadhaar Card Number (আধার নম্বর) *</label>
                             <input type="text" id="selfAadhaar" required maxlength="12" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="12 Digit Aadhaar">
                         </div>
                         <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">গাড়ি নেওয়ার তারিখ (Booking Start Date) *</label>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">Rental Start Date (শুরুর তারিখ) *</label>
                             <input type="date" id="selfStartDate" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
                         </div>
                     </div>
 
                     <!-- Addresses -->
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block mb-1">বর্তমান ঠিকানা (Current Address) *</label>
-                        <input type="text" id="selfCurrAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="ফ্ল্যাট, রাস্তা, এলাকা, পিনকোড">
+                        <label class="text-xs font-bold text-slate-700 block mb-1">Current Address (বর্তমান ঠিকানা) *</label>
+                        <input type="text" id="selfCurrAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="Flat, Street, Area, Pin Code">
                     </div>
 
                     <div>
                         <div class="flex justify-between items-center mb-1">
-                            <label class="text-xs font-bold text-slate-700">স্থায়ী ঠিকানা (Permanent Address) *</label>
+                            <label class="text-xs font-bold text-slate-700">Permanent Address (স্থায়ী ঠিকানা) *</label>
                             <label class="text-xs text-amber-600 font-bold cursor-pointer flex items-center gap-1">
                                 <input type="checkbox" id="selfSameAddr" onchange="copySelfAddress()" class="rounded text-amber-500 focus:ring-0"> Same as Current
                             </label>
                         </div>
-                        <input type="text" id="selfPermAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="স্থায়ী ঠিকানার বিবরণ">
+                        <input type="text" id="selfPermAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="Permanent address details">
                     </div>
 
                     <!-- Slab Selection -->
                     <div class="bg-amber-50/70 p-4 rounded-xl border border-amber-200 space-y-3">
-                        <label class="text-xs font-black text-amber-900 uppercase block">ভাড়ার স্ল্যাব নির্বাচন করুন (Select Rental Slab) *</label>
+                        <label class="text-xs font-black text-amber-900 uppercase block">Select Rental Slab (ভাড়ার স্ল্যাব) *</label>
                         <select id="selfSlab" onchange="updateSelfSlabDetails()" class="w-full bg-white border border-amber-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
                             <option value="1">Slab 1 (Security Deposit: ₹1500 | Daily: ₹200 | Weekly: ₹1400)</option>
                             <option value="2">Slab 2 (Security Deposit: ₹700 | Daily: ₹220 | Weekly: ₹1540)</option>
                             <option value="3">Slab 3 (Security Deposit: ₹500 | Daily: ₹230 | Weekly: ₹1610)</option>
                         </select>
                         <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold bg-white p-2.5 rounded-lg border border-amber-200">
-                            <div class="text-slate-600">সিকিউরিটি: <span id="selfSec" class="text-amber-700 font-black">&#8377;1500</span></div>
-                            <div class="text-slate-600">দৈনিক ভাড়া: <span id="selfDaily" class="text-amber-700 font-black">&#8377;200</span></div>
-                            <div class="text-slate-600">সাপ্তাহিক ভাড়া: <span id="selfWeekly" class="text-amber-700 font-black">&#8377;1400</span></div>
+                            <div class="text-slate-600">Security: <span id="selfSec" class="text-amber-700 font-black">&#8377;1500</span></div>
+                            <div class="text-slate-600">Daily Rent: <span id="selfDaily" class="text-amber-700 font-black">&#8377;200</span></div>
+                            <div class="text-slate-600">Weekly Rent: <span id="selfWeekly" class="text-amber-700 font-black">&#8377;1400</span></div>
                         </div>
                     </div>
 
                     <!-- Customer Photo -->
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block mb-1">গ্রাহকের নিজস্ব ছবি আপলোড (Upload Photo) *</label>
+                        <label class="text-xs font-bold text-slate-700 block mb-1">Upload Customer Photo (ছবি আপলোড করুন) *</label>
                         <input type="file" id="selfPhoto" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-600">
                     </div>
 
-                    <!-- Consent & Terms Box -->
-                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2 text-xs text-slate-600 leading-relaxed max-h-48 overflow-y-auto custom-scroll">
-                        <h4 class="font-black text-slate-900 uppercase text-[11px] flex items-center gap-1.5 text-amber-700">
-                            <i class="fa-solid fa-file-contract"></i> KD Captain - Consent, Declaration & Terms
+                    <!-- Official Legal English Declaration Document Box -->
+                    <div class="bg-slate-50 border border-slate-300 p-4 rounded-xl space-y-3 text-xs text-slate-700 leading-relaxed max-h-72 overflow-y-auto custom-scroll font-sans border-l-4 border-l-amber-500">
+                        <h4 class="font-black text-slate-900 uppercase text-xs flex items-center gap-1.5 text-amber-800">
+                            <i class="fa-solid fa-file-contract"></i> OM GANANAYAKA (O.G) LLP — TERMS & CONDITIONS
                         </h4>
-                        <p>১. আমি সুস্থ মস্তিষ্কে এবং স্বেচ্ছায় KD Captain থেকে উল্লিখিত স্ল্যাব অনুযায়ী গাড়ি ভাড়ায় গ্রহণ করছি।</p>
-                        <p>২. গাড়ির যাবতীয় ট্রাফিক নিয়ম ও বৈধ কাগজপত্র মেনে চলার দায়িত্ব সম্পূর্ণ আমার। কোনো রূপ ট্রাফিক ফাইন বা আইনি জটিলতা হলে আমি সম্পূর্ণ দায়ী থাকিব।</p>
-                        <p>৩. নির্দিষ্ট ডিউ তারিখের মধ্যে ভাড়ার অর্থ পরিশোধে ব্যর্থ হলে কর্তৃপক্ষ গাড়ি ফেরত নেওয়ার পূর্ণ অধিকার রাখে।</p>
-                        <p>৪. গাড়ির কোনো ক্ষতি বা দুর্ঘটনা ঘটলে নির্ধারিত ক্ষতিপূরণ বহন করিতে আমি বাধ্য থাকিব।</p>
+                        
+                        <div>
+                            <p class="font-bold text-slate-900">Section 2: Battery Care & Charging Protocol</p>
+                            <p><strong>Authorized Charging Only:</strong> I agree to charge the EV scooter using only the official OEM charger provided by KD Captain. I will strictly avoid third-party, modified, or unauthorized charging points.</p>
+                            <p><strong>No Extreme Discharge:</strong> I will not let the battery drop below 15–20% State of Charge (SoC) to prevent deep discharge degradation.</p>
+                            <p><strong>Temperature & Water Safety:</strong> I will never charge the battery immediately after high-speed or heavy-load riding (will allow 15–30 minutes cooldown) and will never plug in charging connectors when wet or exposed to heavy rain/waterlogging.</p>
+                            <p><strong>Tampering Prohibition:</strong> I will not attempt to open, bypass, modify, or repair the battery pack, charging socket, or onboard wiring. Any unauthorized tampering will lead to immediate confiscation and financial liability for replacement costs.</p>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-slate-900">Section 3: Vehicle Maintenance & Physical Safety</p>
+                            <p><strong>Daily Pre-Ride Check:</strong> I am responsible for inspecting tire pressure, brake responsiveness, headlights, indicators, and rearview mirrors before starting my daily shift.</p>
+                            <p><strong>Weight & Passenger Restrictions:</strong> I understand that the scooter is strictly rated for a maximum payload (rider + cargo not exceeding manufacturer limit, typically 130–150 kg). Overloading or unauthorized triple riding is strictly prohibited.</p>
+                            <p><strong>Waterlogged Roads:</strong> During Kolkata monsoons, I will not ride the EV through water submerged above wheel-hub level to protect the hub motor and controller.</p>
+                            <p><strong>Damage Reporting & Routine Servicing:</strong> Any mechanical failure, flat tire, or structural damage must be reported via the KD Captain support channel within 2 hours. I agree to bring the vehicle to designated service points on scheduled dates.</p>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-slate-900">Section 6: Rental Payments & Deposit Terms</p>
+                            <p><strong>On-Time Settlement:</strong> Daily/weekly/monthly rental fees must be cleared before the agreed cutoff time. Failure to pay on time will result in remote vehicle immobilization via the telematics system.</p>
+                            <p><strong>Security Deposit Deduction:</strong> KD Captain reserves the right to deduct costs from the security deposit for unpaid fines, battery damages due to negligence, physical dents, or unpaid daily rental balances.</p>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-slate-900">Section 7: Advanced Battery Care & Electrical Safeguards</p>
+                            <p><strong>Approved Power Sockets Only:</strong> I will only plug the OEM charger into a standard, properly grounded 3-pin 16A/6A power outlet. Direct wire tapping or loose sockets are strictly prohibited.</p>
+                            <p><strong>Thermal Management & Overnight Charging:</strong> I will never charge the battery in direct sunlight during extreme summer heat or leave the battery connected continuously for more than 8 hours.</p>
+                            <p><strong>Zero Drop Rule:</strong> For detachable batteries, I will carry them using designated handles with both hands. Continuing to charge or use a dropped/dented battery is strictly forbidden due to fire hazard.</p>
+                            <p><strong>No Unofficial Fast Chargers:</strong> Any battery degradation or burnout caused by unofficial charging will be billed to me at 100% replacement cost.</p>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-slate-900">Section 8: Prevention of Fleet Mishandling, Stunts & Abuse</p>
+                            <p><strong>Zero Reckless Driving:</strong> The scooter is strictly for utility and legal delivery purposes. Performing stunts, wheelies, aggressive braking, or racing is strictly banned.</p>
+                            <p><strong>Cargo & Modifications:</strong> The footboard and luggage rack must only carry properly secured parcel bags. Transporting sharp construction materials or gas cylinders is prohibited. No unauthorized electrical modifications are allowed.</p>
+                            <p><strong>Tire, Rim Protection & Washing:</strong> Riding on a flat tire is prohibited. Cleaning must be done with a damp cloth only; high-pressure jet washing on the battery and console is prohibited.</p>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-slate-900">Section 9: Strict Legal Prohibitions, Contraband & Crime Compliance</p>
+                            <p><strong>Absolute Contraband Prohibition (NDPS & Arms Act):</strong> Under Section 60(3) of the NDPS Act and Bharatiya Nyaya Sanhita (BNS), I declare that I will NEVER use the vehicle to carry, transport, conceal, or deliver narcotic drugs, psychotropic substances, illegal alcohol, smuggled goods, weapons, explosives, or banned products.</p>
+                            <p><strong>No Criminal Involvement & Zero-Connivance Indemnity:</strong> If the vehicle is impounded or seized due to illegal acts committed by me, I am fully liable for all legal costs, fines, and the complete commercial value of the scooter, facing immediate criminal prosecution.</p>
+                            <p><strong>Commercial Transport Documentation:</strong> I will ensure all deliveries carry valid merchant bills, delivery platform digital manifests, or e-way bills.</p>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-slate-900">Section 10: Responsible Delivery, Customer Conduct & Public Safety</p>
+                            <p><strong>Safe Cargo & No Phone Distraction:</strong> Cargo must not obstruct handlebar movement or rider visibility. Riding while holding a phone in hand or wearing noise-canceling headphones is prohibited.</p>
+                            <p><strong>Pedestrian & Traffic Courtesy:</strong> I will strictly respect pedestrian walkways and traffic rules. Any road rage or abusive behavior will lead to blacklisting and retrieval of the scooter.</p>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-slate-900">Section 11: Geofencing, Telematics & Vehicle Inspection</p>
+                            <p><strong>Geographic Boundary Compliance:</strong> The scooter is authorized strictly within the Kolkata Metropolitan Area (KMA). Taking it outside triggers automatic remote motor shutdown.</p>
+                            <p><strong>Right to Spot Inspection & Immediate Surrender:</strong> KD Captain officials have the right to inspect the vehicle at any time. Upon surrender notice, I agree to return the vehicle within 4 hours with all dues cleared.</p>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-slate-900">Section 12: Final Consent Declaration</p>
+                            <p><em>"I hereby confirm that I have read, understood, and agreed to all the operational, safety, maintenance, and traffic compliance terms listed above by KD Captain / Om Gananayaka (O.G) LLP. I understand that the scooter remains the sole property of the company, and any violation of these rules gives KD Captain the full right to immobilize/repossess the scooter and take appropriate legal action."</em></p>
+                        </div>
+
                     </div>
 
-                    <!-- Checkbox Consent -->
-                    <div class="flex items-start gap-2 pt-1">
-                        <input type="checkbox" id="consentCheck" required class="mt-0.5 rounded text-amber-500 focus:ring-0 w-4 h-4">
-                        <label for="consentCheck" class="text-xs font-bold text-slate-800 cursor-pointer">
-                            আমি উপরের সমস্ত নিয়মাবলী ও শর্তাবলী সুস্থ মস্তিষ্কে পড়িয়া ও বুঝিয়া সম্মতি প্রদান করিলাম।
-                        </label>
+                    <!-- Checkbox Consents -->
+                    <div class="space-y-2 pt-1">
+                        <div class="flex items-start gap-2">
+                            <input type="checkbox" id="consentCheck1" required class="mt-0.5 rounded text-amber-500 focus:ring-0 w-4 h-4">
+                            <label for="consentCheck1" class="text-xs font-bold text-slate-900 cursor-pointer">
+                                I Accept and Agree to all Terms and Conditions.
+                            </label>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <input type="checkbox" id="consentCheck2" required class="mt-0.5 rounded text-amber-500 focus:ring-0 w-4 h-4">
+                            <label for="consentCheck2" class="text-xs font-bold text-slate-900 cursor-pointer">
+                                I have read every clause above and fully understand that KD Captain operates a zero-tolerance policy regarding vehicle abuse, battery damage, and illegal activities. I accept complete civil and criminal liability for any breach.
+                            </label>
+                        </div>
                     </div>
 
                     <button type="submit" id="btnSelfSubmit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded-xl text-xs uppercase tracking-wider shadow-md transition">
-                        Submit KYC & Consent
+                        Submit KYC & Accept Declaration
                     </button>
                 </form>
             </div>
@@ -252,7 +321,7 @@
                         <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
                             <i class="fa-solid fa-id-card-clip text-amber-500"></i> Customer CRM Directory
                         </h2>
-                        <p class="text-xs text-slate-500">গ্রাহকের প্রোফাইল, ঠিকানা, বকেয়া এবং কনসেন্ট হিস্ট্রি</p>
+                        <p class="text-xs text-slate-500">সকল গ্রাহকের প্রোফাইল, ছবি, আধার কার্ড ও হিস্ট্রি</p>
                     </div>
                     <input type="text" id="crmSearchInput" oninput="filterCRMDirectory()" placeholder="নাম, ফোন বা গাড়ির নম্বরে খুঁজুন..." class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-amber-500 w-full sm:w-64">
                 </div>
@@ -269,8 +338,8 @@
             <button onclick="closeModal('portfolioModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg"><i class="fa-solid fa-xmark"></i></button>
             
             <div class="flex items-center gap-4 border-b border-slate-100 pb-4">
-                <img id="modalImg" src="https://via.placeholder.com/150" class="w-16 h-16 rounded-full object-cover border-2 border-amber-500 shadow-sm">
-                <div>
+                <img id="modalImg" src="https://via.placeholder.com/150" onclick="openPhotoViewer(this.src, document.getElementById('modalName').innerText)" class="w-16 h-16 rounded-full object-cover border-2 border-amber-500 shadow-sm cursor-pointer hover:scale-105 transition" title="Click to Zoom Fullscreen">
+                <div class="flex-1">
                     <h3 class="text-base font-bold text-slate-900" id="modalName">Customer Name</h3>
                     <p class="text-xs text-slate-500" id="modalPhone">+91 XXXXXXXX</p>
                     <span class="text-[11px] bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded font-bold mt-1 inline-block" id="modalAadhaar">Aadhaar: [Aadhaar Redacted]</span>
@@ -311,12 +380,13 @@
                 </div>
                 <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
                     <p class="text-[10px] text-slate-500 font-bold">Consent Status</p>
-                    <p class="font-bold text-emerald-600"><i class="fa-solid fa-circle-check"></i> Agreed & Signed</p>
+                    <p class="font-bold text-emerald-600"><i class="fa-solid fa-circle-check"></i> Agreed & Accepted</p>
                 </div>
             </div>
 
             <div class="pt-2 flex gap-2">
-                <button onclick="closeModal('portfolioModal')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs">Close Profile</button>
+                <button id="modalDeleteBtn" class="w-1/3 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1"><i class="fa-solid fa-trash"></i> Delete</button>
+                <button onclick="closeModal('portfolioModal')" class="w-2/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs">Close Profile</button>
             </div>
         </div>
     </div>
@@ -326,7 +396,7 @@
         <div class="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
             <button onclick="closeModal('editModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg"><i class="fa-solid fa-xmark"></i></button>
             <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-                <i class="fa-solid fa-pen-to-square text-amber-500"></i> Edit Customer & Set Next Due
+                <i class="fa-solid fa-pen-to-square text-amber-500"></i> Edit Customer Record
             </h3>
 
             <form id="adminEditForm" class="space-y-3">
@@ -377,8 +447,16 @@
         </div>
     </div>
 
+    <!-- Modal: Fullscreen Photo Lightbox / Zoom -->
+    <div id="photoLightbox" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4">
+        <button onclick="closeModal('photoLightbox')" class="absolute top-4 right-4 text-white text-2xl hover:text-amber-400"><i class="fa-solid fa-xmark"></i></button>
+        <h4 id="photoViewerTitle" class="text-white text-sm font-bold mb-3 tracking-wide">Customer Photo View</h4>
+        <div class="max-w-2xl max-h-[80vh] overflow-hidden rounded-xl border border-slate-700 shadow-2xl flex items-center justify-center">
+            <img id="photoViewerImg" src="" class="max-w-full max-h-[75vh] object-contain transition duration-200">
+        </div>
+    </div>
+
     <script>
-        // Data Structures
         let masterVehicles = JSON.parse(localStorage.getItem('kd_master_fleet')) || [
             { no: "WB-01-A1234", status: "Active" },
             { no: "WB-02-B5678", status: "Garage" }
@@ -392,7 +470,6 @@
             "3": { sec: 500, daily: 230, weekly: 1610 }
         };
 
-        // Navigation
         function switchView(view) {
             document.getElementById('viewAdmin').classList.add('hidden');
             document.getElementById('viewCustomerForm').classList.add('hidden');
@@ -402,21 +479,41 @@
             document.getElementById('btnTabCust').className = "bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
             document.getElementById('btnTabDir').className = "bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
 
+            const metrics = document.getElementById('metricsSection');
+
             if (view === 'admin') {
+                metrics.classList.remove('hidden');
                 document.getElementById('viewAdmin').classList.remove('hidden');
                 document.getElementById('btnTabAdmin').className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition";
                 updateAdminUI(rentalFleet);
+                window.location.hash = "";
             } else if (view === 'customer') {
+                metrics.classList.add('hidden');
                 document.getElementById('viewCustomerForm').classList.remove('hidden');
                 document.getElementById('btnTabCust').className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+                window.location.hash = "register";
             } else if (view === 'directory') {
+                metrics.classList.remove('hidden');
                 document.getElementById('viewDirectory').classList.remove('hidden');
                 document.getElementById('btnTabDir').className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
                 renderCRMDirectory(rentalFleet);
+                window.location.hash = "";
             }
         }
 
-        // Customer Self Form Logic
+        function copyCustomerShareLink() {
+            const url = window.location.origin + window.location.pathname + "#register";
+            navigator.clipboard.writeText(url).then(() => {
+                alert("কাস্টমার রেজিস্ট্রেশন ফর্মের লিংক কপি হয়েছে:\n" + url);
+            });
+        }
+
+        function openPhotoViewer(src, title) {
+            document.getElementById("photoViewerImg").src = src || "https://via.placeholder.com/400";
+            document.getElementById("photoViewerTitle").innerText = title ? title + " - Photo View" : "Customer Photo View";
+            document.getElementById("photoLightbox").classList.remove("hidden");
+        }
+
         function copySelfAddress() {
             const check = document.getElementById("selfSameAddr");
             const curr = document.getElementById("selfCurrAddr");
@@ -458,7 +555,6 @@
                 await new Promise(resolve => reader.onload = () => { base64Photo = reader.result; resolve(); });
             }
 
-            // Find first available garage vehicle or assign pending
             const availableVeh = masterVehicles.find(v => v.status === "Garage")?.no || "Pending Assignment";
 
             const newRecord = {
@@ -472,7 +568,7 @@
                 vehicle: availableVeh,
                 status: "Active",
                 paid: 0,
-                dueAmt: slabs[slabVal].sec + slabs[slabVal].weekly, // Default initial due
+                dueAmt: slabs[slabVal].sec + slabs[slabVal].weekly,
                 dueDate: document.getElementById("selfStartDate").value,
                 photo: base64Photo,
                 consentGiven: true
@@ -481,14 +577,13 @@
             rentalFleet.unshift(newRecord);
             saveState();
 
-            alert("রেজিস্ট্রেশন সফল হয়েছে! অ্যাডমিন প্যানেল থেকে বাকি তথ্য আপডেট করা যাবে।");
+            alert("Registration & Consent submitted successfully! KD Captain / Om Gananayaka (O.G) LLP will verify your booking.");
             this.reset();
             updateSelfSlabDetails();
             btn.disabled = false;
             switchView('admin');
         });
 
-        // Master Fleet Management
         document.getElementById("addVehicleForm").addEventListener("submit", function(e) {
             e.preventDefault();
             const vNo = document.getElementById("newVehNo").value.trim().toUpperCase();
@@ -518,7 +613,6 @@
                 const v = masterVehicles.find(item => item.no === oldNo);
                 if (v) {
                     v.no = formatted;
-                    // Update in rentals as well
                     rentalFleet.forEach(r => { if(r.vehicle === oldNo) r.vehicle = formatted; });
                     saveState();
                     renderMasterFleet();
@@ -558,7 +652,6 @@
             });
         }
 
-        // Admin Dashboard & Table UI
         function updateAdminUI(data) {
             const tbody = document.getElementById("fleetTable");
             const alertList = document.getElementById("dueAlertList");
@@ -575,12 +668,12 @@
             const today = new Date().toISOString().split('T')[0];
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">কোনো রেকর্ড নেই।</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">No records found.</td></tr>`;
             }
 
             data.forEach((item, index) => {
                 const paid = Number(item.paid) || 0;
-                const due = Number(item.dueAmt) || 0; // Manual Next Due Amount
+                const due = Number(item.dueAmt) || 0;
 
                 totalCollected += paid;
                 totalDuePending += due;
@@ -602,8 +695,13 @@
                 tr.className = "hover:bg-slate-50 transition";
                 tr.innerHTML = `
                     <td class="p-3">
-                        <div class="font-black text-slate-900 uppercase">${item.vehicle}</div>
-                        <div class="text-[11px] text-slate-500">${item.name} | ${item.phone}</div>
+                        <div class="flex items-center gap-2.5">
+                            <img src="${item.photo || 'https://via.placeholder.com/150'}" onclick="openPhotoViewer('${item.photo || ''}', '${item.name}')" class="w-8 h-8 rounded-full object-cover border border-amber-500 cursor-pointer hover:scale-110 transition" title="Click to Zoom">
+                            <div>
+                                <div class="font-black text-slate-900 uppercase">${item.vehicle}</div>
+                                <div class="text-[11px] text-slate-500">${item.name} | ${item.phone}</div>
+                            </div>
+                        </div>
                     </td>
                     <td class="p-3 font-semibold text-amber-700">Slab ${item.slab || '1'}</td>
                     <td class="p-3">
@@ -617,9 +715,9 @@
                         </span>
                     </td>
                     <td class="p-3 text-right space-x-1 whitespace-nowrap">
-                        <button onclick="openEditModal(${index})" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-2 py-1 rounded text-xs font-bold shadow-xs"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="viewPortfolio(${index})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-id-card"></i></button>
-                        <button onclick="deleteRecord(${index})" class="text-rose-500 hover:text-rose-700 px-1"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="openEditModal(${index})" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-2.5 py-1 rounded text-xs font-bold shadow-xs"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="viewPortfolio(${index})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded text-xs font-bold"><i class="fa-solid fa-id-card"></i></button>
+                        <button onclick="deleteRecord(${index})" class="bg-rose-50 hover:bg-rose-100 text-rose-600 px-2.5 py-1 rounded text-xs font-bold"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -634,7 +732,6 @@
             updateChart(totalCollected, totalDuePending);
         }
 
-        // CRM Directory
         function renderCRMDirectory(data) {
             const grid = document.getElementById("crmGrid");
             grid.innerHTML = "";
@@ -649,7 +746,7 @@
                 card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between";
                 card.innerHTML = `
                     <div class="flex items-start gap-3">
-                        <img src="${item.photo || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" class="w-12 h-12 rounded-full object-cover border-2 border-amber-500">
+                        <img src="${item.photo || 'https://via.placeholder.com/150'}" onclick="openPhotoViewer('${item.photo || ''}', '${item.name}')" class="w-12 h-12 rounded-full object-cover border-2 border-amber-500 cursor-pointer hover:scale-105 transition" title="Click to Zoom">
                         <div class="flex-1 min-w-0">
                             <h4 class="font-bold text-slate-900 text-sm truncate">${item.name}</h4>
                             <p class="text-[11px] text-slate-500"><i class="fa-solid fa-phone text-xs"></i> ${item.phone}</p>
@@ -664,6 +761,7 @@
                         <div class="space-x-1">
                             <button onclick="openEditModal(${index})" class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-2.5 py-1 rounded text-[11px] font-bold">Edit</button>
                             <button onclick="viewPortfolio(${index})" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-2.5 py-1 rounded text-[11px] font-bold">Profile</button>
+                            <button onclick="deleteRecord(${index})" class="bg-rose-50 hover:bg-rose-100 text-rose-600 px-2 py-1 rounded text-[11px] font-bold"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                 `;
@@ -677,7 +775,6 @@
             renderCRMDirectory(filtered);
         }
 
-        // Edit Modal Logic
         function openEditModal(index) {
             const item = rentalFleet[index];
             document.getElementById("editIndex").value = index;
@@ -715,7 +812,6 @@
             rentalFleet[index].dueDate = document.getElementById("editDueDate").value;
             rentalFleet[index].status = updatedStatus;
 
-            // Sync master vehicle status
             const v = masterVehicles.find(item => item.no === updatedVeh);
             if (v) v.status = updatedStatus === "Active" ? "Active" : "Garage";
 
@@ -726,7 +822,6 @@
             renderCRMDirectory(rentalFleet);
         });
 
-        // View Details Modal
         function viewPortfolio(index) {
             const item = rentalFleet[index];
             document.getElementById("modalName").innerText = item.name;
@@ -739,7 +834,13 @@
             document.getElementById("modalPaid").innerText = "₹" + (item.paid || 0);
             document.getElementById("modalDueAmt").innerText = "₹" + (item.dueAmt || 0);
             document.getElementById("modalDueDate").innerText = item.dueDate || "Not Set";
-            document.getElementById("modalImg").src = item.photo || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
+            document.getElementById("modalImg").src = item.photo || "https://via.placeholder.com/150";
+            
+            document.getElementById("modalDeleteBtn").onclick = function() {
+                deleteRecord(index);
+                closeModal('portfolioModal');
+            };
+
             document.getElementById("portfolioModal").classList.remove("hidden");
         }
 
@@ -748,7 +849,7 @@
         }
 
         function deleteRecord(index) {
-            if (confirm("Are you sure you want to delete this customer record?")) {
+            if (confirm("Are you sure you want to permanently delete this customer record?")) {
                 rentalFleet.splice(index, 1);
                 saveState();
                 updateAdminUI(rentalFleet);
@@ -811,9 +912,12 @@
             updateAdminUI(filtered);
         });
 
-        // Initial Execution
-        renderMasterFleet();
-        updateAdminUI(rentalFleet);
+        if (window.location.hash === "#register" || window.location.hash === "#form") {
+            switchView('customer');
+        } else {
+            renderMasterFleet();
+            updateAdminUI(rentalFleet);
+        }
         updateSelfSlabDetails();
     </script>
 </body>
