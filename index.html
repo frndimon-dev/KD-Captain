@@ -269,16 +269,16 @@
                     <div class="bg-amber-50/70 p-4 rounded-xl border border-amber-200 space-y-3">
                         <label class="text-xs font-black text-amber-900 uppercase block">Select Initial Rental Slab (১ম মাসের স্ল্যাব) *</label>
                         <select id="selfSlab" onchange="updateSelfSlabDetails()" class="w-full bg-white border border-amber-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 cursor-pointer">
-                            <option value="1">Slab 1 (Security: ₹1500 | Month 1 Daily: ₹200 | Week 1 Due: ₹1400)</option>
-                            <option value="2">Slab 2 (Security: ₹700 | Month 1 Daily: ₹220 | Week 1 Due: ₹1540)</option>
-                            <option value="3">Slab 3 (Security: ₹500 | Month 1 Daily: ₹230 | Week 1 Due: ₹1610)</option>
+                            <option value="1">Slab 1 (Security: ₹1500 | Month 1 Daily: ₹200 | Week 1 Advance: ₹1400 | Total Initial Pay: ₹2900)</option>
+                            <option value="2">Slab 2 (Security: ₹700 | Month 1 Daily: ₹220 | Week 1 Advance: ₹1540 | Total Initial Pay: ₹2240)</option>
+                            <option value="3">Slab 3 (Security: ₹500 | Month 1 Daily: ₹230 | Week 1 Advance: ₹1610 | Total Initial Pay: ₹2110)</option>
                         </select>
                         <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold bg-white p-2.5 rounded-lg border border-amber-200">
                             <div class="text-slate-600">Security Deposit: <span id="selfSec" class="text-amber-700 font-black">₹1500</span></div>
-                            <div class="text-slate-600">Daily Rate (M1): <span id="selfDaily" class="text-amber-700 font-black">₹200</span></div>
-                            <div class="text-slate-600">Week 1 Rent Due: <span id="selfWeekly" class="text-amber-700 font-black">₹1400</span></div>
+                            <div class="text-slate-600">Week 1 Rent (Advance): <span id="selfWeekly" class="text-amber-700 font-black">₹1400</span></div>
+                            <div class="text-slate-600">Total Collected Now: <span id="selfInitialTotal" class="text-emerald-700 font-black">₹2900</span></div>
                         </div>
-                        <p class="text-[11px] text-amber-800 font-semibold">* ১ম মাস (৪ সপ্তাহ) পর ৫ম সপ্তাহ থেকে সবার জন্য ফ্ল্যাট ₹২০০/দিন (সাপ্তাহিক ₹১৪০০) কার্যকর হবে।</p>
+                        <p class="text-[11px] text-amber-800 font-semibold">* অনবোর্ডিংয়ের সময় সিকিউরিটি ডিপোজিট ও ১ম সপ্তাহের অগ্রিম ভাড়া এক সাথে জমা হবে। পরবর্তী বকেয়া হবে Week 2-এর জন্য।</p>
                     </div>
 
                     <!-- Mandatory Legal Terms & Conditions Box -->
@@ -400,7 +400,7 @@
             </div>
             <div>
                 <h3 class="font-black text-slate-900 text-base">Customer Successfully Onboarded!</h3>
-                <p class="text-xs text-slate-500 mt-1">কাস্টমারের রেজিস্ট্রেশন বিল ও স্লিপ জেনারেট হয়েছে।</p>
+                <p class="text-xs text-slate-500 mt-1">Security Deposit & Week 1 Advance Rent সফলভাবে রেকর্ড করা হয়েছে।</p>
             </div>
             <div class="bg-slate-50 p-3 rounded-xl border text-left text-xs space-y-1">
                 <p><strong class="text-slate-800">Customer:</strong> <span id="succCustName">-</span></p>
@@ -441,7 +441,7 @@
                 </div>
                 <div>
                     <label class="font-bold text-slate-700 block mb-1">Payment Note</label>
-                    <input type="text" id="payNote" class="w-full border rounded-lg p-2 bg-slate-50" placeholder="e.g. Week 2 Full Payment">
+                    <input type="text" id="payNote" class="w-full border rounded-lg p-2 bg-slate-50" placeholder="e.g. Week 2 Rent">
                 </div>
                 <div class="flex justify-end gap-2 pt-2 border-t">
                     <button type="button" onclick="closePaymentModal()" class="px-3 py-1.5 rounded-lg bg-slate-200 text-slate-700 font-bold">Cancel</button>
@@ -490,9 +490,9 @@
             <div>
                 <div class="flex justify-between items-center mb-1">
                     <h4 class="text-xs font-bold text-slate-900 uppercase">Payment Logs & Individual Slips</h4>
-                    <span class="text-[10px] text-slate-500 font-semibold">* ক্লিক করে নির্দিষ্ট সপ্তাহের আলাদা বিল পান</span>
+                    <span class="text-[10px] text-slate-500 font-semibold">* যেকোনো এন্ট্রির পাশে Slip বাটনে চাপুন</span>
                 </div>
-                <div id="pvHistoryList" class="space-y-1.5 max-h-40 overflow-y-auto custom-scroll border p-2 rounded-xl text-xs bg-slate-50"></div>
+                <div id="pvHistoryList" class="space-y-1.5 max-h-44 overflow-y-auto custom-scroll border p-2 rounded-xl text-xs bg-slate-50"></div>
             </div>
 
             <div class="flex justify-between items-center gap-2 pt-3 border-t">
@@ -618,7 +618,7 @@
         </div>
     </div>
 
-    <!-- Modal 6: Official Printable & Downloadable Digital Receipt (With Week 1 Terms Integration) -->
+    <!-- Modal 6: Official Printable & Downloadable Digital Receipt -->
     <div id="receiptModal" style="display: none;" class="fixed inset-0 bg-slate-950/75 z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
             <div class="flex justify-between items-center border-b pb-2">
@@ -774,7 +774,7 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('kd_captain_final_stable_v10', JSON.stringify({
+            localStorage.setItem('kd_captain_final_stable_v11', JSON.stringify({
                 fleet: state.fleet,
                 bookings: state.bookings,
                 recycleBin: state.recycleBin
@@ -830,7 +830,7 @@
             updateIdFieldValidation();
             updateSelfSlabDetails();
 
-            var saved = localStorage.getItem('kd_captain_final_stable_v10');
+            var saved = localStorage.getItem('kd_captain_final_stable_v11');
             if (saved) {
                 try {
                     var parsed = JSON.parse(saved);
@@ -939,15 +939,15 @@
         function updateSelfSlabDetails() {
             var slab = parseInt(document.getElementById('selfSlab').value);
             var sec = document.getElementById('selfSec');
-            var daily = document.getElementById('selfDaily');
             var weekly = document.getElementById('selfWeekly');
+            var initialTotal = document.getElementById('selfInitialTotal');
 
             var rates = calculateWeeklyRate(slab, 1);
             var secAmt = slab === 1 ? 1500 : slab === 2 ? 700 : 500;
 
             sec.innerText = '₹' + secAmt;
-            daily.innerText = '₹' + rates.daily;
             weekly.innerText = '₹' + rates.weekly;
+            initialTotal.innerText = '₹' + (secAmt + rates.weekly);
         }
 
         function copySelfAddress() {
@@ -1063,13 +1063,15 @@
 
             var startDt = document.getElementById('selfStartDate').value;
             var slab = parseInt(document.getElementById('selfSlab').value) || 1;
-            var rates = calculateWeeklyRate(slab, 1);
+            var ratesM1 = calculateWeeklyRate(slab, 1);
+            var ratesM2 = calculateWeeklyRate(slab, 2);
             var sec = slab === 1 ? 1500 : slab === 2 ? 700 : 500;
             var nextDue = add7Days(startDt);
             var custName = document.getElementById('selfName').value.trim();
 
             var photoUrl = state.tempPhotoBase64 || `https://ui-avatars.com/api/?name=${encodeURIComponent(custName)}&background=f59e0b&color=fff&size=128`;
 
+            // Onboarding automatically saves BOTH Security Deposit and Week 1 Advance Rent
             var newBooking = {
                 id: Date.now(),
                 name: custName,
@@ -1084,15 +1086,16 @@
                 addrProofNo: document.getElementById('selfAddrProofNo').value,
                 startDate: startDt,
                 slab: slab,
-                currentWeek: 1,
-                dailyRate: rates.daily,
+                currentWeek: 2, // Moves directly to active Week 2
+                dailyRate: ratesM2.daily,
                 securityDeposit: sec,
-                due: rates.weekly,
+                due: ratesM2.weekly, // Next due is Week 2 rent
                 dueDate: nextDue,
                 status: 'Active',
                 termsAccepted: true,
                 paymentHistory: [
-                    { week: 0, amount: sec, type: "Security Deposit", date: startDt }
+                    { week: 0, amount: sec, type: "Security Deposit", date: startDt },
+                    { week: 1, amount: ratesM1.weekly, type: "Week 1 Advance Rent", date: startDt }
                 ]
             };
 
@@ -1120,7 +1123,7 @@
 
             document.getElementById('succOpenBillBtn').onclick = function() {
                 closeOnboardModal();
-                openReceiptModal(b.id, 0);
+                openReceiptModal(b.id, 1);
             };
 
             var modal = document.getElementById('onboardSuccessModal');
@@ -1196,7 +1199,7 @@
             document.getElementById('payCustDetails').innerText = 'Current Week: ' + b.currentWeek + ' | Due: ₹' + b.due + ' on ' + b.dueDate;
             document.getElementById('payDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('payAmount').value = b.due;
-            document.getElementById('payNote').value = 'Week ' + b.currentWeek + ' Rent Payment';
+            document.getElementById('payNote').value = 'Week ' + b.currentWeek + ' Rent';
 
             var m = document.getElementById('paymentModal');
             m.style.display = 'flex';
@@ -1215,7 +1218,7 @@
             var amt = parseFloat(document.getElementById('payAmount').value) || 0;
             var date = document.getElementById('payDate').value;
             var paidWeek = b.currentWeek;
-            var note = document.getElementById('payNote').value || ('Week ' + paidWeek + ' Rent Payment');
+            var note = document.getElementById('payNote').value || ('Week ' + paidWeek + ' Rent');
 
             if (!b.paymentHistory) b.paymentHistory = [];
             b.paymentHistory.push({
@@ -1261,7 +1264,7 @@
             body.innerHTML = '';
 
             var entriesToShow = b.paymentHistory || [];
-            var isWeek1Onboard = (paymentHistoryIndex === 0 || (paymentHistoryIndex === null && entriesToShow.length <= 1));
+            var isWeek1Onboard = (paymentHistoryIndex === 0 || paymentHistoryIndex === 1 || (paymentHistoryIndex === null && entriesToShow.length <= 2));
 
             if (paymentHistoryIndex !== null && paymentHistoryIndex !== undefined && entriesToShow[paymentHistoryIndex]) {
                 document.getElementById('recBadgeTitle').innerText = `${entriesToShow[paymentHistoryIndex].type.toUpperCase()}`;
