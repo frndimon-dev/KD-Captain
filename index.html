@@ -17,6 +17,11 @@
     <style>
         .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        @media print {
+            body * { visibility: hidden; }
+            #printableInvoice, #printableInvoice * { visibility: visible; }
+            #printableInvoice { position: absolute; left: 0; top: 0; width: 100%; }
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-16 font-sans">
@@ -83,7 +88,7 @@
         <!-- ================= VIEW 1: ADMIN DASHBOARD ================= -->
         <div id="viewAdmin" class="space-y-6">
 
-            <!-- Chart & Alerts -->
+            <!-- Chart & Alerts (48 Hours Notification Center) -->
             <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center min-h-[220px]">
                     <h4 class="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wide">Collection vs Due Breakdown</h4>
@@ -92,14 +97,17 @@
                     </div>
                 </div>
 
-                <div class="md:col-span-2 bg-rose-50 border border-rose-200 rounded-xl p-4 shadow-sm flex flex-col justify-between">
+                <div class="md:col-span-2 bg-amber-50/50 border border-amber-200 rounded-xl p-4 shadow-sm flex flex-col justify-between">
                     <div>
-                        <h3 class="text-rose-700 font-bold text-xs uppercase tracking-wide flex items-center gap-2 mb-3">
-                            <i class="fa-solid fa-bell text-sm"></i> Payment Due & Overdue Alerts
-                        </h3>
-                        <div id="dueAlertList" class="space-y-2 max-h-40 overflow-y-auto custom-scroll pr-1"></div>
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-amber-950 font-black text-xs uppercase tracking-wide flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-amber-600 text-sm"></i> 48-Hour Urgent Due & Overdue Center
+                            </h3>
+                            <span class="text-[10px] bg-amber-200 text-amber-900 px-2 py-0.5 rounded font-bold">Auto-Triggered</span>
+                        </div>
+                        <div id="dueAlertList" class="space-y-2 max-h-48 overflow-y-auto custom-scroll pr-1"></div>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-2">* WhatsApp Reminder বাটনে ক্লিক করে গ্রাহককে মেসেজ পাঠান।</p>
+                    <p class="text-[11px] text-slate-500 mt-2 font-medium">* ৪৮ ঘণ্টার মধ্যে নির্ধারিত ভাড়া ও আগের বকেয়াযুক্ত গ্রাহকদের তালিকা এবং রেডিমেড হোয়াটসঅ্যাপ রিমাইন্ডার।</p>
                 </div>
             </section>
 
@@ -128,18 +136,18 @@
                     <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                         <i class="fa-solid fa-list-check text-amber-500"></i> Active Bookings & Financial Logs
                     </h2>
-                    <input type="text" id="searchInput" oninput="renderBookingsTable()" placeholder="Search name, vehicle or phone..." class="w-full sm:w-64 bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-amber-500">
+                    <input type="text" id="searchInput" oninput="renderBookingsTable()" placeholder="Search name, vehicle or WhatsApp..." class="w-full sm:w-64 bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-amber-500">
                 </div>
 
                 <div class="overflow-x-auto custom-scroll">
                     <table class="w-full text-left text-xs text-slate-700">
                         <thead class="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
                             <tr>
-                                <th class="p-3">Customer & Vehicle</th>
+                                <th class="p-3">Customer & WhatsApp</th>
                                 <th class="p-3">Running Week</th>
-                                <th class="p-3">Daily Rate</th>
+                                <th class="p-3">Daily / Weekly Rate</th>
                                 <th class="p-3">Total Paid / Current Due</th>
-                                <th class="p-3">Next Due Date</th>
+                                <th class="p-3">Next Due & Countdown</th>
                                 <th class="p-3">Status</th>
                                 <th class="p-3 text-right">Actions</th>
                             </tr>
@@ -150,13 +158,13 @@
             </section>
         </div>
 
-        <!-- ================= VIEW 2: CUSTOMER FORM ================= -->
+        <!-- ================= VIEW 2: CUSTOMER ONBOARDING FORM ================= -->
         <div id="viewCustomerForm" style="display: none;" class="max-w-3xl mx-auto space-y-6">
             <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-lg space-y-6">
                 <div class="border-b border-slate-100 pb-4 text-center">
                     <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">OM GANANAYAKA (O.G) LLP</span>
                     <h2 class="text-xl font-black text-slate-900 mt-2">KD Captain — Vehicle Rental Registration</h2>
-                    <p class="text-xs text-slate-500 mt-1">Fill out customer identity, address and assign an available vehicle.</p>
+                    <p class="text-xs text-slate-500 mt-1">কাস্টমার ভেরিফিকেশন, হোয়াটসঅ্যাপ রসিদ ও অনবোর্ডিং ফর্ম।</p>
                 </div>
 
                 <form id="customerSelfForm" onsubmit="handleCustomerSubmit(event)" class="space-y-4">
@@ -166,8 +174,11 @@
                             <input type="text" id="selfName" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="Rahul Sharma">
                         </div>
                         <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Phone Number (10 Digit) *</label>
-                            <input type="tel" id="selfPhone" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="98XXXXXXXX">
+                            <label class="text-xs font-bold text-slate-700 block mb-1 flex items-center justify-between">
+                                <span>WhatsApp Number (10 Digit) *</span>
+                                <span class="text-[10px] text-emerald-600 font-bold"><i class="fa-brands fa-whatsapp"></i> Mandatory</span>
+                            </label>
+                            <input type="tel" id="selfPhone" required maxlength="10" pattern="[0-9]{10}" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-bold" placeholder="98XXXXXXXX">
                         </div>
                     </div>
 
@@ -179,14 +190,14 @@
                             <div>
                                 <label class="text-[11px] font-semibold text-slate-600 block mb-1">Document Type *</label>
                                 <select id="selfIdType" onchange="updateIdFieldValidation()" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 cursor-pointer">
-                                    <option value="Aadhaar">Aadhaar Card (12 Digit)</option>
-                                    <option value="PAN">PAN Card (10 Digit)</option>
+                                    <option value="Aadhaar">Aadhaar Card (Only 12 Digits)</option>
+                                    <option value="PAN">PAN Card (10 Digits Alphanumeric)</option>
                                     <option value="Voter">Voter ID / EPIC Card</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="text-[11px] font-semibold text-slate-600 block mb-1" id="lblIdNumber">Enter Aadhaar Card Number *</label>
-                                <input type="text" id="selfIdNumber" required maxlength="12" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium uppercase" placeholder="Enter 12 Digit Number">
+                                <label class="text-[11px] font-semibold text-slate-600 block mb-1" id="lblIdNumber">Enter 12-Digit Aadhaar Number *</label>
+                                <input type="text" id="selfIdNumber" required class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
                             </div>
                         </div>
                     </div>
@@ -230,7 +241,7 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="text-xs font-bold text-slate-700 block mb-1">Rental Start Date *</label>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">Rental Onboarding Date *</label>
                             <input type="date" id="selfStartDate" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
                         </div>
                         <div>
@@ -266,7 +277,7 @@
             <section class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-users text-amber-500"></i> Customer CRM Directory & Payment Portfolios
+                        <i class="fa-solid fa-users text-amber-500"></i> Customer CRM Directory & Live Due Counters
                     </h2>
                 </div>
                 <div id="crmListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
@@ -275,7 +286,33 @@
 
     </main>
 
-    <!-- Modal 1: Add Weekly Payment -->
+    <!-- Modal 1: Onboarding WhatsApp Direct Dispatcher -->
+    <div id="onboardSuccessModal" style="display: none;" class="fixed inset-0 bg-slate-950/70 z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 text-center">
+            <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <div>
+                <h3 class="font-black text-slate-900 text-base">Customer Successfully Onboarded!</h3>
+                <p class="text-xs text-slate-500 mt-1">কাস্টমারের হোয়াটসঅ্যাপে রেজিস্ট্রেশন স্লিপ ও রসিদের কপি পাঠান।</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border text-left text-xs space-y-1">
+                <p><strong class="text-slate-800">Customer:</strong> <span id="succCustName">-</span></p>
+                <p><strong class="text-slate-800">Assigned Bike:</strong> <span id="succCustVeh" class="font-bold text-amber-700">-</span></p>
+                <p><strong class="text-slate-800">WhatsApp:</strong> <span id="succCustPhone">-</span></p>
+            </div>
+            <div class="flex flex-col gap-2 pt-2">
+                <a id="succWaBtn" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-brands fa-whatsapp text-base"></i> Send Confirmation to WhatsApp
+                </a>
+                <button type="button" onclick="closeOnboardModal()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold p-2 rounded-xl text-xs">
+                    Close & Go to Admin Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Add Weekly Payment -->
     <div id="paymentModal" style="display: none;" class="fixed inset-0 bg-slate-950/60 z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b pb-2">
@@ -308,7 +345,7 @@
         </div>
     </div>
 
-    <!-- Modal 2: Edit Customer Details -->
+    <!-- Modal 3: Edit Customer Details -->
     <div id="editCustomerModal" style="display: none;" class="fixed inset-0 bg-slate-950/60 z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
             <div class="flex justify-between items-center border-b pb-2">
@@ -322,8 +359,8 @@
                     <input type="text" id="editCustName" required class="w-full border rounded-lg p-2 bg-slate-50">
                 </div>
                 <div>
-                    <label class="font-bold text-slate-700 block mb-1">Phone Number</label>
-                    <input type="tel" id="editCustPhone" required class="w-full border rounded-lg p-2 bg-slate-50">
+                    <label class="font-bold text-slate-700 block mb-1">WhatsApp Number</label>
+                    <input type="tel" id="editCustPhone" required maxlength="10" pattern="[0-9]{10}" class="w-full border rounded-lg p-2 bg-slate-50">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
@@ -386,7 +423,65 @@
         </div>
     </div>
 
-    <!-- JavaScript Execution Logic -->
+    <!-- Modal 4: Professional Printable Invoice & Cash Receipt -->
+    <div id="receiptModal" style="display: none;" class="fixed inset-0 bg-slate-950/75 z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-black text-slate-900 text-sm">Official Rental Receipt</h3>
+                <button onclick="closeReceiptModal()" class="text-slate-400 hover:text-slate-700 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Printable Voucher Template -->
+            <div id="printableInvoice" class="bg-white border border-slate-300 p-5 rounded-xl space-y-4 text-xs font-sans text-slate-800">
+                <div class="flex justify-between items-start border-b border-slate-300 pb-3">
+                    <div>
+                        <h2 class="text-base font-black text-slate-950">KD CAPTAIN</h2>
+                        <p class="text-[10px] font-bold text-amber-700 uppercase">A Unit of OM GANANAYAKA (O.G) LLP</p>
+                        <p class="text-[10px] text-slate-500">Kolkata, West Bengal</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="bg-slate-900 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase">Payment Slip</span>
+                        <p class="text-[10px] text-slate-500 mt-1" id="recIssueDate">-</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-[11px]">
+                    <div><strong>Customer:</strong> <span id="recCustName">-</span></div>
+                    <div><strong>WhatsApp:</strong> <span id="recCustPhone">-</span></div>
+                    <div><strong>Vehicle No:</strong> <span id="recCustVeh" class="font-bold text-amber-800">-</span></div>
+                    <div><strong>Plan:</strong> <span id="recCustSlab">-</span></div>
+                </div>
+
+                <table class="w-full text-left text-[11px] border border-slate-200">
+                    <thead class="bg-slate-100 font-bold border-b border-slate-200">
+                        <tr>
+                            <th class="p-2">Description</th>
+                            <th class="p-2 text-right">Amount (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recTableBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+
+                <div class="flex justify-between items-center bg-amber-50 p-2.5 rounded-lg border border-amber-200 font-bold text-xs">
+                    <span class="text-slate-700">Next Due Date: <strong id="recNextDueDate" class="text-slate-900">-</strong></span>
+                    <span class="text-rose-700">Next Week Due: <strong id="recNextDueAmt">₹0</strong></span>
+                </div>
+
+                <div class="text-[9px] text-slate-400 text-center pt-2">
+                    * This is a computer generated digital receipt. Authorized by Om Gananayaka (O.G) LLP.
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2 border-t">
+                <button type="button" onclick="closeReceiptModal()" class="px-4 py-2 rounded-xl bg-slate-200 text-slate-700 font-bold text-xs">Close</button>
+                <button type="button" onclick="window.print()" class="px-5 py-2 rounded-xl bg-slate-950 text-amber-400 font-black text-xs flex items-center gap-1.5 shadow-md">
+                    <i class="fa-solid fa-print"></i> Print / Save PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core App Logic -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyBciPcjLQGXwFY03eR8pnkf",
@@ -403,9 +498,7 @@
                 firebase.initializeApp(firebaseConfig);
                 db = firebase.firestore();
             }
-        } catch(e) {
-            console.log("Firebase init locally fallback.");
-        }
+        } catch(e) {}
 
         var state = {
             fleet: [
@@ -435,31 +528,50 @@
             return d.toISOString().split('T')[0];
         }
 
-        function calculateDaysActive(startDate) {
-            if (!startDate) return 0;
-            var start = new Date(startDate);
-            var now = new Date();
-            var diffTime = Math.abs(now - start);
-            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        function calculateDaysRemaining(dueDateStr) {
+            if (!dueDateStr) return { days: 0, text: 'No Date', isUrgent: false, isOverdue: false };
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+            var due = new Date(dueDateStr);
+            due.setHours(0, 0, 0, 0);
+            
+            var diffTime = due.getTime() - today.getTime();
+            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays < 0) {
+                return { days: diffDays, text: Math.abs(diffDays) + ' Days Overdue', isUrgent: true, isOverdue: true };
+            } else if (diffDays === 0) {
+                return { days: 0, text: 'Due Today', isUrgent: true, isOverdue: false };
+            } else if (diffDays <= 2) {
+                return { days: diffDays, text: diffDays === 1 ? '1 Day to go (48h Urgent)' : '2 Days to go (48h Urgent)', isUrgent: true, isOverdue: false };
+            } else {
+                return { days: diffDays, text: diffDays + ' Days to go', isUrgent: false, isOverdue: false };
+            }
         }
 
         function saveLocalData() {
-            localStorage.setItem('kd_captain_final_stable', JSON.stringify({
+            localStorage.setItem('kd_captain_final_stable_v3', JSON.stringify({
                 fleet: state.fleet,
                 bookings: state.bookings
             }));
         }
 
         window.onload = function() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = String(now.getMonth() + 1).padStart(2, '0');
+            var day = String(now.getDate()).padStart(2, '0');
+            var todayStr = year + '-' + month + '-' + day;
+            
             var dateInput = document.getElementById('selfStartDate');
             if (dateInput) {
-                dateInput.value = new Date().toISOString().split('T')[0];
+                dateInput.value = todayStr;
             }
+
             updateIdFieldValidation();
             updateSelfSlabDetails();
 
-            // Load Local Data first immediately
-            var saved = localStorage.getItem('kd_captain_final_stable');
+            var saved = localStorage.getItem('kd_captain_final_stable_v3');
             if (saved) {
                 try {
                     var parsed = JSON.parse(saved);
@@ -470,7 +582,6 @@
             renderAll();
             populateVehicleSelect();
 
-            // Background Firebase Realtime Sync
             if (db) {
                 db.collection("kd_fleet").onSnapshot(function(snapshot) {
                     if (!snapshot.empty) {
@@ -529,18 +640,31 @@
             var lbl = document.getElementById('lblIdNumber');
             var input = document.getElementById('selfIdNumber');
 
+            input.value = '';
             if (type === 'Aadhaar') {
-                lbl.innerText = 'Enter Aadhaar Card Number *';
+                lbl.innerText = 'Enter 12-Digit Aadhaar Number (Numbers only) *';
+                input.type = 'tel';
+                input.inputMode = 'numeric';
                 input.maxLength = 12;
-                input.placeholder = 'Enter 12 Digit Number';
+                input.pattern = '[0-9]{12}';
+                input.placeholder = '123456789012';
+                input.oninput = function() { this.value = this.value.replace(/[^0-9]/g, ''); };
             } else if (type === 'PAN') {
-                lbl.innerText = 'Enter PAN Card Number *';
+                lbl.innerText = 'Enter PAN Card Number (10 Digits) *';
+                input.type = 'text';
+                input.inputMode = 'text';
                 input.maxLength = 10;
+                input.pattern = '[A-Za-z0-9]{10}';
                 input.placeholder = 'ABCDE1234F';
+                input.oninput = function() { this.value = this.value.toUpperCase(); };
             } else {
                 lbl.innerText = 'Enter Voter ID (EPIC) Number *';
+                input.type = 'text';
+                input.inputMode = 'text';
                 input.maxLength = 16;
+                input.pattern = '';
                 input.placeholder = 'WBF1234567';
+                input.oninput = function() { this.value = this.value.toUpperCase(); };
             }
         }
 
@@ -643,9 +767,22 @@
 
         function handleCustomerSubmit(e) {
             e.preventDefault();
+            var phone = document.getElementById('selfPhone').value.trim();
+            if (phone.length !== 10) {
+                alert('Please enter a valid 10-digit WhatsApp number.');
+                return;
+            }
+
             var assignedVeh = document.getElementById('selfAssignVeh').value;
             if (!assignedVeh) {
-                alert('Please ensure an available vehicle is selected from garage.');
+                alert('Please assign an available vehicle from the garage.');
+                return;
+            }
+
+            var idType = document.getElementById('selfIdType').value;
+            var idNo = document.getElementById('selfIdNumber').value.trim();
+            if (idType === 'Aadhaar' && idNo.length !== 12) {
+                alert('Aadhaar number must be exactly 12 digits.');
                 return;
             }
 
@@ -654,14 +791,15 @@
             var rates = calculateWeeklyRate(slab, 1);
             var sec = slab === 1 ? 1500 : slab === 2 ? 700 : 500;
             var nextDue = add7Days(startDt);
+            var custName = document.getElementById('selfName').value.trim();
 
             var newBooking = {
                 id: Date.now(),
-                name: document.getElementById('selfName').value,
-                phone: document.getElementById('selfPhone').value,
+                name: custName,
+                phone: phone,
                 veh: assignedVeh,
-                idType: document.getElementById('selfIdType').value,
-                idNo: document.getElementById('selfIdNumber').value,
+                idType: idType,
+                idNo: idNo,
                 permAddr: document.getElementById('selfPermAddr').value,
                 currAddr: document.getElementById('selfCurrAddr').value,
                 addrProofType: document.getElementById('selfAddrProofType').value,
@@ -679,7 +817,6 @@
                 ]
             };
 
-            // Switch Vehicle to Active
             var v = state.fleet.find(function(item) { return item.no === assignedVeh; });
             if (v) {
                 v.status = 'Active';
@@ -690,8 +827,34 @@
             saveLocalData();
             if (db) db.collection("kd_bookings").doc(String(newBooking.id)).set(newBooking).catch(function(){});
 
-            alert('Customer Onboarding Successful!');
+            showOnboardSuccess(newBooking);
             document.getElementById('customerSelfForm').reset();
+            updateIdFieldValidation();
+        }
+
+        function showOnboardSuccess(b) {
+            document.getElementById('succCustName').innerText = b.name;
+            document.getElementById('succCustVeh').innerText = b.veh;
+            document.getElementById('succCustPhone').innerText = '+91 ' + b.phone;
+
+            var msg = `*OM GANANAYAKA (O.G) LLP - KD CAPTAIN*\n\n` +
+                      `Dear ${b.name},\nWelcome to KD Captain Rental Services!\n\n` +
+                      `*Assigned Vehicle:* ${b.veh}\n` +
+                      `*Start Date:* ${b.startDate}\n` +
+                      `*Selected Plan:* Slab ${b.slab} (₹${b.dailyRate}/day)\n` +
+                      `*Security Deposit Paid:* ₹${b.securityDeposit}\n` +
+                      `*Week 1 Rent Due:* ₹${b.due} on ${b.dueDate}\n\n` +
+                      `Thank you for renting with us. Have a safe drive!`;
+
+            var waLink = `https://wa.me/91${b.phone}?text=${encodeURIComponent(msg)}`;
+            document.getElementById('succWaBtn').setAttribute('href', waLink);
+
+            var modal = document.getElementById('onboardSuccessModal');
+            modal.style.display = 'flex';
+        }
+
+        function closeOnboardModal() {
+            document.getElementById('onboardSuccessModal').style.display = 'none';
             switchView('admin');
         }
 
@@ -743,7 +906,40 @@
 
             closePaymentModal();
             renderAll();
-            alert('Payment recorded successfully! Next week due: ₹' + b.due + ' on ' + b.dueDate);
+            
+            // Open Printable Receipt directly
+            openReceiptModal(b.id);
+        }
+
+        function openReceiptModal(id) {
+            var b = state.bookings.find(function(item) { return item.id == id; });
+            if (!b) return;
+
+            document.getElementById('recIssueDate').innerText = 'Date: ' + new Date().toLocaleDateString('en-GB');
+            document.getElementById('recCustName').innerText = b.name;
+            document.getElementById('recCustPhone').innerText = '+91 ' + b.phone;
+            document.getElementById('recCustVeh').innerText = b.veh;
+            document.getElementById('recCustSlab').innerText = 'Slab ' + b.slab + ' (₹' + b.dailyRate + '/day)';
+            document.getElementById('recNextDueDate').innerText = b.dueDate;
+            document.getElementById('recNextDueAmt').innerText = '₹' + b.due;
+
+            var body = document.getElementById('recTableBody');
+            body.innerHTML = '';
+            if (b.paymentHistory && b.paymentHistory.length > 0) {
+                b.paymentHistory.forEach(function(p) {
+                    body.innerHTML += `<tr>
+                        <td class="p-2 border-b border-slate-100">${p.type} <span class="text-slate-400 text-[10px]">(${p.date})</span></td>
+                        <td class="p-2 border-b border-slate-100 text-right font-bold text-emerald-700">₹${p.amount}</td>
+                    </tr>`;
+                });
+            }
+
+            var modal = document.getElementById('receiptModal');
+            modal.style.display = 'flex';
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receiptModal').style.display = 'none';
         }
 
         function openEditModal(id) {
@@ -908,23 +1104,29 @@
 
             table.innerHTML = filtered.map(function(b) {
                 var rates = calculateWeeklyRate(b.slab, b.currentWeek);
+                var rem = calculateDaysRemaining(b.dueDate);
                 var totalCustPaid = 0;
                 if (b.paymentHistory) {
                     b.paymentHistory.forEach(function(p) { totalCustPaid += p.amount; });
                 }
 
+                var badgeClass = rem.isOverdue ? 'bg-rose-100 text-rose-700 font-black' : (rem.isUrgent ? 'bg-amber-100 text-amber-800 font-bold' : 'bg-slate-100 text-slate-700');
+
+                var waMsg = `Hello ${b.name}, reminder from KD Captain: Week ${b.currentWeek} vehicle rent ₹${b.due} is due on ${b.dueDate} (${rem.text}). Please pay on time.`;
+
                 return '<tr class="hover:bg-slate-50 transition">' +
-                    '<td class="p-3"><div class="font-bold text-slate-900">' + b.name + '</div><div class="text-[11px] text-slate-500 font-semibold">' + b.veh + ' &bull; ' + b.phone + '</div></td>' +
+                    '<td class="p-3"><div class="font-bold text-slate-900">' + b.name + '</div><div class="text-[11px] text-slate-500 font-semibold">' + b.veh + ' &bull; +91 ' + b.phone + '</div></td>' +
                     '<td class="p-3"><span class="font-bold text-amber-800">Week ' + b.currentWeek + '</span> <span class="text-[10px] bg-slate-200 text-slate-800 px-1.5 py-0.5 rounded font-bold">Slab ' + b.slab + '</span></td>' +
                     '<td class="p-3 font-semibold text-slate-800">₹' + rates.daily + '/day <span class="text-[10px] text-slate-500 block">(₹' + rates.weekly + '/wk)</span></td>' +
                     '<td class="p-3"><span class="text-emerald-700 font-bold">Paid: ₹' + totalCustPaid + '</span> / <span class="text-rose-600 font-bold">Due: ₹' + b.due + '</span></td>' +
-                    '<td class="p-3 font-bold text-slate-800">' + b.dueDate + '</td>' +
+                    '<td class="p-3"><div class="font-bold text-slate-800">' + b.dueDate + '</div><span class="text-[10px] px-2 py-0.5 rounded-full inline-block mt-0.5 ' + badgeClass + '">' + rem.text + '</span></td>' +
                     '<td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ' + (b.status === 'Active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700') + '">' + b.status + '</span></td>' +
                     '<td class="p-3 text-right flex items-center justify-end gap-1.5">' +
                         '<button onclick="openPaymentModal(' + b.id + ')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded text-[11px] font-bold shadow-sm flex items-center gap-1"><i class="fa-solid fa-plus"></i> Add Pay</button>' +
+                        '<button onclick="openReceiptModal(' + b.id + ')" class="bg-slate-900 hover:bg-slate-800 text-amber-400 p-1.5 rounded text-xs" title="Print Slip"><i class="fa-solid fa-receipt"></i></button>' +
                         '<button onclick="openEditModal(' + b.id + ')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-1.5 rounded text-xs"><i class="fa-solid fa-pen-to-square"></i></button>' +
                         '<button onclick="deleteBooking(' + b.id + ')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 p-1.5 rounded text-xs"><i class="fa-solid fa-trash"></i></button>' +
-                        '<a href="https://wa.me/91' + b.phone + '?text=Hello%20' + encodeURIComponent(b.name) + ',%20Week%20' + b.currentWeek + '%20vehicle%20rent%20due%20₹' + b.due + '%20on%20' + b.dueDate + '" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded text-xs"><i class="fa-brands fa-whatsapp"></i></a>' +
+                        '<a href="https://wa.me/91' + b.phone + '?text=' + encodeURIComponent(waMsg) + '" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded text-xs"><i class="fa-brands fa-whatsapp"></i></a>' +
                     '</td>' +
                 '</tr>';
             }).join('');
@@ -932,17 +1134,35 @@
 
         function renderAlerts() {
             var list = document.getElementById('dueAlertList');
-            var pending = state.bookings.filter(function(b) { return b.due > 0; });
+            var pending = state.bookings.filter(function(b) { 
+                var rem = calculateDaysRemaining(b.dueDate);
+                return b.due > 0 && (rem.isUrgent || rem.isOverdue);
+            });
+
             if (pending.length === 0) {
-                list.innerHTML = '<p class="text-xs text-slate-500">No active overdue payments.</p>';
+                list.innerHTML = '<div class="text-center py-4 bg-white rounded-lg border border-emerald-200 text-xs font-bold text-emerald-700"><i class="fa-solid fa-circle-check mr-1"></i> No payments due in the next 48 hours. All clear!</div>';
                 return;
             }
+
             list.innerHTML = pending.map(function(b) {
-                return '<div class="flex justify-between items-center bg-white p-2.5 rounded-lg border border-rose-200 text-xs">' +
-                    '<div><span class="font-bold text-slate-800">' + b.name + '</span> (' + b.veh + ') &bull; Week ' + b.currentWeek + ' Due: <span class="text-rose-600 font-bold">₹' + b.due + '</span> on ' + b.dueDate + '</div>' +
-                    '<div class="flex items-center gap-2">' +
-                        '<button onclick="openPaymentModal(' + b.id + ')" class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300 font-bold hover:bg-emerald-100">+ Receive Pay</button>' +
-                        '<a href="https://wa.me/91' + b.phone + '?text=Dear%20' + encodeURIComponent(b.name) + ',%20reminder%20for%20Week%20' + b.currentWeek + '%20rent%20due%20₹' + b.due + '%20on%20' + b.dueDate + '" target="_blank" class="text-emerald-700 font-bold flex items-center gap-1 hover:underline"><i class="fa-brands fa-whatsapp"></i> Remind</a>' +
+                var rem = calculateDaysRemaining(b.dueDate);
+                var alertBg = rem.isOverdue ? 'bg-rose-50 border-rose-300' : 'bg-amber-50 border-amber-300';
+                var textHighlight = rem.isOverdue ? 'text-rose-700' : 'text-amber-800';
+
+                var remMsg = `*PAYMENT REMINDER - KD CAPTAIN*\n\n` +
+                             `Dear ${b.name},\nThis is an automated reminder regarding your rental bike (${b.veh}).\n` +
+                             `*Week ${b.currentWeek} Due:* ₹${b.due}\n` +
+                             `*Due Date:* ${b.dueDate} (${rem.text})\n\n` +
+                             `Please make the payment on time to avoid service disruption.`;
+
+                return '<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-2.5 rounded-lg border text-xs gap-2 ' + alertBg + '">' +
+                    '<div>' +
+                        '<span class="font-bold text-slate-900">' + b.name + '</span> (' + b.veh + ') &bull; ' +
+                        '<span class="font-bold ' + textHighlight + '">' + rem.text + '</span> &bull; Due: <strong>₹' + b.due + '</strong>' +
+                    '</div>' +
+                    '<div class="flex items-center gap-2 w-full sm:w-auto justify-end">' +
+                        '<button onclick="openPaymentModal(' + b.id + ')" class="text-emerald-700 bg-white px-2.5 py-1 rounded border border-emerald-300 font-bold hover:bg-emerald-50">+ Add Pay</button>' +
+                        '<a href="https://wa.me/91' + b.phone + '?text=' + encodeURIComponent(remMsg) + '" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded font-bold flex items-center gap-1 shadow-sm"><i class="fa-brands fa-whatsapp"></i> WhatsApp Remind</a>' +
                     '</div>' +
                 '</div>';
             }).join('');
@@ -993,7 +1213,7 @@
             }
             crm.innerHTML = state.bookings.map(function(b) {
                 var rates = calculateWeeklyRate(b.slab, b.currentWeek);
-                var totalDays = calculateDaysActive(b.startDate);
+                var rem = calculateDaysRemaining(b.dueDate);
                 var totalPaid = 0;
                 var historyHtml = '';
                 
@@ -1007,22 +1227,25 @@
                     }).join('');
                 }
 
+                var badgeColor = rem.isOverdue ? 'bg-rose-600 text-white' : (rem.isUrgent ? 'bg-amber-500 text-slate-950 font-black' : 'bg-slate-800 text-white');
+
                 return '<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3 relative">' +
                     '<div class="flex justify-between items-start border-b pb-2">' +
                         '<div>' +
                             '<h4 class="font-black text-slate-900 text-sm">' + b.name + '</h4>' +
-                            '<p class="text-xs text-slate-500"><i class="fa-solid fa-phone mr-1"></i>' + b.phone + '</p>' +
+                            '<p class="text-xs text-slate-500"><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i>+91 ' + b.phone + '</p>' +
                         '</div>' +
                         '<div class="flex items-center gap-1">' +
-                            '<span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">' + b.veh + '</span>' +
+                            '<span class="text-[11px] font-bold px-2 py-0.5 rounded-full ' + badgeColor + '">' + rem.text + '</span>' +
+                            '<button onclick="openReceiptModal(' + b.id + ')" class="text-slate-700 hover:text-amber-600 p-1 text-xs" title="Receipt"><i class="fa-solid fa-receipt"></i></button>' +
                             '<button onclick="openEditModal(' + b.id + ')" class="text-amber-600 hover:text-amber-800 p-1 text-xs"><i class="fa-solid fa-pen-to-square"></i></button>' +
                             '<button onclick="deleteBooking(' + b.id + ')" class="text-rose-500 hover:text-rose-700 p-1 text-xs"><i class="fa-solid fa-trash"></i></button>' +
                         '</div>' +
                     '</div>' +
                     '<div class="text-xs text-slate-600 space-y-1">' +
                         '<div class="grid grid-cols-2 gap-1 bg-slate-50 p-2 rounded-lg">' +
-                            '<div><strong>Start:</strong> ' + b.startDate + '</div>' +
-                            '<div><strong>Days Active:</strong> ' + totalDays + ' Days</div>' +
+                            '<div><strong>Bike:</strong> <span class="text-amber-800 font-bold">' + b.veh + '</span></div>' +
+                            '<div><strong>Start Date:</strong> ' + b.startDate + '</div>' +
                             '<div><strong>Current Tier:</strong> Slab ' + b.slab + '</div>' +
                             '<div><strong>Daily Rent:</strong> ₹' + rates.daily + '/day</div>' +
                         '</div>' +
@@ -1033,14 +1256,14 @@
                             '<span class="text-emerald-700 font-black">Total Paid: ₹' + totalPaid + '</span>' +
                             '<span class="text-rose-600 font-black">Current Due: ₹' + b.due + '</span>' +
                         '</div>' +
-                        '<div class="text-[11px] font-semibold text-slate-700">Next Payment Due Date: <span class="text-rose-700 font-bold">' + b.dueDate + '</span></div>' +
+                        '<div class="text-[11px] font-semibold text-slate-700">Next Payment Due: <span class="text-rose-700 font-bold">' + b.dueDate + '</span></div>' +
                     '</div>' +
                     '<div class="pt-2 border-t border-slate-100">' +
                         '<div class="flex justify-between items-center mb-1">' +
                             '<p class="text-[11px] font-black text-slate-800 uppercase tracking-wide">Installment History:</p>' +
                             '<button onclick="openPaymentModal(' + b.id + ')" class="text-[10px] font-bold text-emerald-700 hover:underline">+ Add Week ' + b.currentWeek + ' Pay</button>' +
                         '</div>' +
-                        '<div class="max-h-28 overflow-y-auto custom-scroll pr-1">' + (historyHtml || '<span class="text-[10px] text-slate-400">No installments logged</span>') + '</div>' +
+                        '<div class="max-h-24 overflow-y-auto custom-scroll pr-1">' + (historyHtml || '<span class="text-[10px] text-slate-400">No installments logged</span>') + '</div>' +
                     '</div>' +
                 '</div>';
             }).join('');
@@ -1052,7 +1275,7 @@
         }
 
         function exportToCSV() {
-            var csv = "Name,Phone,Vehicle,ID Type,ID No,Permanent Address,Present Address,Current Week,Daily Rate,Weekly Due,Next Due Date,Status\n";
+            var csv = "Name,WhatsApp Phone,Vehicle,ID Type,ID No,Permanent Address,Present Address,Current Week,Daily Rate,Weekly Due,Next Due Date,Status\n";
             state.bookings.forEach(function(b) {
                 csv += '"' + b.name + '","' + b.phone + '","' + b.veh + '","' + b.idType + '","' + b.idNo + '","' + (b.permAddr || '') + '","' + (b.currAddr || '') + '","' + b.currentWeek + '","' + b.dailyRate + '","' + b.due + '","' + b.dueDate + '","' + b.status + '"\n';
             });
