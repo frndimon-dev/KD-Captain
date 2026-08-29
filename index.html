@@ -300,7 +300,7 @@
             </section>
         </div>
 
-        <!-- ================= VIEW 4: RECYCLE BIN (30 DAYS SAFEGUARD) ================= -->
+        <!-- ================= VIEW 4: RECYCLE BIN ================= -->
         <div id="viewBin" style="display: none;" class="space-y-6">
             <section class="bg-white p-5 rounded-xl border border-rose-200 shadow-sm">
                 <div class="flex justify-between items-center mb-4 border-b border-rose-100 pb-3">
@@ -317,7 +317,7 @@
 
     </main>
 
-    <!-- Modal 1: Onboarding WhatsApp Direct Dispatcher -->
+    <!-- Modal 1: Onboarding Direct Dispatcher -->
     <div id="onboardSuccessModal" style="display: none;" class="fixed inset-0 bg-slate-950/70 z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 text-center">
             <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
@@ -376,7 +376,7 @@
         </div>
     </div>
 
-    <!-- Modal 3: Full Portfolio View / Preview Modal -->
+    <!-- Modal 3: Full Portfolio View -->
     <div id="viewPortfolioModal" style="display: none;" class="fixed inset-0 bg-slate-950/70 z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
             <div class="flex justify-between items-center border-b pb-3">
@@ -447,7 +447,6 @@
             <form id="editCustomerForm" onsubmit="saveCustomerEdit(event)" class="space-y-3 text-xs">
                 <input type="hidden" id="editCustId">
                 
-                <!-- Edit Photo -->
                 <div class="bg-slate-50 p-2.5 rounded-xl border flex items-center gap-3">
                     <img id="editPhotoPreview" src="" class="w-12 h-12 rounded-full object-cover border border-amber-400">
                     <div>
@@ -572,7 +571,6 @@
                     <div><strong>Plan:</strong> <span id="recCustSlab">-</span></div>
                 </div>
 
-                <!-- Cumulative Payment Breakdown Table -->
                 <div>
                     <h5 class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Itemized Payment Breakdown:</h5>
                     <table class="w-full text-left text-[11px] border border-slate-200">
@@ -596,7 +594,6 @@
                 </div>
             </div>
 
-            <!-- Action buttons: Direct PDF & WhatsApp Pipeline -->
             <div class="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2 border-t">
                 <button type="button" onclick="downloadPdfAndSendWhatsApp()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm">
                     <i class="fa-solid fa-file-pdf"></i> Download PDF & Send WhatsApp Bill
@@ -692,7 +689,7 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('kd_captain_final_stable_v7', JSON.stringify({
+            localStorage.setItem('kd_captain_final_stable_v8', JSON.stringify({
                 fleet: state.fleet,
                 bookings: state.bookings,
                 recycleBin: state.recycleBin
@@ -748,7 +745,7 @@
             updateIdFieldValidation();
             updateSelfSlabDetails();
 
-            var saved = localStorage.getItem('kd_captain_final_stable_v7');
+            var saved = localStorage.getItem('kd_captain_final_stable_v8');
             if (saved) {
                 try {
                     var parsed = JSON.parse(saved);
@@ -1066,14 +1063,14 @@
             if (b.paymentHistory && b.paymentHistory.length > 0) {
                 b.paymentHistory.forEach(function(p, index) {
                     totalPaid += p.amount;
-                    histBody.innerHTML += `<div class="flex justify-between items-center py-1.5 px-2 bg-white rounded-lg border border-slate-200 shadow-2xs">
+                    histBody.innerHTML += `<div class="flex justify-between items-center py-1.5 px-2 bg-white rounded-lg border border-slate-200">
                         <div>
                             <span class="font-bold text-slate-800"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i>${p.type}</span>
                             <span class="text-[10px] text-slate-400 block">${p.date}</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="font-bold text-emerald-700">+₹${p.amount}</span>
-                            <button onclick="closePortfolioModal(); openReceiptModal(${b.id}, ${index})" class="bg-slate-900 hover:bg-slate-800 text-amber-400 px-2 py-0.5 rounded text-[10px] font-bold shadow-2xs">
+                            <button onclick="closePortfolioModal(); openReceiptModal(${b.id}, ${index})" class="bg-slate-900 hover:bg-slate-800 text-amber-400 px-2 py-0.5 rounded text-[10px] font-bold">
                                 <i class="fa-solid fa-receipt"></i> Slip
                             </button>
                         </div>
@@ -1149,11 +1146,9 @@
             closePaymentModal();
             renderAll();
             
-            // Open the specific installment bill receipt modal directly
             openReceiptModal(b.id, newIndex);
         }
 
-        // Open Individual or Full Cumulative Statement Receipt
         function openReceiptModal(id, paymentHistoryIndex) {
             var b = state.bookings.find(function(item) { return item.id == id; });
             if (!b) return;
@@ -1171,9 +1166,7 @@
 
             var body = document.getElementById('recTableBody');
             body.innerHTML = '';
-            var totalPaidCalculated = 0;
 
-            // If paymentHistoryIndex is provided, show up to that specific payment history
             var entriesToShow = b.paymentHistory || [];
             if (paymentHistoryIndex !== null && paymentHistoryIndex !== undefined && entriesToShow[paymentHistoryIndex]) {
                 document.getElementById('recBadgeTitle').innerText = `${entriesToShow[paymentHistoryIndex].type.toUpperCase()}`;
@@ -1183,7 +1176,6 @@
             }
 
             entriesToShow.forEach(function(p) {
-                totalPaidCalculated += p.amount;
                 body.innerHTML += `<tr>
                     <td class="p-2 border-b border-slate-100">${p.type} <span class="text-slate-400 text-[10px]">(${p.date})</span></td>
                     <td class="p-2 border-b border-slate-100 text-right font-bold text-emerald-700">₹${p.amount}</td>
@@ -1198,7 +1190,6 @@
             document.getElementById('receiptModal').style.display = 'none';
         }
 
-        // Direct PDF Generation & WhatsApp Trigger
         function downloadPdfAndSendWhatsApp() {
             if (!state.activeReceiptCustomer) return;
             var b = state.activeReceiptCustomer;
@@ -1217,7 +1208,6 @@
                 jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
             };
 
-            // Generate and save PDF
             html2pdf().set(opt).from(element).save().then(function() {
                 var totalPaid = (b.paymentHistory || []).reduce((sum, p) => sum + (p.amount || 0), 0);
                 var waMsg = `*OFFICIAL PAYMENT BILL & STATEMENT - KD CAPTAIN*\n` +
@@ -1336,7 +1326,6 @@
             alert('Customer updated successfully!');
         }
 
-        // Move to Recycle Bin (30-day safeguard)
         function deleteBooking(id) {
             if (confirm('Move customer profile to Recycle Bin? (You can restore it anytime within 30 days)')) {
                 var bIndex = state.bookings.findIndex(function(item) { return item.id == id; });
@@ -1635,7 +1624,7 @@
                             '</div>' +
                         '</div>' +
                         '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ' + badgeColor + '">' + rem.text + '</span>' +
-                    }</div>' +
+                    '</div>' +
                     '<div class="text-xs text-slate-600 space-y-1">' +
                         '<div class="grid grid-cols-2 gap-1 bg-slate-50 p-2 rounded-lg">' +
                             '<div><strong>Bike:</strong> <span class="text-amber-800 font-bold">' + b.veh + '</span></div>' +
