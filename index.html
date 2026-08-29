@@ -350,7 +350,7 @@
                 </div>
                 <div class="flex justify-end gap-2 pt-2 border-t">
                     <button type="button" onclick="closePaymentModal()" class="px-3 py-1.5 rounded-lg bg-slate-200 text-slate-700 font-bold">Cancel</button>
-                    <button type="submit" class="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-bold">Save & Advance Week</button>
+                    <button type="submit" class="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-bold">Save, Open Bill & Send WhatsApp</button>
                 </div>
             </form>
         </div>
@@ -634,7 +634,7 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('kd_captain_final_stable_v4', JSON.stringify({
+            localStorage.setItem('kd_captain_final_stable_v5', JSON.stringify({
                 fleet: state.fleet,
                 bookings: state.bookings
             }));
@@ -679,7 +679,7 @@
             updateIdFieldValidation();
             updateSelfSlabDetails();
 
-            var saved = localStorage.getItem('kd_captain_final_stable_v4');
+            var saved = localStorage.getItem('kd_captain_final_stable_v5');
             if (saved) {
                 try {
                     var parsed = JSON.parse(saved);
@@ -1027,7 +1027,7 @@
             document.getElementById('payCustDetails').innerText = 'Current Week: ' + b.currentWeek + ' | Due: ₹' + b.due + ' on ' + b.dueDate;
             document.getElementById('payDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('payAmount').value = b.due;
-            document.getElementById('payNote').value = 'Week ' + b.currentWeek + ' Rent';
+            document.getElementById('payNote').value = 'Week ' + b.currentWeek + ' Rent Payment';
 
             var m = document.getElementById('paymentModal');
             m.style.display = 'flex';
@@ -1045,16 +1045,18 @@
 
             var amt = parseFloat(document.getElementById('payAmount').value) || 0;
             var date = document.getElementById('payDate').value;
-            var note = document.getElementById('payNote').value || ('Week ' + b.currentWeek + ' Payment');
+            var paidWeek = b.currentWeek;
+            var note = document.getElementById('payNote').value || ('Week ' + paidWeek + ' Rent Payment');
 
             if (!b.paymentHistory) b.paymentHistory = [];
             b.paymentHistory.push({
-                week: b.currentWeek,
+                week: paidWeek,
                 amount: amt,
                 type: note,
                 date: date
             });
 
+            // Advance to next week & calculate rates according to slab rules
             b.currentWeek += 1;
             var nextRates = calculateWeeklyRate(b.slab, b.currentWeek);
             b.dailyRate = nextRates.daily;
@@ -1066,10 +1068,12 @@
 
             closePaymentModal();
             renderAll();
-            openReceiptModal(b.id);
+            
+            // Automatically open receipt and prepare WhatsApp bill dispatcher
+            openReceiptModal(b.id, `Week ${paidWeek} Payment Received: ₹${amt}`);
         }
 
-        function openReceiptModal(id) {
+        function openReceiptModal(id, customNote) {
             var b = state.bookings.find(function(item) { return item.id == id; });
             if (!b) return;
 
@@ -1085,6 +1089,7 @@
             var body = document.getElementById('recTableBody');
             body.innerHTML = '';
             var totalPaidSoFar = 0;
+            var lastPaymentText = customNote || "Rental Payment";
             if (b.paymentHistory && b.paymentHistory.length > 0) {
                 b.paymentHistory.forEach(function(p) {
                     totalPaidSoFar += p.amount;
@@ -1093,17 +1098,21 @@
                         <td class="p-2 border-b border-slate-100 text-right font-bold text-emerald-700">₹${p.amount}</td>
                     </tr>`;
                 });
+                var lastEntry = b.paymentHistory[b.paymentHistory.length - 1];
+                lastPaymentText = `${lastEntry.type} of ₹${lastEntry.amount} received on ${lastEntry.date}`;
             }
 
             var billMsg = `*OFFICIAL PAYMENT RECEIPT - KD CAPTAIN*\n` +
                           `*OM GANANAYAKA (O.G) LLP*\n\n` +
                           `Dear ${b.name},\n` +
-                          `Here is your updated rental statement for bike *${b.veh}*:\n` +
-                          `• Total Amount Paid: ₹${totalPaidSoFar}\n` +
-                          `• Current Active Week: Week ${b.currentWeek}\n` +
-                          `• Next Week Due: ₹${b.due}\n` +
-                          `• Next Payment Due Date: ${b.dueDate}\n\n` +
-                          `Thank you for keeping your dues clear! Have a safe ride.`;
+                          `We have successfully received your payment:\n` +
+                          `• *Status:* ${lastPaymentText}\n` +
+                          `• *Assigned Bike:* ${b.veh}\n` +
+                          `• *Total Paid So Far:* ₹${totalPaidSoFar}\n` +
+                          `• *Current Running Week:* Week ${b.currentWeek}\n` +
+                          `• *Next Week Due:* ₹${b.due}\n` +
+                          `• *Next Payment Due Date:* ${b.dueDate}\n\n` +
+                          `Thank you for renting with KD Captain! Safe journey.`;
 
             document.getElementById('recWaBtn').setAttribute('href', `https://wa.me/91${b.phone}?text=${encodeURIComponent(billMsg)}`);
 
@@ -1314,7 +1323,7 @@
                     '<td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ' + (b.status === 'Active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700') + '">' + b.status + '</span></td>' +
                     '<td class="p-3 text-right flex items-center justify-end gap-1.5">' +
                         '<button onclick="openPortfolioModal(' + b.id + ')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 px-2 py-1 rounded text-[11px] font-bold shadow-sm" title="View Portfolio"><i class="fa-solid fa-eye"></i> View</button>' +
-                        '<button onclick="openPaymentModal(' + b.id + ')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[11px] font-bold shadow-sm flex items-center gap-1"><i class="fa-solid fa-plus"></i> Pay</button>' +
+                        '<button onclick="openPaymentModal(' + b.id + ')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded text-[11px] font-bold shadow-sm flex items-center gap-1"><i class="fa-solid fa-plus"></i> Pay</button>' +
                         '<button onclick="openReceiptModal(' + b.id + ')" class="bg-slate-900 hover:bg-slate-800 text-amber-400 p-1.5 rounded text-xs" title="Print Slip"><i class="fa-solid fa-receipt"></i></button>' +
                         '<button onclick="openEditModal(' + b.id + ')" class="bg-slate-200 hover:bg-slate-300 text-slate-800 p-1.5 rounded text-xs"><i class="fa-solid fa-pen-to-square"></i></button>' +
                         '<button onclick="deleteBooking(' + b.id + ')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 p-1.5 rounded text-xs"><i class="fa-solid fa-trash"></i></button>' +
