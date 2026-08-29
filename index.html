@@ -1009,7 +1009,6 @@
 
             var photoUrl = state.tempPhotoBase64 || `https://ui-avatars.com/api/?name=${encodeURIComponent(custName)}&background=f59e0b&color=fff&size=128`;
 
-            // Onboarding automatically records BOTH Security Deposit and Week 1 Advance Rent
             var newBooking = {
                 id: Date.now(),
                 name: custName,
@@ -1024,10 +1023,10 @@
                 addrProofNo: document.getElementById('selfAddrProofNo').value,
                 startDate: startDt,
                 slab: slab,
-                currentWeek: 2, // Active running week advances directly to Week 2
+                currentWeek: 2,
                 dailyRate: ratesM2.daily,
                 securityDeposit: sec,
-                due: ratesM2.weekly, // Next due is Week 2 rent
+                due: ratesM2.weekly,
                 dueDate: nextDue,
                 status: 'Active',
                 paymentHistory: [
@@ -1655,7 +1654,7 @@
                                 '<h4 class="font-black text-slate-900 text-sm flex items-center gap-1">' + b.name + ' <i class="fa-solid fa-chevron-right text-[10px] text-amber-500"></i></h4>' +
                                 '<p class="text-xs text-slate-500"><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i>+91 ' + b.phone + '</p>' +
                             '</div>' +
-                        }</div>' +
+                        '</div>' +
                         '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ' + badgeColor + '">' + rem.text + '</span>' +
                     '</div>' +
                     '<div class="text-xs text-slate-600 space-y-1">' +
