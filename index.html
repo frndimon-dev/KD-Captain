@@ -722,7 +722,6 @@
             editTempPhotoBase64: ""
         };
 
-        // Automatic calendar-based Running Week calculation based on Onboarding Date
         function getCalendarRunningWeek(startDateStr) {
             if (!startDateStr) return 1;
             var start = new Date(startDateStr);
@@ -781,12 +780,16 @@
             return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         }
 
-        // Automatic legacy data migration to ensure previous bookings include Week 1 Advance Rent
+        // Automatic legacy data migration & Sorting
         function migrateLegacyBookings(bookingsList) {
             var changed = false;
             bookingsList.forEach(function(b) {
                 if (!b.paymentHistory) b.paymentHistory = [];
+
+                // Deduplicate and ensure Week 1 is present
+                var hasSec = b.paymentHistory.some(function(p){ return p.type.indexOf('Security') !== -1; });
                 var hasWeek1 = b.paymentHistory.some(function(p){ return p.type.indexOf('Week 1') !== -1; });
+
                 if (!hasWeek1) {
                     var rates = calculateWeeklyRate(b.slab || 1, 1);
                     b.paymentHistory.push({
@@ -795,18 +798,23 @@
                         type: "Week 1 Advance Rent",
                         date: b.startDate
                     });
-                    var r2 = calculateWeeklyRate(b.slab || 1, 2);
-                    b.dailyRate = r2.daily;
-                    b.due = r2.weekly;
                     changed = true;
-                    if (db) db.collection("kd_bookings").doc(String(b.id)).set(b).catch(function(){});
+                }
+
+                // Sort history properly: Security Deposit (0), Week 1 (1), Week 2 (2)...
+                b.paymentHistory.sort(function(a, b) {
+                    return (a.week !== undefined ? a.week : 0) - (b.week !== undefined ? b.week : 0);
+                });
+
+                if (changed && db) {
+                    db.collection("kd_bookings").doc(String(b.id)).set(b).catch(function(){});
                 }
             });
             return changed;
         }
 
         function saveLocalData() {
-            localStorage.setItem('kd_captain_final_stable_v14', JSON.stringify({
+            localStorage.setItem('kd_captain_final_stable_v15', JSON.stringify({
                 fleet: state.fleet,
                 bookings: state.bookings,
                 recycleBin: state.recycleBin
@@ -862,7 +870,7 @@
             updateIdFieldValidation();
             updateSelfSlabDetails();
 
-            var saved = localStorage.getItem('kd_captain_final_stable_v14') || localStorage.getItem('kd_captain_final_stable_v12') || localStorage.getItem('kd_captain_final_stable_v11') || localStorage.getItem('kd_captain_final_stable_v9');
+            var saved = localStorage.getItem('kd_captain_final_stable_v15') || localStorage.getItem('kd_captain_final_stable_v14') || localStorage.getItem('kd_captain_final_stable_v12') || localStorage.getItem('kd_captain_final_stable_v11') || localStorage.getItem('kd_captain_final_stable_v9');
             if (saved) {
                 try {
                     var parsed = JSON.parse(saved);
@@ -870,9 +878,8 @@
                     if (parsed.bookings) state.bookings = parsed.bookings;
                     if (parsed.recycleBin) state.recycleBin = parsed.recycleBin;
 
-                    if (migrateLegacyBookings(state.bookings)) {
-                        saveLocalData();
-                    }
+                    migrateLegacyBookings(state.bookings);
+                    saveLocalData();
                 } catch(e){}
             }
             renderAll();
@@ -1124,7 +1131,7 @@
                 slab: slab,
                 dailyRate: ratesM1.daily,
                 securityDeposit: sec,
-                due: ratesM2.weekly, // Next due is Week 2 rent
+                due: ratesM2.weekly,
                 dueDate: nextDue,
                 status: 'Active',
                 termsAccepted: true,
@@ -1176,6 +1183,13 @@
 
             var runningWk = getCalendarRunningWeek(b.startDate);
             var rates = calculateWeeklyRate(b.slab, runningWk);
+
+            // Ensure history is ordered properly: Security Deposit first, then Week 1, Week 2...
+            if (b.paymentHistory) {
+                b.paymentHistory.sort(function(a, b) {
+                    return (a.week !== undefined ? a.week : 0) - (b.week !== undefined ? b.week : 0);
+                });
+            }
 
             document.getElementById('pvPhoto').src = b.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.name)}&background=f59e0b&color=fff&size=128`;
             document.getElementById('pvName').innerText = b.name;
@@ -1272,7 +1286,12 @@
                 date: date
             });
 
-            var newIndex = b.paymentHistory.length - 1;
+            // Re-sort payment logs
+            b.paymentHistory.sort(function(a, b) {
+                return (a.week !== undefined ? a.week : 0) - (b.week !== undefined ? b.week : 0);
+            });
+
+            var newIndex = b.paymentHistory.findIndex(function(p){ return p.week === paidWeekNo; });
             var followingWeek = paidWeekNo + 1;
             var nextRates = calculateWeeklyRate(b.slab, followingWeek);
             b.dailyRate = nextRates.daily;
@@ -1727,8 +1746,8 @@
                 state.chartInstance.destroy();
             }
 
-            var cVal = collected === 0 && due === 0 ? 1 : collected;
-            var dVal = collected === 0 && due === 0 ? 0 : due;
+            var cVal = (collected === 0 && due === 0) ? 1 : collected;
+            var dVal = (collected === 0 && due === 0) ? 0 : due;
 
             state.chartInstance = new Chart(ctx, {
                 type: 'doughnut',
