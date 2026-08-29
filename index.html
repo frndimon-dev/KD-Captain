@@ -49,6 +49,9 @@
                 <button type="button" onclick="switchView('directory')" id="btnTabDir" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
                     <i class="fa-solid fa-address-book text-amber-600"></i> Customer CRM
                 </button>
+                <button type="button" onclick="switchView('bin')" id="btnTabBin" class="bg-white hover:bg-slate-100 text-rose-700 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5 border border-rose-200">
+                    <i class="fa-solid fa-trash-can"></i> Recycle Bin (<span id="binCount">0</span>)
+                </button>
                 <button type="button" onclick="copyCustomerShareLink()" class="bg-slate-900 hover:bg-slate-800 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
                     <i class="fa-solid fa-share-nodes"></i> Copy Link
                 </button>
@@ -188,7 +191,7 @@
                             <i class="fa-solid fa-camera mr-1"></i> Customer Photo (কাস্টমারের ছবি)
                         </label>
                         <div class="flex items-center gap-4">
-                            <input type="file" id="selfPhoto" accept="image/*" onchange="previewUploadedPhoto(event)" class="text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer">
+                            <input type="file" id="selfPhoto" accept="image/*" onchange="previewUploadedPhoto(event, 'formPhotoPreview')" class="text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer">
                             <img id="formPhotoPreview" src="" class="w-10 h-10 rounded-full object-cover border border-amber-300 hidden">
                         </div>
                     </div>
@@ -292,6 +295,21 @@
                     </h2>
                 </div>
                 <div id="crmListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </section>
+        </div>
+
+        <!-- ================= VIEW 4: RECYCLE BIN (30 DAYS SAFEGUARD) ================= -->
+        <div id="viewBin" style="display: none;" class="space-y-6">
+            <section class="bg-white p-5 rounded-xl border border-rose-200 shadow-sm">
+                <div class="flex justify-between items-center mb-4 border-b border-rose-100 pb-3">
+                    <div>
+                        <h2 class="text-sm font-black text-rose-800 flex items-center gap-2">
+                            <i class="fa-solid fa-trash-can"></i> Recycle Bin (Deleted Profiles)
+                        </h2>
+                        <p class="text-xs text-slate-500">ভুলবশত ডিলিট হয়ে যাওয়া কাস্টমার ৩০ দিন পর্যন্ত এখানে সুরক্ষিত থাকবে।</p>
+                    </div>
+                </div>
+                <div id="binListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </section>
         </div>
 
@@ -414,37 +432,62 @@
         </div>
     </div>
 
-    <!-- Modal 5: Edit Customer Details -->
+    <!-- Modal 5: Edit Customer Details (With Photo Update & Full Fields) -->
     <div id="editCustomerModal" style="display: none;" class="fixed inset-0 bg-slate-950/60 z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
             <div class="flex justify-between items-center border-b pb-2">
-                <h3 class="font-black text-slate-900 text-sm">Edit Customer Details</h3>
+                <h3 class="font-black text-slate-900 text-sm">Edit Full Customer Details</h3>
                 <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-700 text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="editCustomerForm" onsubmit="saveCustomerEdit(event)" class="space-y-3 text-xs">
                 <input type="hidden" id="editCustId">
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">Customer Full Name</label>
-                    <input type="text" id="editCustName" required class="w-full border rounded-lg p-2 bg-slate-50">
+                
+                <!-- Edit Photo -->
+                <div class="bg-slate-50 p-2.5 rounded-xl border flex items-center gap-3">
+                    <img id="editPhotoPreview" src="" class="w-12 h-12 rounded-full object-cover border border-amber-400">
+                    <div>
+                        <label class="font-bold text-slate-800 block mb-1">Update Customer Photo</label>
+                        <input type="file" id="editPhotoInput" accept="image/*" onchange="previewUploadedPhoto(event, 'editPhotoPreview')" class="text-[11px] text-slate-600">
+                    </div>
                 </div>
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">WhatsApp Number</label>
-                    <input type="tel" id="editCustPhone" required maxlength="10" pattern="[0-9]{10}" class="w-full border rounded-lg p-2 bg-slate-50">
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">Customer Name</label>
+                        <input type="text" id="editCustName" required class="w-full border rounded-lg p-2 bg-slate-50 font-medium">
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">WhatsApp Number</label>
+                        <input type="tel" id="editCustPhone" required maxlength="10" pattern="[0-9]{10}" class="w-full border rounded-lg p-2 bg-slate-50 font-bold">
+                    </div>
                 </div>
+
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="font-bold text-slate-700 block mb-1">ID Type</label>
-                        <input type="text" id="editCustIdType" required class="w-full border rounded-lg p-2 bg-slate-50">
+                        <select id="editCustIdType" class="w-full border rounded-lg p-2 bg-slate-50">
+                            <option value="Aadhaar">Aadhaar Card</option>
+                            <option value="PAN">PAN Card</option>
+                            <option value="Voter">Voter ID</option>
+                        </select>
                     </div>
                     <div>
                         <label class="font-bold text-slate-700 block mb-1">ID Number</label>
-                        <input type="text" id="editCustIdNo" required class="w-full border rounded-lg p-2 bg-slate-50">
+                        <input type="text" id="editCustIdNo" required class="w-full border rounded-lg p-2 bg-slate-50 font-medium">
                     </div>
                 </div>
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">Assigned Vehicle</label>
-                    <select id="editCustVeh" class="w-full border rounded-lg p-2 bg-slate-50 font-semibold"></select>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">Assigned Vehicle</label>
+                        <select id="editCustVeh" class="w-full border rounded-lg p-2 bg-slate-50 font-semibold"></select>
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 block mb-1">Onboarding Date</label>
+                        <input type="date" id="editCustStartDate" class="w-full border rounded-lg p-2 bg-slate-50">
+                    </div>
                 </div>
+
                 <div>
                     <label class="font-bold text-slate-700 block mb-1">Permanent Address</label>
                     <input type="text" id="editCustPermAddr" class="w-full border rounded-lg p-2 bg-slate-50">
@@ -453,6 +496,7 @@
                     <label class="font-bold text-slate-700 block mb-1">Present Address</label>
                     <input type="text" id="editCustCurrAddr" class="w-full border rounded-lg p-2 bg-slate-50">
                 </div>
+
                 <div class="grid grid-cols-3 gap-2">
                     <div>
                         <label class="font-bold text-slate-700 block mb-1">Rental Slab</label>
@@ -468,22 +512,24 @@
                     </div>
                     <div>
                         <label class="font-bold text-slate-700 block mb-1">Status</label>
-                        <select id="editCustStatus" class="w-full border rounded-lg p-2 bg-slate-50">
+                        <select id="editCustStatus" class="w-full border rounded-lg p-2 bg-slate-50 font-bold">
                             <option value="Active">Active</option>
                             <option value="Completed">Completed</option>
                         </select>
                     </div>
                 </div>
+
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="font-bold text-slate-700 block mb-1">Current Due (₹)</label>
-                        <input type="number" id="editCustDue" required class="w-full border rounded-lg p-2 bg-slate-50">
+                        <input type="number" id="editCustDue" required class="w-full border rounded-lg p-2 bg-slate-50 font-bold text-rose-700">
                     </div>
                     <div>
                         <label class="font-bold text-slate-700 block mb-1">Next Due Date</label>
-                        <input type="date" id="editCustDueDate" required class="w-full border rounded-lg p-2 bg-slate-50">
+                        <input type="date" id="editCustDueDate" required class="w-full border rounded-lg p-2 bg-slate-50 font-medium">
                     </div>
                 </div>
+
                 <div class="flex justify-end gap-2 pt-3 border-t">
                     <button type="button" onclick="closeEditModal()" class="px-3 py-1.5 rounded-lg bg-slate-200 text-slate-700 font-bold">Cancel</button>
                     <button type="submit" class="px-4 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-black">Save Changes</button>
@@ -541,7 +587,6 @@
                 </div>
             </div>
 
-            <!-- Action buttons -->
             <div class="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2 border-t">
                 <a id="recWaBtn" target="_blank" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm">
                     <i class="fa-brands fa-whatsapp text-sm"></i> Send Bill to Customer WhatsApp
@@ -582,8 +627,10 @@
                 { no: "WB-03-EF9012", status: "Garage" }
             ],
             bookings: [],
+            recycleBin: [],
             activeReceiptCustomer: null,
-            tempPhotoBase64: ""
+            tempPhotoBase64: "",
+            editTempPhotoBase64: ""
         };
 
         function calculateWeeklyRate(slab, weekNumber) {
@@ -634,19 +681,30 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('kd_captain_final_stable_v5', JSON.stringify({
+            localStorage.setItem('kd_captain_final_stable_v6', JSON.stringify({
                 fleet: state.fleet,
-                bookings: state.bookings
+                bookings: state.bookings,
+                recycleBin: state.recycleBin
             }));
+            updateBinBadge();
         }
 
-        function previewUploadedPhoto(event) {
+        function updateBinBadge() {
+            var el = document.getElementById('binCount');
+            if (el) el.innerText = state.recycleBin.length;
+        }
+
+        function previewUploadedPhoto(event, previewElementId) {
             var file = event.target.files[0];
             if (file) {
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    state.tempPhotoBase64 = e.target.result;
-                    var prev = document.getElementById('formPhotoPreview');
+                    if (previewElementId === 'formPhotoPreview') {
+                        state.tempPhotoBase64 = e.target.result;
+                    } else {
+                        state.editTempPhotoBase64 = e.target.result;
+                    }
+                    var prev = document.getElementById(previewElementId);
                     prev.src = e.target.result;
                     prev.classList.remove('hidden');
                 };
@@ -679,16 +737,18 @@
             updateIdFieldValidation();
             updateSelfSlabDetails();
 
-            var saved = localStorage.getItem('kd_captain_final_stable_v5');
+            var saved = localStorage.getItem('kd_captain_final_stable_v6');
             if (saved) {
                 try {
                     var parsed = JSON.parse(saved);
                     if (parsed.fleet && parsed.fleet.length > 0) state.fleet = parsed.fleet;
                     if (parsed.bookings) state.bookings = parsed.bookings;
+                    if (parsed.recycleBin) state.recycleBin = parsed.recycleBin;
                 } catch(e){}
             }
             renderAll();
             populateVehicleSelect();
+            updateBinBadge();
 
             if (db) {
                 db.collection("kd_fleet").onSnapshot(function(snapshot) {
@@ -718,15 +778,18 @@
             document.getElementById('viewAdmin').style.display = 'none';
             document.getElementById('viewCustomerForm').style.display = 'none';
             document.getElementById('viewDirectory').style.display = 'none';
+            document.getElementById('viewBin').style.display = 'none';
 
             var btnAdmin = document.getElementById('btnTabAdmin');
             var btnCust = document.getElementById('btnTabCust');
             var btnDir = document.getElementById('btnTabDir');
+            var btnBin = document.getElementById('btnTabBin');
 
             var inactiveClass = "bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
             btnAdmin.className = inactiveClass;
             btnCust.className = inactiveClass;
             btnDir.className = inactiveClass;
+            btnBin.className = "bg-white hover:bg-slate-100 text-rose-700 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5 border border-rose-200";
 
             if (view === 'admin') {
                 document.getElementById('viewAdmin').style.display = 'block';
@@ -740,6 +803,10 @@
                 document.getElementById('viewDirectory').style.display = 'block';
                 btnDir.className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
                 renderCRM();
+            } else if (view === 'bin') {
+                document.getElementById('viewBin').style.display = 'block';
+                btnBin.className = "bg-rose-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+                renderBin();
             }
         }
 
@@ -1056,7 +1123,6 @@
                 date: date
             });
 
-            // Advance to next week & calculate rates according to slab rules
             b.currentWeek += 1;
             var nextRates = calculateWeeklyRate(b.slab, b.currentWeek);
             b.dailyRate = nextRates.daily;
@@ -1068,8 +1134,6 @@
 
             closePaymentModal();
             renderAll();
-            
-            // Automatically open receipt and prepare WhatsApp bill dispatcher
             openReceiptModal(b.id, `Week ${paidWeek} Payment Received: ₹${amt}`);
         }
 
@@ -1139,11 +1203,13 @@
             var b = state.bookings.find(function(item) { return item.id == id; });
             if (!b) return;
 
+            state.editTempPhotoBase64 = "";
             document.getElementById('editCustId').value = b.id;
             document.getElementById('editCustName').value = b.name;
             document.getElementById('editCustPhone').value = b.phone;
             document.getElementById('editCustIdType').value = b.idType;
             document.getElementById('editCustIdNo').value = b.idNo;
+            document.getElementById('editCustStartDate').value = b.startDate || '';
             document.getElementById('editCustPermAddr').value = b.permAddr || '';
             document.getElementById('editCustCurrAddr').value = b.currAddr || '';
             document.getElementById('editCustSlab').value = b.slab || 1;
@@ -1151,6 +1217,9 @@
             document.getElementById('editCustDue').value = b.due || 0;
             document.getElementById('editCustDueDate').value = b.dueDate || '';
             document.getElementById('editCustStatus').value = b.status || 'Active';
+
+            var editImg = b.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.name)}&background=f59e0b&color=fff&size=128`;
+            document.getElementById('editPhotoPreview').src = editImg;
 
             var vehSelect = document.getElementById('editCustVeh');
             vehSelect.innerHTML = '';
@@ -1180,6 +1249,7 @@
             b.phone = document.getElementById('editCustPhone').value;
             b.idType = document.getElementById('editCustIdType').value;
             b.idNo = document.getElementById('editCustIdNo').value;
+            b.startDate = document.getElementById('editCustStartDate').value;
             b.permAddr = document.getElementById('editCustPermAddr').value;
             b.currAddr = document.getElementById('editCustCurrAddr').value;
             b.slab = parseInt(document.getElementById('editCustSlab').value);
@@ -1188,6 +1258,10 @@
             b.dueDate = document.getElementById('editCustDueDate').value;
             b.status = document.getElementById('editCustStatus').value;
             b.veh = newVeh;
+
+            if (state.editTempPhotoBase64) {
+                b.photo = state.editTempPhotoBase64;
+            }
 
             var rateInfo = calculateWeeklyRate(b.slab, b.currentWeek);
             b.dailyRate = rateInfo.daily;
@@ -1214,21 +1288,99 @@
             alert('Customer updated successfully!');
         }
 
+        // Move to Recycle Bin (30-day safeguard)
         function deleteBooking(id) {
-            if (confirm('Are you sure you want to delete this customer record?')) {
-                var b = state.bookings.find(function(item) { return item.id == id; });
-                if (b) {
-                    var v = state.fleet.find(function(v) { return v.no === b.veh; });
+            if (confirm('Move customer profile to Recycle Bin? (You can restore it anytime within 30 days)')) {
+                var bIndex = state.bookings.findIndex(function(item) { return item.id == id; });
+                if (bIndex !== -1) {
+                    var b = state.bookings[bIndex];
+                    b.deletedAt = Date.now();
+                    state.recycleBin.push(b);
+                    state.bookings.splice(bIndex, 1);
+
+                    var v = state.fleet.find(function(item) { return item.no === b.veh; });
                     if (v) { 
                         v.status = 'Garage'; 
                         if (db) db.collection("kd_fleet").doc(v.no).set(v).catch(function(){});
                     }
+
+                    if (db) {
+                        db.collection("kd_bookings").doc(String(id)).delete().catch(function(){});
+                    }
+                    saveLocalData();
+                    renderAll();
+                    alert('Profile moved to Recycle Bin safely.');
                 }
-                state.bookings = state.bookings.filter(function(item) { return item.id != id; });
-                saveLocalData();
-                if (db) db.collection("kd_bookings").doc(String(id)).delete().catch(function(){});
-                renderAll();
             }
+        }
+
+        function restoreFromBin(id) {
+            var bIndex = state.recycleBin.findIndex(function(item) { return item.id == id; });
+            if (bIndex !== -1) {
+                var b = state.recycleBin[bIndex];
+                delete b.deletedAt;
+                state.bookings.push(b);
+                state.recycleBin.splice(bIndex, 1);
+
+                var v = state.fleet.find(function(item) { return item.no === b.veh; });
+                if (v) { 
+                    v.status = 'Active'; 
+                    if (db) db.collection("kd_fleet").doc(v.no).set(v).catch(function(){});
+                }
+
+                if (db) db.collection("kd_bookings").doc(String(b.id)).set(b).catch(function(){});
+
+                saveLocalData();
+                renderAll();
+                renderBin();
+                alert('Customer portfolio restored successfully!');
+            }
+        }
+
+        function permanentDeleteFromBin(id) {
+            if (confirm('Are you sure you want to PERMANENTLY delete this record? This action cannot be undone.')) {
+                state.recycleBin = state.recycleBin.filter(function(item) { return item.id != id; });
+                saveLocalData();
+                renderBin();
+            }
+        }
+
+        function renderBin() {
+            var container = document.getElementById('binListContainer');
+            if (state.recycleBin.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 col-span-3 text-center py-6">Recycle bin is completely empty.</p>';
+                return;
+            }
+
+            var now = Date.now();
+            container.innerHTML = state.recycleBin.map(function(b) {
+                var daysLeft = 30 - Math.floor((now - (b.deletedAt || now)) / (1000 * 60 * 60 * 24));
+                if (daysLeft < 0) daysLeft = 0;
+                var userImg = b.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.name)}&background=f59e0b&color=fff&size=128`;
+
+                return `<div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm space-y-3">
+                    <div class="flex justify-between items-start border-b pb-2">
+                        <div class="flex items-center gap-2.5">
+                            <img src="${userImg}" class="w-10 h-10 rounded-full object-cover border border-slate-300">
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-sm">${b.name}</h4>
+                                <p class="text-xs text-slate-500">+91 ${b.phone} &bull; ${b.veh}</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded-full">${daysLeft} days left</span>
+                    </div>
+                    <div class="text-xs text-slate-600 bg-slate-50 p-2 rounded-lg">
+                        <p><strong>Tier:</strong> Slab ${b.slab} (Week ${b.currentWeek})</p>
+                        <p><strong>Due:</strong> ₹${b.due} on ${b.dueDate}</p>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t text-xs">
+                        <button onclick="permanentDeleteFromBin(${b.id})" class="text-rose-600 hover:text-rose-800 font-bold">Delete Forever</button>
+                        <button onclick="restoreFromBin(${b.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1 rounded-lg shadow-sm flex items-center gap-1">
+                            <i class="fa-solid fa-rotate-left"></i> Restore Profile
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function renderAll() {
@@ -1238,6 +1390,7 @@
             renderAlerts();
             renderChart();
             renderCRM();
+            updateBinBadge();
         }
 
         function renderMetrics() {
@@ -1326,7 +1479,7 @@
                         '<button onclick="openPaymentModal(' + b.id + ')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded text-[11px] font-bold shadow-sm flex items-center gap-1"><i class="fa-solid fa-plus"></i> Pay</button>' +
                         '<button onclick="openReceiptModal(' + b.id + ')" class="bg-slate-900 hover:bg-slate-800 text-amber-400 p-1.5 rounded text-xs" title="Print Slip"><i class="fa-solid fa-receipt"></i></button>' +
                         '<button onclick="openEditModal(' + b.id + ')" class="bg-slate-200 hover:bg-slate-300 text-slate-800 p-1.5 rounded text-xs"><i class="fa-solid fa-pen-to-square"></i></button>' +
-                        '<button onclick="deleteBooking(' + b.id + ')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 p-1.5 rounded text-xs"><i class="fa-solid fa-trash"></i></button>' +
+                        '<button onclick="deleteBooking(' + b.id + ')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 p-1.5 rounded text-xs" title="Move to Bin"><i class="fa-solid fa-trash"></i></button>' +
                         '<a href="https://wa.me/91' + b.phone + '?text=' + encodeURIComponent(waMsg) + '" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded text-xs"><i class="fa-brands fa-whatsapp"></i></a>' +
                     '</td>' +
                 '</tr>';
@@ -1454,7 +1607,7 @@
                             '<button onclick="openReceiptModal(' + b.id + ')" class="text-slate-700 hover:text-amber-600 p-1 text-xs" title="Receipt"><i class="fa-solid fa-receipt"></i></button>' +
                             '<button onclick="openPaymentModal(' + b.id + ')" class="text-emerald-700 hover:text-emerald-800 font-bold p-1 text-xs">+ Pay</button>' +
                             '<button onclick="openEditModal(' + b.id + ')" class="text-amber-600 hover:text-amber-800 p-1 text-xs"><i class="fa-solid fa-pen-to-square"></i></button>' +
-                            '<button onclick="deleteBooking(' + b.id + ')" class="text-rose-500 hover:text-rose-700 p-1 text-xs"><i class="fa-solid fa-trash"></i></button>' +
+                            '<button onclick="deleteBooking(' + b.id + ')" class="text-rose-500 hover:text-rose-700 p-1 text-xs" title="Move to Bin"><i class="fa-solid fa-trash"></i></button>' +
                         '</div>' +
                     '</div>' +
                 '</div>';
