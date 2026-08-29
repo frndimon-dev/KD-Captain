@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KD Captain - Realtime Cloud Admin Portal</title>
+    <title>KD Captain - Fleet & Customer Portal</title>
     <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,30 +11,36 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen pb-16 font-sans">
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-16 font-sans">
 
-    <!-- Header -->
-    <header class="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-40">
+    <!-- Header (Yellow & White Theme) -->
+    <header class="bg-amber-500 border-b border-amber-600 p-4 sticky top-0 z-40 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
-            <div>
-                <h1 class="text-xl font-black tracking-wide text-amber-400 flex items-center gap-2">
-                    <i class="fa-solid fa-car-side"></i> KD CAPTAIN ADMIN
-                </h1>
-                <p class="text-[11px] text-slate-400">4-Partner Realtime Cloud Control & Portfolio CRM</p>
+            <div class="flex items-center gap-3">
+                <div class="bg-white text-amber-600 p-2 rounded-xl shadow-sm text-xl">
+                    <i class="fa-solid fa-car-side"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-wide text-slate-950">KD CAPTAIN</h1>
+                    <p class="text-[11px] text-slate-900 font-semibold">Realtime Fleet Management & KYC Engine</p>
+                </div>
             </div>
+            
             <div class="flex flex-wrap items-center gap-2">
-                <button onclick="switchTab('dashboard')" id="btnTabDash" class="bg-amber-500 text-slate-950 px-3 py-1.5 rounded-lg text-xs font-bold transition">Dashboard</button>
-                <button onclick="switchTab('customers')" id="btnTabCust" class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-users"></i> Customer CRM
+                <button onclick="switchView('admin')" id="btnTabAdmin" class="bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition">
+                    <i class="fa-solid fa-gauge-high mr-1 text-amber-400"></i> Admin Panel
                 </button>
-                <button onclick="exportToCSV()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-excel"></i> Export Excel
+                <button onclick="switchView('customer')" id="btnTabCust" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-pen text-amber-600"></i> Customer Self-Form
                 </button>
-                <button onclick="loadFromCloud()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition">
-                    <i id="syncIcon" class="fa-solid fa-rotate"></i>
+                <button onclick="switchView('directory')" id="btnTabDir" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-address-book text-amber-600"></i> Customer CRM
+                </button>
+                <button onclick="exportToCSV()" class="bg-white hover:bg-slate-100 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1">
+                    <i class="fa-solid fa-file-excel"></i> Export
                 </button>
             </div>
         </div>
@@ -44,63 +50,63 @@
 
         <!-- Top Metrics Cards -->
         <section class="grid grid-cols-2 md:grid-cols-5 gap-3">
-            <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 shadow-md">
-                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Total Fleet</p>
-                <h3 class="text-2xl font-black text-white mt-1" id="statTotal">0</h3>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <p class="text-[11px] text-slate-500 uppercase font-bold tracking-wider">Total Fleet</p>
+                <h3 class="text-2xl font-black text-slate-900 mt-1" id="statTotal">0</h3>
             </div>
-            <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 shadow-md">
-                <p class="text-[10px] text-emerald-400 uppercase font-bold tracking-wider">On Rent (Active)</p>
-                <h3 class="text-2xl font-black text-emerald-400 mt-1" id="statActive">0</h3>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <p class="text-[11px] text-emerald-600 uppercase font-bold tracking-wider">On Rent (Active)</p>
+                <h3 class="text-2xl font-black text-emerald-600 mt-1" id="statActive">0</h3>
             </div>
-            <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 shadow-md">
-                <p class="text-[10px] text-sky-400 uppercase font-bold tracking-wider">In Garage (Available)</p>
-                <h3 class="text-2xl font-black text-sky-400 mt-1" id="statGarage">0</h3>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <p class="text-[11px] text-sky-600 uppercase font-bold tracking-wider">In Garage</p>
+                <h3 class="text-2xl font-black text-sky-600 mt-1" id="statGarage">0</h3>
             </div>
-            <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 shadow-md">
-                <p class="text-[10px] text-emerald-300 uppercase font-bold tracking-wider">Total Collected</p>
-                <h3 class="text-2xl font-black text-emerald-300 mt-1" id="statCollected">&#8377;0</h3>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <p class="text-[11px] text-slate-600 uppercase font-bold tracking-wider">Total Collected</p>
+                <h3 class="text-2xl font-black text-slate-900 mt-1" id="statCollected">&#8377;0</h3>
             </div>
-            <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 shadow-md col-span-2 md:col-span-1">
-                <p class="text-[10px] text-rose-400 uppercase font-bold tracking-wider">Total Due Pending</p>
-                <h3 class="text-2xl font-black text-rose-400 mt-1" id="statPendingRent">&#8377;0</h3>
+            <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 shadow-sm col-span-2 md:col-span-1">
+                <p class="text-[11px] text-rose-600 uppercase font-bold tracking-wider">Total Due Pending</p>
+                <h3 class="text-2xl font-black text-rose-600 mt-1" id="statPendingRent">&#8377;0</h3>
             </div>
         </section>
 
-        <!-- TAB 1: DASHBOARD VIEW -->
-        <div id="viewDashboard" class="space-y-6">
+        <!-- ================= VIEW 1: ADMIN DASHBOARD ================= -->
+        <div id="viewAdmin" class="space-y-6">
 
             <!-- Chart & Overdue Alerts -->
             <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 shadow-md flex flex-col items-center justify-center">
-                    <h4 class="text-xs font-bold text-slate-300 mb-2 uppercase tracking-wide">Collection vs Due Breakdown</h4>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center">
+                    <h4 class="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wide">Collection vs Due Breakdown</h4>
                     <div class="w-44 h-44">
                         <canvas id="paymentPieChart"></canvas>
                     </div>
                 </div>
 
-                <div class="md:col-span-2 bg-rose-950/20 border border-rose-500/30 rounded-xl p-4 shadow-lg flex flex-col justify-between">
+                <div class="md:col-span-2 bg-rose-50 border border-rose-200 rounded-xl p-4 shadow-sm flex flex-col justify-between">
                     <div>
-                        <h3 class="text-rose-400 font-bold text-xs uppercase tracking-wide flex items-center gap-2 mb-3">
+                        <h3 class="text-rose-700 font-bold text-xs uppercase tracking-wide flex items-center gap-2 mb-3">
                             <i class="fa-solid fa-bell animate-bounce text-sm"></i> Payment Due & Overdue Alerts
                         </h3>
                         <div id="dueAlertList" class="space-y-2 max-h-40 overflow-y-auto custom-scroll pr-1"></div>
                     </div>
-                    <p class="text-[10px] text-slate-500 mt-2">* WhatsApp Reminder বাটনে চাপ দিলে গ্রাহকের কাছে অটোমেটিক ডিউ মেসেজ চলে যাবে।</p>
+                    <p class="text-[11px] text-slate-500 mt-2">* WhatsApp Reminder বাটনে ক্লিক করে গ্রাহককে তাৎক্ষণিক বকেয়া নোটিফিকেশন পাঠান।</p>
                 </div>
             </section>
 
             <!-- Master Fleet Inventory Manager -->
-            <section class="bg-slate-900/90 p-5 rounded-xl border border-slate-800 shadow-lg">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 border-b border-slate-800 pb-3">
+            <section class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 border-b border-slate-100 pb-3">
                     <div>
-                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-warehouse text-amber-400"></i> Master Fleet Inventory (গাড়ি কন্ট্রোল)
+                        <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-warehouse text-amber-500"></i> Master Fleet Inventory (গাড়ি তালিকা ও স্ট্যাটাস)
                         </h2>
-                        <p class="text-[11px] text-slate-400">নতুন গাড়ি যোগ করুন অথবা এক ক্লিকে Active / Garage স্ট্যাটাস পরিবর্তন করুন</p>
+                        <p class="text-xs text-slate-500">নতুন গাড়ি যুক্ত করুন, গাড়ির নম্বর এডিট করুন অথবা স্ট্যাটাস সুইচ করুন</p>
                     </div>
                     <form id="addVehicleForm" class="flex gap-2 w-full sm:w-auto">
-                        <input type="text" id="newVehNo" required placeholder="Vehicle No (WB-01-XXXX)" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white uppercase focus:outline-none focus:border-amber-400 w-full sm:w-52">
-                        <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs whitespace-nowrap">
+                        <input type="text" id="newVehNo" required placeholder="Vehicle No (e.g. WB-01-AB1234)" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 uppercase focus:outline-none focus:border-amber-500 w-full sm:w-56 font-semibold">
+                        <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs whitespace-nowrap shadow-sm">
                             <i class="fa-solid fa-plus"></i> Add Vehicle
                         </button>
                     </form>
@@ -108,223 +114,271 @@
                 <div id="fleetInventoryContainer" class="flex flex-wrap gap-2.5 max-h-36 overflow-y-auto custom-scroll p-1"></div>
             </section>
 
-            <!-- Booking Entry Form & Bookings Table -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Form -->
-                <div class="bg-slate-900/90 p-5 rounded-xl border border-slate-800 shadow-lg h-fit">
-                    <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-800 pb-3">
-                        <i class="fa-solid fa-user-plus text-amber-400"></i> New Customer Booking & KYC
+            <!-- Admin Bookings & Review Table -->
+            <section class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 border-b border-slate-100 pb-3">
+                    <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-amber-500"></i> Active Bookings & Financial Records
                     </h2>
-                    <form id="bookingForm" class="space-y-3">
-                        <div>
-                            <label class="text-[10px] text-slate-400 uppercase font-semibold block mb-1">Customer Full Name *</label>
-                            <input type="text" id="custName" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-400" placeholder="e.g. Rahul Sharma">
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="text-[10px] text-slate-400 uppercase font-semibold block mb-1">Phone Number *</label>
-                                <input type="tel" id="custPhone" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-400" placeholder="98XXXXXXXX">
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-slate-400 uppercase font-semibold block mb-1">Aadhaar Card No. *</label>
-                                <input type="text" id="custAadhaar" required maxlength="12" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-400" placeholder="12 Digit Aadhaar">
-                            </div>
-                        </div>
-
-                        <!-- Current & Permanent Address -->
-                        <div>
-                            <label class="text-[10px] text-slate-400 uppercase font-semibold block mb-1">Current Address (বর্তমান ঠিকানা) *</label>
-                            <input type="text" id="currAddress" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-400" placeholder="Flat, Area, City">
-                        </div>
-
-                        <div>
-                            <div class="flex justify-between items-center mb-1">
-                                <label class="text-[10px] text-slate-400 uppercase font-semibold">Permanent Address (স্থায়ী ঠিকানা) *</label>
-                                <label class="text-[10px] text-amber-400 cursor-pointer flex items-center gap-1 font-medium">
-                                    <input type="checkbox" id="sameAddressCheck" onchange="copyAddress()" class="rounded bg-slate-800 border-slate-700 text-amber-500">
-                                    Same as Current
-                                </label>
-                            </div>
-                            <input type="text" id="permAddress" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-400" placeholder="Permanent address details">
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="text-[10px] text-slate-400 uppercase font-semibold block mb-1">Select Vehicle *</label>
-                                <select id="vehicleNoSelect" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white uppercase focus:outline-none focus:border-amber-400">
-                                    <option value="">-- Choose Vehicle --</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-slate-400 uppercase font-semibold block mb-1">Status *</label>
-                                <select id="vehicleStatus" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-400">
-                                    <option value="Active">On Rent (Active)</option>
-                                    <option value="Garage">In Garage (Available)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Rental Slab -->
-                        <div class="bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 space-y-2">
-                            <label class="text-[10px] text-amber-400 uppercase font-bold block">Rental Plan / Slab *</label>
-                            <select id="slabSelect" onchange="calculateSlabRates()" class="w-full bg-slate-900 border border-amber-500/40 rounded-lg p-2 text-xs text-amber-300 font-semibold focus:outline-none focus:border-amber-400">
-                                <option value="1">Slab 1 (Sec: ₹1500 | Daily: ₹200 | Weekly: ₹1400)</option>
-                                <option value="2">Slab 2 (Sec: ₹700 | Daily: ₹220 | Weekly: ₹1540)</option>
-                                <option value="3">Slab 3 (Sec: ₹500 | Daily: ₹230 | Weekly: ₹1610)</option>
-                            </select>
-                            <div class="grid grid-cols-3 gap-1.5 text-[10px] text-slate-400 pt-1">
-                                <div>Security: <span id="lblSec" class="text-white font-bold">&#8377;1500</span></div>
-                                <div>Daily: <span id="lblDaily" class="text-white font-bold">&#8377;200</span></div>
-                                <div>Weekly: <span id="lblWeekly" class="text-white font-bold">&#8377;1400</span></div>
-                            </div>
-                        </div>
-
-                        <!-- Financials -->
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="text-[10px] text-slate-400 uppercase font-semibold block mb-1">Paid Amount (&#8377;) *</label>
-                                <input type="number" id="rentPaid" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-400" placeholder="&#8377;">
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-slate-400 uppercase font-semibold block mb-1">Payment Mode *</label>
-                                <select id="paymentMode" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-400">
-                                    <option value="UPI">UPI / Online</option>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Bank Transfer">Bank Transfer</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="text-[10px] text-amber-300 uppercase font-semibold block mb-1">Next Due Date *</label>
-                                <input type="date" id="nextDueDate" required class="w-full bg-slate-950 border border-amber-500/40 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-400">
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-slate-400 uppercase font-semibold block mb-1">Customer Photo</label>
-                                <input type="file" id="custPhoto" accept="image/*" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:bg-slate-800 file:text-amber-400 hover:file:bg-slate-700">
-                            </div>
-                        </div>
-
-                        <button type="submit" id="submitBtn" class="w-full mt-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-lg text-xs tracking-wide uppercase transition shadow-md flex justify-center items-center gap-2">
-                            <span>Save Rental Record</span>
-                        </button>
-                    </form>
+                    <input type="text" id="searchInput" placeholder="Search name, vehicle or phone..." class="w-full sm:w-64 bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-amber-500">
                 </div>
 
-                <!-- Table -->
-                <div class="lg:col-span-2 bg-slate-900/90 p-5 rounded-xl border border-slate-800 shadow-lg">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 border-b border-slate-800 pb-3">
-                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-list-ul text-amber-400"></i> Active Fleet Bookings
-                        </h2>
-                        <input type="text" id="searchInput" placeholder="Search name, vehicle or phone..." class="w-full sm:w-56 bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-400">
-                    </div>
-
-                    <div class="overflow-x-auto custom-scroll">
-                        <table class="w-full text-left text-xs text-slate-300">
-                            <thead class="bg-slate-950 text-slate-400 uppercase text-[9px] font-bold">
-                                <tr>
-                                    <th class="p-2.5">Customer & Vehicle</th>
-                                    <th class="p-2.5">Slab & Daily</th>
-                                    <th class="p-2.5">Financials</th>
-                                    <th class="p-2.5">Next Due</th>
-                                    <th class="p-2.5">Status</th>
-                                    <th class="p-2.5 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="fleetTable" class="divide-y divide-slate-800">
-                                <tr>
-                                    <td colspan="6" class="p-6 text-center text-slate-500">Connecting and syncing data...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="overflow-x-auto custom-scroll">
+                    <table class="w-full text-left text-xs text-slate-700">
+                        <thead class="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold">
+                            <tr>
+                                <th class="p-3">Customer & Vehicle</th>
+                                <th class="p-3">Slab Details</th>
+                                <th class="p-3">Paid / Next Due</th>
+                                <th class="p-3">Next Due Date</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fleetTable" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="6" class="p-6 text-center text-slate-400">No records found.</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
+            </section>
 
         </div>
 
-        <!-- TAB 2: CUSTOMER DIRECTORY & CRM -->
-        <div id="viewCustomers" class="hidden space-y-4">
-            <div class="bg-slate-900/90 p-5 rounded-xl border border-slate-800 shadow-lg">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4 mb-4">
-                    <div>
-                        <h2 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-id-card-clip text-amber-400"></i> Customer Directory & KYC Hub
-                        </h2>
-                        <p class="text-xs text-slate-400">সকল গ্রাহকের ছবি, আধার কার্ড, ঠিকানা ও বুকিং হিস্ট্রি</p>
-                    </div>
-                    <input type="text" id="custSearchInput" oninput="filterCustomerDirectory()" placeholder="Search name, phone or vehicle..." class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 w-full sm:w-64">
+        <!-- ================= VIEW 2: CUSTOMER SELF-ONBOARDING & CONSENT ================= -->
+        <div id="viewCustomerForm" class="hidden max-w-3xl mx-auto space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-lg space-y-6">
+                
+                <div class="border-b border-slate-100 pb-4 text-center">
+                    <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">KYC & Consent Registration</span>
+                    <h2 class="text-xl font-black text-slate-900 mt-2">KD Captain - Rental Registration Form</h2>
+                    <p class="text-xs text-slate-500 mt-1">অনুগ্রহ করে নিচের সমস্ত তথ্য সঠিকভাবে পূরণ করে কনসেন্ট ফর্মে সম্মতি প্রদান করুন।</p>
                 </div>
 
-                <div id="customerGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                <form id="customerSelfForm" class="space-y-4">
+                    
+                    <!-- Basic Info -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">গ্রাহকের পুরো নাম (Customer Name) *</label>
+                            <input type="text" id="selfName" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="e.g. Rahul Sharma">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">ফোন নম্বর (Phone Number) *</label>
+                            <input type="tel" id="selfPhone" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="98XXXXXXXX">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">আধার কার্ড নম্বর (Aadhaar Number) *</label>
+                            <input type="text" id="selfAadhaar" required maxlength="12" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="12 Digit Aadhaar">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-700 block mb-1">গাড়ি নেওয়ার তারিখ (Booking Start Date) *</label>
+                            <input type="date" id="selfStartDate" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
+                        </div>
+                    </div>
+
+                    <!-- Addresses -->
+                    <div>
+                        <label class="text-xs font-bold text-slate-700 block mb-1">বর্তমান ঠিকানা (Current Address) *</label>
+                        <input type="text" id="selfCurrAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="ফ্ল্যাট, রাস্তা, এলাকা, পিনকোড">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="text-xs font-bold text-slate-700">স্থায়ী ঠিকানা (Permanent Address) *</label>
+                            <label class="text-xs text-amber-600 font-bold cursor-pointer flex items-center gap-1">
+                                <input type="checkbox" id="selfSameAddr" onchange="copySelfAddress()" class="rounded text-amber-500 focus:ring-0"> Same as Current
+                            </label>
+                        </div>
+                        <input type="text" id="selfPermAddr" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500" placeholder="স্থায়ী ঠিকানার বিবরণ">
+                    </div>
+
+                    <!-- Slab Selection -->
+                    <div class="bg-amber-50/70 p-4 rounded-xl border border-amber-200 space-y-3">
+                        <label class="text-xs font-black text-amber-900 uppercase block">ভাড়ার স্ল্যাব নির্বাচন করুন (Select Rental Slab) *</label>
+                        <select id="selfSlab" onchange="updateSelfSlabDetails()" class="w-full bg-white border border-amber-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500">
+                            <option value="1">Slab 1 (Security Deposit: ₹1500 | Daily: ₹200 | Weekly: ₹1400)</option>
+                            <option value="2">Slab 2 (Security Deposit: ₹700 | Daily: ₹220 | Weekly: ₹1540)</option>
+                            <option value="3">Slab 3 (Security Deposit: ₹500 | Daily: ₹230 | Weekly: ₹1610)</option>
+                        </select>
+                        <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold bg-white p-2.5 rounded-lg border border-amber-200">
+                            <div class="text-slate-600">সিকিউরিটি: <span id="selfSec" class="text-amber-700 font-black">&#8377;1500</span></div>
+                            <div class="text-slate-600">দৈনিক ভাড়া: <span id="selfDaily" class="text-amber-700 font-black">&#8377;200</span></div>
+                            <div class="text-slate-600">সাপ্তাহিক ভাড়া: <span id="selfWeekly" class="text-amber-700 font-black">&#8377;1400</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Photo -->
+                    <div>
+                        <label class="text-xs font-bold text-slate-700 block mb-1">গ্রাহকের নিজস্ব ছবি আপলোড (Upload Photo) *</label>
+                        <input type="file" id="selfPhoto" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-600">
+                    </div>
+
+                    <!-- Consent & Terms Box -->
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2 text-xs text-slate-600 leading-relaxed max-h-48 overflow-y-auto custom-scroll">
+                        <h4 class="font-black text-slate-900 uppercase text-[11px] flex items-center gap-1.5 text-amber-700">
+                            <i class="fa-solid fa-file-contract"></i> KD Captain - Consent, Declaration & Terms
+                        </h4>
+                        <p>১. আমি সুস্থ মস্তিষ্কে এবং স্বেচ্ছায় KD Captain থেকে উল্লিখিত স্ল্যাব অনুযায়ী গাড়ি ভাড়ায় গ্রহণ করছি।</p>
+                        <p>২. গাড়ির যাবতীয় ট্রাফিক নিয়ম ও বৈধ কাগজপত্র মেনে চলার দায়িত্ব সম্পূর্ণ আমার। কোনো রূপ ট্রাফিক ফাইন বা আইনি জটিলতা হলে আমি সম্পূর্ণ দায়ী থাকিব।</p>
+                        <p>৩. নির্দিষ্ট ডিউ তারিখের মধ্যে ভাড়ার অর্থ পরিশোধে ব্যর্থ হলে কর্তৃপক্ষ গাড়ি ফেরত নেওয়ার পূর্ণ অধিকার রাখে।</p>
+                        <p>৪. গাড়ির কোনো ক্ষতি বা দুর্ঘটনা ঘটলে নির্ধারিত ক্ষতিপূরণ বহন করিতে আমি বাধ্য থাকিব।</p>
+                    </div>
+
+                    <!-- Checkbox Consent -->
+                    <div class="flex items-start gap-2 pt-1">
+                        <input type="checkbox" id="consentCheck" required class="mt-0.5 rounded text-amber-500 focus:ring-0 w-4 h-4">
+                        <label for="consentCheck" class="text-xs font-bold text-slate-800 cursor-pointer">
+                            আমি উপরের সমস্ত নিয়মাবলী ও শর্তাবলী সুস্থ মস্তিষ্কে পড়িয়া ও বুঝিয়া সম্মতি প্রদান করিলাম।
+                        </label>
+                    </div>
+
+                    <button type="submit" id="btnSelfSubmit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded-xl text-xs uppercase tracking-wider shadow-md transition">
+                        Submit KYC & Consent
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= VIEW 3: CUSTOMER CRM DIRECTORY ================= -->
+        <div id="viewDirectory" class="hidden space-y-4">
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4 mb-4">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-id-card-clip text-amber-500"></i> Customer CRM Directory
+                        </h2>
+                        <p class="text-xs text-slate-500">গ্রাহকের প্রোফাইল, ঠিকানা, বকেয়া এবং কনসেন্ট হিস্ট্রি</p>
+                    </div>
+                    <input type="text" id="crmSearchInput" oninput="filterCRMDirectory()" placeholder="নাম, ফোন বা গাড়ির নম্বরে খুঁজুন..." class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-amber-500 w-full sm:w-64">
+                </div>
+
+                <div id="crmGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
         </div>
 
     </main>
 
-    <!-- Modal: Customer Profile -->
-    <div id="portfolioModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 space-y-4 relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+    <!-- Modal: Customer Profile & Full KYC -->
+    <div id="portfolioModal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 space-y-4 relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
+            <button onclick="closeModal('portfolioModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg"><i class="fa-solid fa-xmark"></i></button>
             
-            <div class="flex items-center gap-4 border-b border-slate-800 pb-4">
-                <img id="modalImg" src="https://via.placeholder.com/150" class="w-16 h-16 rounded-full object-cover border-2 border-amber-400 shadow-md">
+            <div class="flex items-center gap-4 border-b border-slate-100 pb-4">
+                <img id="modalImg" src="https://via.placeholder.com/150" class="w-16 h-16 rounded-full object-cover border-2 border-amber-500 shadow-sm">
                 <div>
-                    <h3 class="text-base font-bold text-white" id="modalName">Customer Name</h3>
-                    <p class="text-xs text-slate-400" id="modalPhone">+91 XXXXXXXX</p>
-                    <span class="text-[10px] bg-slate-800 text-amber-300 px-2.5 py-0.5 rounded font-mono mt-1 inline-block" id="modalAadhaar">Aadhaar: [Aadhaar Redacted]</span>
+                    <h3 class="text-base font-bold text-slate-900" id="modalName">Customer Name</h3>
+                    <p class="text-xs text-slate-500" id="modalPhone">+91 XXXXXXXX</p>
+                    <span class="text-[11px] bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded font-bold mt-1 inline-block" id="modalAadhaar">Aadhaar: [Aadhaar Redacted]</span>
                 </div>
             </div>
 
             <div class="space-y-2 text-xs">
-                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                    <p class="text-[10px] text-amber-400 font-semibold uppercase">Current Address (বর্তমান ঠিকানা)</p>
-                    <p class="text-slate-200 mt-0.5" id="modalCurrAddr">-</p>
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <p class="text-[10px] text-amber-700 font-bold uppercase">Current Address (বর্তমান ঠিকানা)</p>
+                    <p class="text-slate-800 mt-0.5 font-medium" id="modalCurrAddr">-</p>
                 </div>
-                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                    <p class="text-[10px] text-sky-400 font-semibold uppercase">Permanent Address (স্থায়ী ঠিকানা)</p>
-                    <p class="text-slate-200 mt-0.5" id="modalPermAddr">-</p>
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <p class="text-[10px] text-sky-700 font-bold uppercase">Permanent Address (স্থায়ী ঠিকানা)</p>
+                    <p class="text-slate-800 mt-0.5 font-medium" id="modalPermAddr">-</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2 text-xs">
-                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                    <p class="text-[10px] text-slate-400">Vehicle Allocated</p>
-                    <p class="font-bold text-white uppercase" id="modalVehicle">WB-XX-XXXX</p>
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <p class="text-[10px] text-slate-500 font-bold">Assigned Vehicle</p>
+                    <p class="font-bold text-slate-900 uppercase" id="modalVehicle">WB-XX-XXXX</p>
                 </div>
-                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                    <p class="text-[10px] text-slate-400">Plan Selected</p>
-                    <p class="font-bold text-amber-400" id="modalSlab">Slab 1</p>
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <p class="text-[10px] text-slate-500 font-bold">Plan Selected</p>
+                    <p class="font-bold text-amber-600" id="modalSlab">Slab 1</p>
                 </div>
-                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                    <p class="text-[10px] text-slate-400">Security Deposit</p>
-                    <p class="font-bold text-emerald-400" id="modalSec">&#8377;0</p>
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <p class="text-[10px] text-slate-500 font-bold">Paid Amount</p>
+                    <p class="font-bold text-emerald-600" id="modalPaid">&#8377;0</p>
                 </div>
-                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                    <p class="text-[10px] text-slate-400">Daily / Weekly Rent</p>
-                    <p class="font-bold text-slate-200" id="modalRent">&#8377;0 / &#8377;0</p>
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <p class="text-[10px] text-rose-600 font-bold">Next Due Amount</p>
+                    <p class="font-bold text-rose-600" id="modalDueAmt">&#8377;0</p>
                 </div>
-                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                    <p class="text-[10px] text-slate-400">Payment Mode</p>
-                    <p class="font-bold text-slate-200" id="modalPayMode">UPI</p>
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <p class="text-[10px] text-slate-500 font-bold">Next Due Date</p>
+                    <p class="font-bold text-slate-800 font-mono" id="modalDueDate">2026-08-30</p>
                 </div>
-                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                    <p class="text-[10px] text-slate-400">Next Due Date</p>
-                    <p class="font-bold text-rose-400 font-mono" id="modalDue">2026-08-30</p>
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <p class="text-[10px] text-slate-500 font-bold">Consent Status</p>
+                    <p class="font-bold text-emerald-600"><i class="fa-solid fa-circle-check"></i> Agreed & Signed</p>
                 </div>
             </div>
 
-            <div class="pt-2">
-                <button onclick="closeModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg text-xs">Close Portfolio</button>
+            <div class="pt-2 flex gap-2">
+                <button onclick="closeModal('portfolioModal')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs">Close Profile</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal: Edit Booking & Admin Verification -->
+    <div id="editModal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
+            <button onclick="closeModal('editModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+                <i class="fa-solid fa-pen-to-square text-amber-500"></i> Edit Customer & Set Next Due
+            </h3>
+
+            <form id="adminEditForm" class="space-y-3">
+                <input type="hidden" id="editIndex">
+                <div>
+                    <label class="text-[10px] text-slate-500 uppercase font-bold block mb-1">Customer Name</label>
+                    <input type="text" id="editName" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-900 font-semibold focus:outline-none focus:border-amber-500">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[10px] text-slate-500 uppercase font-bold block mb-1">Phone Number</label>
+                        <input type="tel" id="editPhone" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-900 font-semibold focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-500 uppercase font-bold block mb-1">Assign Vehicle</label>
+                        <select id="editVehicle" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-900 font-semibold focus:outline-none focus:border-amber-500"></select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[10px] text-slate-500 uppercase font-bold block mb-1">Paid Amount (&#8377;)</label>
+                        <input type="number" id="editPaid" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-900 font-semibold focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-rose-600 uppercase font-bold block mb-1">Next Due Amount (&#8377;) *</label>
+                        <input type="number" id="editDueAmt" required class="w-full bg-rose-50 border border-rose-300 rounded-lg p-2 text-xs text-rose-700 font-bold focus:outline-none focus:border-rose-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[10px] text-slate-500 uppercase font-bold block mb-1">Next Due Date</label>
+                        <input type="date" id="editDueDate" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-900 font-semibold focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-500 uppercase font-bold block mb-1">Status</label>
+                        <select id="editStatus" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-900 font-semibold focus:outline-none focus:border-amber-500">
+                            <option value="Active">Active (On Rent)</option>
+                            <option value="Returned">Returned / Garage</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex gap-2">
+                    <button type="button" onclick="closeModal('editModal')" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 rounded-xl text-xs">Cancel</button>
+                    <button type="submit" class="w-1/2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 rounded-xl text-xs">Update Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Standalone Realtime Storage Engine (Local + Cloud Mirror)
+        // Data Structures
         let masterVehicles = JSON.parse(localStorage.getItem('kd_master_fleet')) || [
             { no: "WB-01-A1234", status: "Active" },
             { no: "WB-02-B5678", status: "Garage" }
@@ -338,26 +392,36 @@
             "3": { sec: 500, daily: 230, weekly: 1610 }
         };
 
-        function switchTab(tab) {
-            if(tab === 'dashboard') {
-                document.getElementById('viewDashboard').classList.remove('hidden');
-                document.getElementById('viewCustomers').classList.add('hidden');
-                document.getElementById('btnTabDash').className = "bg-amber-500 text-slate-950 px-3 py-1.5 rounded-lg text-xs font-bold transition";
-                document.getElementById('btnTabCust').className = "bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5";
-            } else {
-                document.getElementById('viewDashboard').classList.add('hidden');
-                document.getElementById('viewCustomers').classList.remove('hidden');
-                document.getElementById('btnTabCust').className = "bg-amber-500 text-slate-950 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5";
-                document.getElementById('btnTabDash').className = "bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition";
-                renderCustomerDirectory(rentalFleet);
+        // Navigation
+        function switchView(view) {
+            document.getElementById('viewAdmin').classList.add('hidden');
+            document.getElementById('viewCustomerForm').classList.add('hidden');
+            document.getElementById('viewDirectory').classList.add('hidden');
+
+            document.getElementById('btnTabAdmin').className = "bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition";
+            document.getElementById('btnTabCust').className = "bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+            document.getElementById('btnTabDir').className = "bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+
+            if (view === 'admin') {
+                document.getElementById('viewAdmin').classList.remove('hidden');
+                document.getElementById('btnTabAdmin').className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition";
+                updateAdminUI(rentalFleet);
+            } else if (view === 'customer') {
+                document.getElementById('viewCustomerForm').classList.remove('hidden');
+                document.getElementById('btnTabCust').className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+            } else if (view === 'directory') {
+                document.getElementById('viewDirectory').classList.remove('hidden');
+                document.getElementById('btnTabDir').className = "bg-slate-950 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1.5";
+                renderCRMDirectory(rentalFleet);
             }
         }
 
-        function copyAddress() {
-            const check = document.getElementById("sameAddressCheck");
-            const curr = document.getElementById("currAddress");
-            const perm = document.getElementById("permAddress");
-            if(check.checked) {
+        // Customer Self Form Logic
+        function copySelfAddress() {
+            const check = document.getElementById("selfSameAddr");
+            const curr = document.getElementById("selfCurrAddr");
+            const perm = document.getElementById("selfPermAddr");
+            if (check.checked) {
                 perm.value = curr.value;
                 perm.readOnly = true;
             } else {
@@ -365,100 +429,137 @@
             }
         }
 
-        document.getElementById("currAddress").addEventListener("input", function() {
-            if(document.getElementById("sameAddressCheck").checked) {
-                document.getElementById("permAddress").value = this.value;
+        document.getElementById("selfCurrAddr").addEventListener("input", function() {
+            if (document.getElementById("selfSameAddr").checked) {
+                document.getElementById("selfPermAddr").value = this.value;
             }
         });
 
-        function calculateSlabRates() {
-            const val = document.getElementById("slabSelect").value;
-            const slab = slabs[val];
-            document.getElementById("lblSec").innerText = "₹" + slab.sec;
-            document.getElementById("lblDaily").innerText = "₹" + slab.daily;
-            document.getElementById("lblWeekly").innerText = "₹" + slab.weekly;
+        function updateSelfSlabDetails() {
+            const slabVal = document.getElementById("selfSlab").value;
+            const slab = slabs[slabVal];
+            document.getElementById("selfSec").innerText = "₹" + slab.sec;
+            document.getElementById("selfDaily").innerText = "₹" + slab.daily;
+            document.getElementById("selfWeekly").innerText = "₹" + slab.weekly;
         }
 
-        // Add Vehicle
+        document.getElementById("customerSelfForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById("btnSelfSubmit");
+            btn.disabled = true;
+
+            const slabVal = document.getElementById("selfSlab").value;
+            const photoInput = document.getElementById("selfPhoto");
+            let base64Photo = "";
+
+            if (photoInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.readAsDataURL(photoInput.files[0]);
+                await new Promise(resolve => reader.onload = () => { base64Photo = reader.result; resolve(); });
+            }
+
+            // Find first available garage vehicle or assign pending
+            const availableVeh = masterVehicles.find(v => v.status === "Garage")?.no || "Pending Assignment";
+
+            const newRecord = {
+                name: document.getElementById("selfName").value,
+                phone: document.getElementById("selfPhone").value,
+                aadhaar: document.getElementById("selfAadhaar").value,
+                currentAddress: document.getElementById("selfCurrAddr").value,
+                permanentAddress: document.getElementById("selfPermAddr").value,
+                startDate: document.getElementById("selfStartDate").value,
+                slab: slabVal,
+                vehicle: availableVeh,
+                status: "Active",
+                paid: 0,
+                dueAmt: slabs[slabVal].sec + slabs[slabVal].weekly, // Default initial due
+                dueDate: document.getElementById("selfStartDate").value,
+                photo: base64Photo,
+                consentGiven: true
+            };
+
+            rentalFleet.unshift(newRecord);
+            saveState();
+
+            alert("রেজিস্ট্রেশন সফল হয়েছে! অ্যাডমিন প্যানেল থেকে বাকি তথ্য আপডেট করা যাবে।");
+            this.reset();
+            updateSelfSlabDetails();
+            btn.disabled = false;
+            switchView('admin');
+        });
+
+        // Master Fleet Management
         document.getElementById("addVehicleForm").addEventListener("submit", function(e) {
             e.preventDefault();
             const vNo = document.getElementById("newVehNo").value.trim().toUpperCase();
-            if(vNo && !masterVehicles.some(v => v.no === vNo)) {
+            if (vNo && !masterVehicles.some(v => v.no === vNo)) {
                 masterVehicles.push({ no: vNo, status: "Garage" });
                 saveState();
                 document.getElementById("newVehNo").value = "";
                 renderMasterFleet();
-                updateUI(rentalFleet);
+                updateAdminUI(rentalFleet);
             }
         });
 
         function toggleVehicleStatus(no) {
             const v = masterVehicles.find(item => item.no === no);
-            if(v) {
+            if (v) {
                 v.status = v.status === "Active" ? "Garage" : "Active";
                 saveState();
                 renderMasterFleet();
-                updateUI(rentalFleet);
+                updateAdminUI(rentalFleet);
+            }
+        }
+
+        function editVehicleNo(oldNo) {
+            const newNo = prompt("Enter updated Vehicle Number:", oldNo);
+            if (newNo && newNo.trim() !== "") {
+                const formatted = newNo.trim().toUpperCase();
+                const v = masterVehicles.find(item => item.no === oldNo);
+                if (v) {
+                    v.no = formatted;
+                    // Update in rentals as well
+                    rentalFleet.forEach(r => { if(r.vehicle === oldNo) r.vehicle = formatted; });
+                    saveState();
+                    renderMasterFleet();
+                    updateAdminUI(rentalFleet);
+                }
             }
         }
 
         function removeVehicle(no) {
-            if(confirm(`Remove vehicle ${no} from fleet?`)) {
+            if (confirm(`Remove vehicle ${no} from fleet?`)) {
                 masterVehicles = masterVehicles.filter(v => v.no !== no);
                 saveState();
                 renderMasterFleet();
-                updateUI(rentalFleet);
+                updateAdminUI(rentalFleet);
             }
         }
 
         function renderMasterFleet() {
             const container = document.getElementById("fleetInventoryContainer");
-            const select = document.getElementById("vehicleNoSelect");
-            
             container.innerHTML = "";
-            select.innerHTML = '<option value="">-- Choose Vehicle --</option>';
 
-            if(masterVehicles.length === 0) {
-                container.innerHTML = `<span class="text-xs text-slate-500">কোনো গাড়ি নেই। উপরে লিখে 'Add Vehicle' চাপুন।</span>`;
+            if (masterVehicles.length === 0) {
+                container.innerHTML = `<span class="text-xs text-slate-400">কোনো গাড়ি যুক্ত নেই। উপরে লিখে 'Add Vehicle' চাপুন।</span>`;
                 return;
             }
 
             masterVehicles.forEach(v => {
                 const badge = document.createElement("div");
-                badge.className = `flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-semibold ${v.status === 'Active' ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300' : 'bg-sky-950/40 border-sky-500/40 text-sky-300'}`;
+                badge.className = `flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-bold ${v.status === 'Active' ? 'bg-emerald-50 border-emerald-300 text-emerald-800' : 'bg-sky-50 border-sky-300 text-sky-800'}`;
                 badge.innerHTML = `
                     <span><i class="fa-solid fa-car"></i> ${v.no} (${v.status})</span>
-                    <button onclick="toggleVehicleStatus('${v.no}')" class="text-[10px] bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded text-amber-400 border border-slate-700">Switch</button>
-                    <button onclick="removeVehicle('${v.no}')" class="text-[10px] text-rose-400 hover:text-rose-300"><i class="fa-solid fa-xmark"></i></button>
+                    <button onclick="toggleVehicleStatus('${v.no}')" class="text-[10px] bg-white hover:bg-slate-100 px-2 py-0.5 rounded text-amber-600 border border-slate-300">Switch</button>
+                    <button onclick="editVehicleNo('${v.no}')" class="text-[10px] text-slate-500 hover:text-slate-800"><i class="fa-solid fa-pen"></i></button>
+                    <button onclick="removeVehicle('${v.no}')" class="text-[10px] text-rose-500 hover:text-rose-700"><i class="fa-solid fa-xmark"></i></button>
                 `;
                 container.appendChild(badge);
-
-                const opt = document.createElement("option");
-                opt.value = v.no;
-                opt.innerText = `${v.no} [${v.status}]`;
-                select.appendChild(opt);
             });
         }
 
-        function saveState() {
-            localStorage.setItem('kd_master_fleet', JSON.stringify(masterVehicles));
-            localStorage.setItem('kd_rental_fleet', JSON.stringify(rentalFleet));
-        }
-
-        function loadFromCloud() {
-            const syncIcon = document.getElementById("syncIcon");
-            syncIcon.classList.add("fa-spin");
-            setTimeout(() => {
-                masterVehicles = JSON.parse(localStorage.getItem('kd_master_fleet')) || [];
-                rentalFleet = JSON.parse(localStorage.getItem('kd_rental_fleet')) || [];
-                renderMasterFleet();
-                updateUI(rentalFleet);
-                renderCustomerDirectory(rentalFleet);
-                syncIcon.classList.remove("fa-spin");
-            }, 500);
-        }
-
-        function updateUI(data) {
+        // Admin Dashboard & Table UI
+        function updateAdminUI(data) {
             const tbody = document.getElementById("fleetTable");
             const alertList = document.getElementById("dueAlertList");
             
@@ -474,55 +575,51 @@
             const today = new Date().toISOString().split('T')[0];
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-500">কোনো রেকর্ড নেই। ফর্ম ফিলাপ করে যোগ করুন।</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">কোনো রেকর্ড নেই।</td></tr>`;
             }
 
             data.forEach((item, index) => {
-                const slabInfo = slabs[item.slab] || { sec: item.security||0, daily: item.dailyRent||0, weekly: item.weeklyRent||0 };
-                const totalReceivable = slabInfo.sec + slabInfo.weekly;
                 const paid = Number(item.paid) || 0;
-                const pendingAmount = Math.max(0, totalReceivable - paid);
+                const due = Number(item.dueAmt) || 0; // Manual Next Due Amount
 
                 totalCollected += paid;
-                totalDuePending += pendingAmount;
+                totalDuePending += due;
 
-                let dateFormatted = String(item.dueDate).split('T')[0];
+                let dateFormatted = String(item.dueDate || '').split('T')[0];
 
-                if (dateFormatted <= today && pendingAmount > 0 && item.status === 'Active') {
+                if (dateFormatted <= today && due > 0 && item.status === 'Active') {
                     const alertDiv = document.createElement("div");
-                    alertDiv.className = "flex justify-between items-center bg-rose-900/40 border border-rose-500/30 p-2 rounded-lg text-xs text-rose-200";
-                    const waMsg = encodeURIComponent(`নমস্কার ${item.name} মহাশয়, KD Captain থেকে জানানো হচ্ছে আপনার গাড়ির (${item.vehicle}) ভাড়ার বকেয়া ₹${pendingAmount} জমা দেওয়ার তারিখ ছিল ${dateFormatted}। অনুগ্রহ করে দ্রুত পরিশোধ করুন।`);
+                    alertDiv.className = "flex justify-between items-center bg-white border border-rose-200 p-2.5 rounded-lg text-xs shadow-xs";
+                    const waMsg = encodeURIComponent(`নমস্কার ${item.name} মহাশয়, KD Captain থেকে জানানো হচ্ছে আপনার গাড়ির (${item.vehicle}) ভাড়ার বকেয়া ₹${due} জমা দেওয়ার তারিখ ছিল ${dateFormatted}। অনুগ্রহ করে দ্রুত পরিশোধ করুন।`);
                     alertDiv.innerHTML = `
-                        <span><strong>${item.name}</strong> (${item.vehicle}) - Due: <strong>&#8377;${pendingAmount}</strong></span>
-                        <a href="https://wa.me/91${item.phone}?text=${waMsg}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1 rounded text-[10px] font-bold flex items-center gap-1"><i class="fa-brands fa-whatsapp"></i> Reminder</a>
+                        <span><strong>${item.name}</strong> (${item.vehicle}) - Due: <strong class="text-rose-600">&#8377;${due}</strong></span>
+                        <a href="https://wa.me/91${item.phone}?text=${waMsg}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1 rounded text-[10px] font-bold flex items-center gap-1 shadow-xs"><i class="fa-brands fa-whatsapp"></i> Reminder</a>
                     `;
                     alertList.appendChild(alertDiv);
                 }
 
                 const tr = document.createElement("tr");
-                tr.className = "hover:bg-slate-800/40 transition";
+                tr.className = "hover:bg-slate-50 transition";
                 tr.innerHTML = `
-                    <td class="p-2.5">
-                        <div class="font-bold text-white uppercase">${item.vehicle}</div>
-                        <div class="text-[10px] text-slate-400">${item.name} | ${item.phone}</div>
+                    <td class="p-3">
+                        <div class="font-black text-slate-900 uppercase">${item.vehicle}</div>
+                        <div class="text-[11px] text-slate-500">${item.name} | ${item.phone}</div>
                     </td>
-                    <td class="p-2.5">
-                        <span class="text-amber-400 font-semibold">Slab ${item.slab || '1'}</span>
-                        <div class="text-[10px] text-slate-400">&#8377;${slabInfo.daily}/day</div>
+                    <td class="p-3 font-semibold text-amber-700">Slab ${item.slab || '1'}</td>
+                    <td class="p-3">
+                        <div class="text-slate-700">Paid: &#8377;${paid}</div>
+                        <div class="text-[11px] font-black ${due > 0 ? 'text-rose-600' : 'text-emerald-600'}">Next Due: &#8377;${due}</div>
                     </td>
-                    <td class="p-2.5">
-                        <div class="text-slate-300">Paid: &#8377;${paid}</div>
-                        <div class="text-[10px] font-bold ${pendingAmount > 0 ? 'text-rose-400' : 'text-emerald-400'}">Due: &#8377;${pendingAmount}</div>
-                    </td>
-                    <td class="p-2.5 font-mono text-amber-300">${dateFormatted}</td>
-                    <td class="p-2.5">
-                        <span class="px-2 py-0.5 rounded-full text-[9px] font-bold ${item.status === 'Active' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-sky-500/10 text-sky-400 border border-sky-500/20'}">
+                    <td class="p-3 font-mono text-slate-700 font-semibold">${dateFormatted}</td>
+                    <td class="p-3">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${item.status === 'Active' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-600'}">
                             ${item.status}
                         </span>
                     </td>
-                    <td class="p-2.5 text-right space-x-1">
-                        <button onclick="viewPortfolio(${index})" class="bg-slate-800 hover:bg-slate-700 text-amber-400 px-2 py-1 rounded text-[10px] font-semibold border border-slate-700"><i class="fa-solid fa-id-card"></i></button>
-                        <button onclick="deleteRecord(${index})" class="text-rose-400 hover:text-rose-300 px-1"><i class="fa-solid fa-trash"></i></button>
+                    <td class="p-3 text-right space-x-1 whitespace-nowrap">
+                        <button onclick="openEditModal(${index})" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-2 py-1 rounded text-xs font-bold shadow-xs"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="viewPortfolio(${index})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-id-card"></i></button>
+                        <button onclick="deleteRecord(${index})" class="text-rose-500 hover:text-rose-700 px-1"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -537,53 +634,131 @@
             updateChart(totalCollected, totalDuePending);
         }
 
-        function renderCustomerDirectory(data) {
-            const grid = document.getElementById("customerGrid");
+        // CRM Directory
+        function renderCRMDirectory(data) {
+            const grid = document.getElementById("crmGrid");
             grid.innerHTML = "";
 
-            if(data.length === 0) {
-                grid.innerHTML = `<div class="col-span-full p-8 text-center text-slate-500">কোনো গ্রাহক পাওয়া যায়নি।</div>`;
+            if (data.length === 0) {
+                grid.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400">কোনো গ্রাহকের রেকর্ড পাওয়া যায়নি।</div>`;
                 return;
             }
 
             data.forEach((item, index) => {
-                const slabInfo = slabs[item.slab] || { sec: 1500, daily: 200, weekly: 1400 };
-                const due = Math.max(0, (slabInfo.sec + slabInfo.weekly) - (Number(item.paid)||0));
-                
                 const card = document.createElement("div");
-                card.className = "bg-slate-950 p-4 rounded-xl border border-slate-800 hover:border-amber-400/50 transition shadow-md flex flex-col justify-between";
+                card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between";
                 card.innerHTML = `
                     <div class="flex items-start gap-3">
-                        <img src="${item.photo || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" class="w-12 h-12 rounded-full object-cover border border-amber-400">
+                        <img src="${item.photo || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" class="w-12 h-12 rounded-full object-cover border-2 border-amber-500">
                         <div class="flex-1 min-w-0">
-                            <h4 class="font-bold text-white text-sm truncate">${item.name}</h4>
-                            <p class="text-[11px] text-slate-400"><i class="fa-solid fa-phone text-xs"></i> ${item.phone}</p>
-                            <p class="text-[10px] text-amber-300 font-mono mt-0.5"><i class="fa-solid fa-car text-xs"></i> ${item.vehicle}</p>
+                            <h4 class="font-bold text-slate-900 text-sm truncate">${item.name}</h4>
+                            <p class="text-[11px] text-slate-500"><i class="fa-solid fa-phone text-xs"></i> ${item.phone}</p>
+                            <p class="text-[11px] text-amber-700 font-bold mt-0.5"><i class="fa-solid fa-car text-xs"></i> ${item.vehicle}</p>
                         </div>
                     </div>
-                    <div class="mt-3 pt-3 border-t border-slate-800 flex justify-between items-center text-xs">
+                    <div class="mt-3 pt-3 border-t border-slate-100 flex justify-between items-center text-xs">
                         <div>
                             <span class="text-[10px] text-slate-400">Due:</span>
-                            <span class="font-bold ${due > 0 ? 'text-rose-400' : 'text-emerald-400'}">&#8377;${due}</span>
+                            <span class="font-black ${item.dueAmt > 0 ? 'text-rose-600' : 'text-emerald-600'}">&#8377;${item.dueAmt || 0}</span>
                         </div>
-                        <button onclick="viewPortfolio(${index})" class="bg-amber-500 hover:bg-amber-400 text-slate-950 px-3 py-1 rounded text-[11px] font-bold">
-                            View Profile
-                        </button>
+                        <div class="space-x-1">
+                            <button onclick="openEditModal(${index})" class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-2.5 py-1 rounded text-[11px] font-bold">Edit</button>
+                            <button onclick="viewPortfolio(${index})" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-2.5 py-1 rounded text-[11px] font-bold">Profile</button>
+                        </div>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        function filterCustomerDirectory() {
-            const q = document.getElementById("custSearchInput").value.toLowerCase();
+        function filterCRMDirectory() {
+            const q = document.getElementById("crmSearchInput").value.toLowerCase();
             const filtered = rentalFleet.filter(c => c.name.toLowerCase().includes(q) || c.phone.includes(q) || c.vehicle.toLowerCase().includes(q));
-            renderCustomerDirectory(filtered);
+            renderCRMDirectory(filtered);
+        }
+
+        // Edit Modal Logic
+        function openEditModal(index) {
+            const item = rentalFleet[index];
+            document.getElementById("editIndex").value = index;
+            document.getElementById("editName").value = item.name;
+            document.getElementById("editPhone").value = item.phone;
+            document.getElementById("editPaid").value = item.paid || 0;
+            document.getElementById("editDueAmt").value = item.dueAmt || 0;
+            document.getElementById("editDueDate").value = item.dueDate || '';
+            document.getElementById("editStatus").value = item.status || 'Active';
+
+            const vehSelect = document.getElementById("editVehicle");
+            vehSelect.innerHTML = "";
+            masterVehicles.forEach(v => {
+                const opt = document.createElement("option");
+                opt.value = v.no;
+                opt.innerText = `${v.no} (${v.status})`;
+                if(v.no === item.vehicle) opt.selected = true;
+                vehSelect.appendChild(opt);
+            });
+
+            document.getElementById("editModal").classList.remove("hidden");
+        }
+
+        document.getElementById("adminEditForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const index = document.getElementById("editIndex").value;
+            const updatedVeh = document.getElementById("editVehicle").value;
+            const updatedStatus = document.getElementById("editStatus").value;
+
+            rentalFleet[index].name = document.getElementById("editName").value;
+            rentalFleet[index].phone = document.getElementById("editPhone").value;
+            rentalFleet[index].vehicle = updatedVeh;
+            rentalFleet[index].paid = Number(document.getElementById("editPaid").value);
+            rentalFleet[index].dueAmt = Number(document.getElementById("editDueAmt").value);
+            rentalFleet[index].dueDate = document.getElementById("editDueDate").value;
+            rentalFleet[index].status = updatedStatus;
+
+            // Sync master vehicle status
+            const v = masterVehicles.find(item => item.no === updatedVeh);
+            if (v) v.status = updatedStatus === "Active" ? "Active" : "Garage";
+
+            saveState();
+            closeModal('editModal');
+            renderMasterFleet();
+            updateAdminUI(rentalFleet);
+            renderCRMDirectory(rentalFleet);
+        });
+
+        // View Details Modal
+        function viewPortfolio(index) {
+            const item = rentalFleet[index];
+            document.getElementById("modalName").innerText = item.name;
+            document.getElementById("modalPhone").innerText = "+91 " + item.phone;
+            document.getElementById("modalAadhaar").innerText = "Aadhaar: [Aadhaar Redacted]";
+            document.getElementById("modalCurrAddr").innerText = item.currentAddress || "Not specified";
+            document.getElementById("modalPermAddr").innerText = item.permanentAddress || item.currentAddress || "Not specified";
+            document.getElementById("modalVehicle").innerText = item.vehicle;
+            document.getElementById("modalSlab").innerText = "Slab " + (item.slab || '1');
+            document.getElementById("modalPaid").innerText = "₹" + (item.paid || 0);
+            document.getElementById("modalDueAmt").innerText = "₹" + (item.dueAmt || 0);
+            document.getElementById("modalDueDate").innerText = item.dueDate || "Not Set";
+            document.getElementById("modalImg").src = item.photo || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
+            document.getElementById("portfolioModal").classList.remove("hidden");
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add("hidden");
+        }
+
+        function deleteRecord(index) {
+            if (confirm("Are you sure you want to delete this customer record?")) {
+                rentalFleet.splice(index, 1);
+                saveState();
+                updateAdminUI(rentalFleet);
+                renderCRMDirectory(rentalFleet);
+            }
         }
 
         function updateChart(collected, due) {
             const ctx = document.getElementById('paymentPieChart').getContext('2d');
-            if(pieChart) pieChart.destroy();
+            if (pieChart) pieChart.destroy();
             pieChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
@@ -598,103 +773,25 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'bottom', labels: { boxWidth: 10, color: '#94a3b8', font: { size: 10 } } }
+                        legend: { position: 'bottom', labels: { boxWidth: 10, color: '#64748b', font: { size: 10, weight: 'bold' } } }
                     }
                 }
             });
         }
 
-        function viewPortfolio(index) {
-            const item = rentalFleet[index];
-            const slabInfo = slabs[item.slab] || { sec: item.security, daily: item.dailyRent, weekly: item.weeklyRent };
-            document.getElementById("modalName").innerText = item.name;
-            document.getElementById("modalPhone").innerText = "+91 " + item.phone;
-            document.getElementById("modalAadhaar").innerText = "Aadhaar: [Aadhaar Redacted]";
-            document.getElementById("modalCurrAddr").innerText = item.currentAddress || "Not specified";
-            document.getElementById("modalPermAddr").innerText = item.permanentAddress || item.currentAddress || "Not specified";
-            document.getElementById("modalVehicle").innerText = item.vehicle;
-            document.getElementById("modalSlab").innerText = "Slab " + (item.slab || '1');
-            document.getElementById("modalSec").innerText = "₹" + slabInfo.sec;
-            document.getElementById("modalRent").innerText = "₹" + slabInfo.daily + " / ₹" + slabInfo.weekly;
-            document.getElementById("modalPayMode").innerText = item.paymentMode || "UPI";
-            document.getElementById("modalDue").innerText = String(item.dueDate).split('T')[0];
-            document.getElementById("modalImg").src = item.photo || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
-            document.getElementById("portfolioModal").classList.remove("hidden");
+        function saveState() {
+            localStorage.setItem('kd_master_fleet', JSON.stringify(masterVehicles));
+            localStorage.setItem('kd_rental_fleet', JSON.stringify(rentalFleet));
         }
-
-        function closeModal() {
-            document.getElementById("portfolioModal").classList.add("hidden");
-        }
-
-        function deleteRecord(index) {
-            if(confirm("Do you want to delete this customer record?")) {
-                rentalFleet.splice(index, 1);
-                saveState();
-                updateUI(rentalFleet);
-                renderCustomerDirectory(rentalFleet);
-            }
-        }
-
-        document.getElementById("bookingForm").addEventListener("submit", async function(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById("submitBtn");
-            submitBtn.disabled = true;
-
-            const slabVal = document.getElementById("slabSelect").value;
-            const vehSelected = document.getElementById("vehicleNoSelect").value;
-            const statusSelected = document.getElementById("vehicleStatus").value;
-            const photoInput = document.getElementById("custPhoto");
-            let base64Photo = "";
-
-            if (photoInput.files.length > 0) {
-                const reader = new FileReader();
-                reader.readAsDataURL(photoInput.files[0]);
-                await new Promise(resolve => reader.onload = () => { base64Photo = reader.result; resolve(); });
-            }
-
-            const newRecord = {
-                name: document.getElementById("custName").value,
-                phone: document.getElementById("custPhone").value,
-                aadhaar: document.getElementById("custAadhaar").value,
-                currentAddress: document.getElementById("currAddress").value,
-                permanentAddress: document.getElementById("permAddress").value,
-                vehicle: vehSelected,
-                status: statusSelected,
-                slab: slabVal,
-                security: slabs[slabVal].sec,
-                dailyRent: slabs[slabVal].daily,
-                weeklyRent: slabs[slabVal].weekly,
-                paid: Number(document.getElementById("rentPaid").value),
-                paymentMode: document.getElementById("paymentMode").value,
-                dueDate: document.getElementById("nextDueDate").value,
-                photo: base64Photo
-            };
-
-            const vObj = masterVehicles.find(v => v.no === vehSelected);
-            if(vObj) {
-                vObj.status = statusSelected;
-            }
-
-            rentalFleet.unshift(newRecord);
-            saveState();
-
-            this.reset();
-            calculateSlabRates();
-            renderMasterFleet();
-            updateUI(rentalFleet);
-            renderCustomerDirectory(rentalFleet);
-
-            submitBtn.disabled = false;
-        });
 
         function exportToCSV() {
             if (rentalFleet.length === 0) {
-                alert("No data available to export.");
+                alert("No data to export.");
                 return;
             }
-            let csv = "Customer Name,Phone,Aadhaar,Current Address,Permanent Address,Vehicle,Status,Slab,Paid Amount,Due Date,Payment Mode\n";
+            let csv = "Name,Phone,Aadhaar,Current Address,Permanent Address,Vehicle,Slab,Paid,Next Due Amount,Due Date,Status\n";
             rentalFleet.forEach(r => {
-                csv += `"${r.name}","${r.phone}","${r.aadhaar}","${r.currentAddress}","${r.permanentAddress}","${r.vehicle}","${r.status}","${r.slab}","${r.paid}","${r.dueDate}","${r.paymentMode}"\n`;
+                csv += `"${r.name}","${r.phone}","${r.aadhaar}","${r.currentAddress}","${r.permanentAddress}","${r.vehicle}","${r.slab}","${r.paid}","${r.dueAmt}","${r.dueDate}","${r.status}"\n`;
             });
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
@@ -711,13 +808,13 @@
                 item.vehicle.toLowerCase().includes(query) ||
                 item.phone.includes(query)
             );
-            updateUI(filtered);
+            updateAdminUI(filtered);
         });
 
-        // Init
-        calculateSlabRates();
+        // Initial Execution
         renderMasterFleet();
-        updateUI(rentalFleet);
+        updateAdminUI(rentalFleet);
+        updateSelfSlabDetails();
     </script>
 </body>
 </html>
