@@ -281,7 +281,7 @@
                         <p class="text-[11px] text-amber-800 font-semibold">* অনবোর্ডিংয়ের সময় সিকিউরিটি ডিপোজিট ও ১ম সপ্তাহের অগ্রিম ভাড়া এক সাথে জমা হবে। পরবর্তী বকেয়া হবে Week 2-এর জন্য।</p>
                     </div>
 
-                    <!-- Mandatory Legal Terms & Conditions Box (Full Agreement) -->
+                    <!-- Mandatory Legal Terms & Conditions Box -->
                     <div class="bg-slate-900 text-slate-200 p-4 rounded-xl border border-slate-700 space-y-3 text-xs">
                         <div class="flex justify-between items-center border-b border-slate-700 pb-2">
                             <h4 class="font-bold text-amber-400 uppercase text-xs flex items-center gap-1.5">
@@ -785,7 +785,9 @@
         function migrateLegacyBookings(bookingsList) {
             var changed = false;
             bookingsList.forEach(function(b) {
-                if (b.paymentHistory && b.paymentHistory.length === 1 && b.paymentHistory[0].type === "Security Deposit") {
+                if (!b.paymentHistory) b.paymentHistory = [];
+                var hasWeek1 = b.paymentHistory.some(function(p){ return p.type.indexOf('Week 1') !== -1; });
+                if (!hasWeek1) {
                     var rates = calculateWeeklyRate(b.slab || 1, 1);
                     b.paymentHistory.push({
                         week: 1,
@@ -797,13 +799,14 @@
                     b.dailyRate = r2.daily;
                     b.due = r2.weekly;
                     changed = true;
+                    if (db) db.collection("kd_bookings").doc(String(b.id)).set(b).catch(function(){});
                 }
             });
             return changed;
         }
 
         function saveLocalData() {
-            localStorage.setItem('kd_captain_final_stable_v12', JSON.stringify({
+            localStorage.setItem('kd_captain_final_stable_v14', JSON.stringify({
                 fleet: state.fleet,
                 bookings: state.bookings,
                 recycleBin: state.recycleBin
@@ -859,7 +862,7 @@
             updateIdFieldValidation();
             updateSelfSlabDetails();
 
-            var saved = localStorage.getItem('kd_captain_final_stable_v12') || localStorage.getItem('kd_captain_final_stable_v11') || localStorage.getItem('kd_captain_final_stable_v9');
+            var saved = localStorage.getItem('kd_captain_final_stable_v14') || localStorage.getItem('kd_captain_final_stable_v12') || localStorage.getItem('kd_captain_final_stable_v11') || localStorage.getItem('kd_captain_final_stable_v9');
             if (saved) {
                 try {
                     var parsed = JSON.parse(saved);
@@ -1230,8 +1233,6 @@
             if (!b) return;
 
             var runningWk = getCalendarRunningWeek(b.startDate);
-
-            // Determine which week installment is being cleared based on payment logs
             var paidWeeks = (b.paymentHistory || []).filter(function(p){ return p.week > 0; }).map(function(p){ return p.week; });
             var nextPayWeek = paidWeeks.length > 0 ? Math.max.apply(null, paidWeeks) + 1 : 2;
 
@@ -1716,7 +1717,7 @@
             var collected = 0;
             state.bookings.forEach(function(b) {
                 if (b.paymentHistory) {
-                    b.paymentHistory.forEach(function(p) { totalCollected += (p.amount || 0); });
+                    b.paymentHistory.forEach(function(p) { collected += (p.amount || 0); });
                 }
             });
 
