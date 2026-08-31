@@ -169,7 +169,7 @@
                 <div class="border-b border-slate-100 pb-4 text-center">
                     <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">OM GANANAYAKA (O.G) LLP</span>
                     <h2 class="text-xl font-black text-slate-900 mt-2">KD Captain — Vehicle Rental Registration</h2>
-                    <p class="text-xs text-slate-500 mt-1">কাস্টমার ভেরিফিকেশন, ছবি আপলোড, টার্মস সাইন ও অনবোর্ডিং।</p>
+                    <p class="text-xs text-slate-500 mt-1">কাস্টমার ভেরিফিকেশন, ফ্রন্ট ও ব্যাক ছবি আপলোড, টার্মস সাইন ও অনবোর্ডিং।</p>
                 </div>
 
                 <form id="customerSelfForm" onsubmit="handleCustomerSubmit(event)" class="space-y-4">
@@ -187,17 +187,18 @@
                         </div>
                     </div>
 
-                    <!-- Photo Upload -->
+                    <!-- Customer Photo Upload -->
                     <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
                         <label class="text-xs font-bold text-slate-900 uppercase block text-amber-800">
-                            <i class="fa-solid fa-camera mr-1"></i> Customer Photo (কাস্টমারের ছবি)
+                            <i class="fa-solid fa-camera mr-1"></i> Customer Photo (কাস্টমারের ছবি) *
                         </label>
                         <div class="flex items-center gap-4">
-                            <input type="file" id="selfPhoto" accept="image/*" onchange="previewUploadedPhoto(event, 'formPhotoPreview')" class="text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer">
+                            <input type="file" id="selfPhoto" accept="image/*" required onchange="handleImageFile(event, 'formPhotoPreview', 'tempPhotoBase64')" class="text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer">
                             <img id="formPhotoPreview" src="" class="w-10 h-10 rounded-full object-cover border border-amber-300 hidden">
                         </div>
                     </div>
 
+                    <!-- Primary Identity Proof with Front and Back Uploads -->
                     <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3">
                         <label class="text-xs font-bold text-slate-900 uppercase block text-amber-800">
                             <i class="fa-solid fa-id-card"></i> Primary Identity Proof *
@@ -206,18 +207,38 @@
                             <div>
                                 <label class="text-[11px] font-semibold text-slate-600 block mb-1">Document Type *</label>
                                 <select id="selfIdType" onchange="updateIdFieldValidation()" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 cursor-pointer">
-                                    <option value="Aadhaar">Aadhaar Card (Only 12 Digits)</option>
-                                    <option value="PAN">PAN Card (10 Digits Alphanumeric)</option>
+                                    <option value="Aadhaar">Aadhaar Card</option>
+                                    <option value="PAN">PAN Card</option>
                                     <option value="Voter">Voter ID / EPIC Card</option>
+                                    <option value="Passport">Passport</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="text-[11px] font-semibold text-slate-600 block mb-1" id="lblIdNumber">Enter 12-Digit Aadhaar Number *</label>
+                                <label class="text-[11px] font-semibold text-slate-600 block mb-1" id="lblIdNumber">Enter Aadhaar Number *</label>
                                 <input type="text" id="selfIdNumber" required class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
+                            </div>
+                        </div>
+
+                        <!-- ID Front and Back Files -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-200">
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-700 block mb-1">ID Card Front Side Photo *</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="file" id="selfIdFront" accept="image/*" required onchange="handleImageFile(event, 'previewIdFront', 'tempIdFrontBase64')" class="text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-slate-200 cursor-pointer">
+                                    <img id="previewIdFront" src="" class="w-8 h-8 rounded object-cover border border-amber-300 hidden">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-700 block mb-1">ID Card Back Side Photo *</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="file" id="selfIdBack" accept="image/*" required onchange="handleImageFile(event, 'previewIdBack', 'tempIdBackBase64')" class="text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-slate-200 cursor-pointer">
+                                    <img id="previewIdBack" src="" class="w-8 h-8 rounded object-cover border border-amber-300 hidden">
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Address & Present Address Proof -->
                     <div class="space-y-3">
                         <div>
                             <label class="text-xs font-bold text-slate-700 block mb-1">Permanent Address (Home) *</label>
@@ -234,7 +255,7 @@
                         </div>
                         <div class="bg-amber-50/50 p-3.5 rounded-xl border border-amber-200 space-y-3">
                             <label class="text-xs font-bold text-slate-900 uppercase block text-amber-900">
-                                <i class="fa-solid fa-house-chimney-user"></i> Present Address Proof *
+                                <i class="fa-solid fa-house-chimney-user"></i> Present Address Proof (Single Side Document) *
                             </label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
@@ -250,6 +271,13 @@
                                 <div>
                                     <label class="text-[11px] font-semibold text-slate-600 block mb-1">Document Reference No *</label>
                                     <input type="text" id="selfAddrProofNo" required class="w-full bg-white border border-amber-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium" placeholder="Consumer / Acc / Ref ID">
+                                </div>
+                            </div>
+                            <div class="pt-2 border-t border-amber-200">
+                                <label class="text-[11px] font-bold text-slate-700 block mb-1">Address Proof Document Photo *</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="file" id="selfAddrDocPhoto" accept="image/*" required onchange="handleImageFile(event, 'previewAddrDoc', 'tempAddrDocBase64')" class="text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-amber-100 file:text-amber-900 cursor-pointer">
+                                    <img id="previewAddrDoc" src="" class="w-8 h-8 rounded object-cover border border-amber-300 hidden">
                                 </div>
                             </div>
                         </div>
@@ -356,7 +384,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black p-3.5 rounded-xl text-sm shadow-md transition cursor-pointer">
+                    <button type="submit" id="btnSubmitForm" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black p-3.5 rounded-xl text-sm shadow-md transition cursor-pointer">
                         Submit & Onboard Customer
                     </button>
                 </form>
@@ -381,9 +409,9 @@
                 <div class="flex justify-between items-center mb-4 border-b border-rose-100 pb-3">
                     <div>
                         <h2 class="text-sm font-black text-rose-800 flex items-center gap-2">
-                            <i class="fa-solid fa-trash-can"></i> Recycle Bin (Deleted Profiles)
+                            <i class="fa-solid fa-trash-can"></i> Recycle Bin (Deleted Records)
                         </h2>
-                        <p class="text-xs text-slate-500">ভুলবশত ডিলিট হয়ে যাওয়া কাস্টমার ৩০ দিন পর্যন্ত এখানে সুরক্ষিত থাকবে।</p>
+                        <p class="text-xs text-slate-500">ভুলবশত ডিলিট হয়ে যাওয়া কাস্টমার বা গাড়ি ৩০ দিন পর্যন্ত এখানে সুরক্ষিত থাকবে।</p>
                     </div>
                 </div>
                 <div id="binListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
@@ -478,12 +506,27 @@
                 <div><strong>Days Active:</strong> <span id="pvDays">-</span></div>
             </div>
 
-            <div class="bg-slate-50 p-3 rounded-xl border space-y-1.5 text-xs text-slate-700">
+            <!-- KYC Documents Preview in Portfolio -->
+            <div class="bg-slate-50 p-3 rounded-xl border space-y-2 text-xs text-slate-700">
                 <p><strong>Primary ID:</strong> <span id="pvIdProof">-</span></p>
-                <p><strong>Permanent Address:</strong> <span id="pvPermAddr">-</span></p>
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block font-bold">ID Front Side:</span>
+                        <img id="pvIdFrontImg" src="" onclick="openFullImage(this.src)" class="w-full h-20 object-cover rounded border border-slate-300 cursor-pointer hover:opacity-90">
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-500 block font-bold">ID Back Side:</span>
+                        <img id="pvIdBackImg" src="" onclick="openFullImage(this.src)" class="w-full h-20 object-cover rounded border border-slate-300 cursor-pointer hover:opacity-90">
+                    </div>
+                </div>
+                <p class="pt-1 border-t"><strong>Permanent Address:</strong> <span id="pvPermAddr">-</span></p>
                 <p><strong>Present Address:</strong> <span id="pvCurrAddr">-</span></p>
                 <p><strong>Address Proof:</strong> <span id="pvAddrProof">-</span></p>
-                <p><strong>Legal Agreement:</strong> <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-check"></i> Accepted & Digitally Signed</span></p>
+                <div>
+                    <span class="text-[10px] text-slate-500 block font-bold">Address Proof Doc Photo:</span>
+                    <img id="pvAddrDocImg" src="" onclick="openFullImage(this.src)" class="w-full h-20 object-cover rounded border border-slate-300 cursor-pointer hover:opacity-90">
+                </div>
+                <p class="pt-1"><strong>Legal Agreement:</strong> <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-check"></i> Accepted & Digitally Signed</span></p>
             </div>
 
             <div class="flex justify-between items-center bg-slate-100 p-3 rounded-xl font-bold text-xs">
@@ -531,7 +574,7 @@
                     <img id="editPhotoPreview" src="" class="w-12 h-12 rounded-full object-cover border border-amber-400">
                     <div>
                         <label class="font-bold text-slate-800 block mb-1">Update Customer Photo</label>
-                        <input type="file" id="editPhotoInput" accept="image/*" onchange="previewUploadedPhoto(event, 'editPhotoPreview')" class="text-[11px] text-slate-600">
+                        <input type="file" id="editPhotoInput" accept="image/*" onchange="handleImageFile(event, 'editPhotoPreview', 'editTempPhotoBase64')" class="text-[11px] text-slate-600">
                     </div>
                 </div>
 
@@ -553,6 +596,7 @@
                             <option value="Aadhaar">Aadhaar Card</option>
                             <option value="PAN">PAN Card</option>
                             <option value="Voter">Voter ID</option>
+                            <option value="Passport">Passport</option>
                         </select>
                     </div>
                     <div>
@@ -723,8 +767,53 @@
             activeReceiptCustomer: null,
             activeReceiptPaymentIndex: null,
             tempPhotoBase64: "",
+            tempIdFrontBase64: "",
+            tempIdBackBase64: "",
+            tempAddrDocBase64: "",
             editTempPhotoBase64: ""
         };
+
+        // Mobile Safe Image Compression via Canvas
+        function handleImageFile(event, previewElementId, stateVarName) {
+            var file = event.target.files[0];
+            if (!file) return;
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = new Image();
+                img.onload = function() {
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+
+                    var maxDim = 800;
+                    var width = img.width;
+                    var height = img.height;
+
+                    if (width > height && width > maxDim) {
+                        height = Math.round((height * maxDim) / width);
+                        width = maxDim;
+                    } else if (height > maxDim) {
+                        width = Math.round((width * maxDim) / height);
+                        height = maxDim;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    var compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    state[stateVarName] = compressedBase64;
+
+                    var prev = document.getElementById(previewElementId);
+                    if (prev) {
+                        prev.src = compressedBase64;
+                        prev.classList.remove('hidden');
+                    }
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
 
         function getCalendarRunningWeek(startDateStr) {
             if (!startDateStr) return 1;
@@ -803,7 +892,6 @@
                     changed = true;
                 }
 
-                // Strict Order Sorting: Security Deposit (week 0) -> Week 1 (week 1) -> Week 2...
                 b.paymentHistory.sort(function(a, b) {
                     return (a.week !== undefined ? a.week : 0) - (b.week !== undefined ? b.week : 0);
                 });
@@ -816,35 +904,21 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('kd_captain_final_stable_v16', JSON.stringify({
-                fleet: state.fleet,
-                bookings: state.bookings,
-                recycleBin: state.recycleBin
-            }));
+            try {
+                localStorage.setItem('kd_captain_final_stable_v17', JSON.stringify({
+                    fleet: state.fleet,
+                    bookings: state.bookings,
+                    recycleBin: state.recycleBin
+                }));
+            } catch(e) {
+                console.warn('LocalStorage quota warning. Data preserved in runtime memory.');
+            }
             updateBinBadge();
         }
 
         function updateBinBadge() {
             var el = document.getElementById('binCount');
             if (el) el.innerText = state.recycleBin.length;
-        }
-
-        function previewUploadedPhoto(event, previewElementId) {
-            var file = event.target.files[0];
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    if (previewElementId === 'formPhotoPreview') {
-                        state.tempPhotoBase64 = e.target.result;
-                    } else {
-                        state.editTempPhotoBase64 = e.target.result;
-                    }
-                    var prev = document.getElementById(previewElementId);
-                    prev.src = e.target.result;
-                    prev.classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
         }
 
         function openFullImage(src) {
@@ -872,7 +946,7 @@
             updateIdFieldValidation();
             updateSelfSlabDetails();
 
-            var saved = localStorage.getItem('kd_captain_final_stable_v16') || localStorage.getItem('kd_captain_final_stable_v15') || localStorage.getItem('kd_captain_final_stable_v14') || localStorage.getItem('kd_captain_final_stable_v12') || localStorage.getItem('kd_captain_final_stable_v11') || localStorage.getItem('kd_captain_final_stable_v9');
+            var saved = localStorage.getItem('kd_captain_final_stable_v17') || localStorage.getItem('kd_captain_final_stable_v16') || localStorage.getItem('kd_captain_final_stable_v15') || localStorage.getItem('kd_captain_final_stable_v14') || localStorage.getItem('kd_captain_final_stable_v12');
             if (saved) {
                 try {
                     var parsed = JSON.parse(saved);
@@ -955,29 +1029,35 @@
             var input = document.getElementById('selfIdNumber');
 
             input.value = '';
+            input.removeAttribute('pattern');
+
             if (type === 'Aadhaar') {
-                lbl.innerText = 'Enter 12-Digit Aadhaar Number (Numbers only) *';
+                lbl.innerText = 'Enter Aadhaar Number (Numbers only) *';
                 input.type = 'tel';
                 input.inputMode = 'numeric';
                 input.maxLength = 12;
-                input.pattern = '[0-9]{12}';
-                input.placeholder = '123456789012';
+                input.placeholder = 'XXXXXXXXXXXX';
                 input.oninput = function() { this.value = this.value.replace(/[^0-9]/g, ''); };
             } else if (type === 'PAN') {
                 lbl.innerText = 'Enter PAN Card Number (10 Digits) *';
                 input.type = 'text';
                 input.inputMode = 'text';
                 input.maxLength = 10;
-                input.pattern = '[A-Za-z0-9]{10}';
                 input.placeholder = 'ABCDE1234F';
                 input.oninput = function() { this.value = this.value.toUpperCase(); };
-            } else {
+            } else if (type === 'Voter') {
                 lbl.innerText = 'Enter Voter ID (EPIC) Number *';
                 input.type = 'text';
                 input.inputMode = 'text';
-                input.maxLength = 16;
-                input.pattern = '';
+                input.maxLength = 18;
                 input.placeholder = 'WBF1234567';
+                input.oninput = function() { this.value = this.value.toUpperCase().replace(/[^A-Z0-9/]/g, ''); };
+            } else {
+                lbl.innerText = 'Enter Passport Number *';
+                input.type = 'text';
+                input.inputMode = 'text';
+                input.maxLength = 12;
+                input.placeholder = 'A1234567';
                 input.oninput = function() { this.value = this.value.toUpperCase(); };
             }
         }
@@ -1070,12 +1150,20 @@
         }
 
         function deleteVehicle(no) {
-            if (confirm('Are you sure you want to delete vehicle ' + no + '?')) {
-                state.fleet = state.fleet.filter(function(v) { return v.no !== no; });
-                if (db) db.collection("kd_fleet").doc(no).delete().catch(function(){});
-                saveLocalData();
-                renderAll();
-                populateVehicleSelect();
+            if (confirm('Are you sure you want to delete vehicle ' + no + '? It will move to Recycle Bin.')) {
+                var vIndex = state.fleet.findIndex(function(v) { return v.no === no; });
+                if (vIndex !== -1) {
+                    var v = state.fleet[vIndex];
+                    v.deletedAt = Date.now();
+                    v.recordType = 'Vehicle';
+                    state.recycleBin.push(v);
+                    state.fleet.splice(vIndex, 1);
+
+                    if (db) db.collection("kd_fleet").doc(no).delete().catch(function(){});
+                    saveLocalData();
+                    renderAll();
+                    populateVehicleSelect();
+                }
             }
         }
 
@@ -1095,8 +1183,14 @@
 
             var idType = document.getElementById('selfIdType').value;
             var idNo = document.getElementById('selfIdNumber').value.trim();
-            if (idType === 'Aadhaar' && idNo.length !== 12) {
-                alert('Aadhaar number must be exactly 12 digits.');
+
+            if (!state.tempIdFrontBase64 || !state.tempIdBackBase64) {
+                alert('Please upload BOTH Front Side and Back Side photos of your Primary ID.');
+                return;
+            }
+
+            if (!state.tempAddrDocBase64) {
+                alert('Please upload the Present Address Proof Document photo.');
                 return;
             }
 
@@ -1125,10 +1219,13 @@
                 veh: assignedVeh,
                 idType: idType,
                 idNo: idNo,
+                idFrontPhoto: state.tempIdFrontBase64,
+                idBackPhoto: state.tempIdBackBase64,
                 permAddr: document.getElementById('selfPermAddr').value,
                 currAddr: document.getElementById('selfCurrAddr').value,
                 addrProofType: document.getElementById('selfAddrProofType').value,
                 addrProofNo: document.getElementById('selfAddrProofNo').value,
+                addrDocPhoto: state.tempAddrDocBase64,
                 startDate: startDt,
                 slab: slab,
                 dailyRate: ratesM1.daily,
@@ -1136,6 +1233,7 @@
                 due: ratesM2.weekly,
                 dueDate: nextDue,
                 status: 'Active',
+                recordType: 'Customer',
                 termsAccepted: true,
                 paymentHistory: [
                     { week: 0, amount: sec, type: "Security Deposit", date: startDt },
@@ -1156,7 +1254,13 @@
             showOnboardSuccess(newBooking);
             document.getElementById('customerSelfForm').reset();
             document.getElementById('formPhotoPreview').classList.add('hidden');
+            document.getElementById('previewIdFront').classList.add('hidden');
+            document.getElementById('previewIdBack').classList.add('hidden');
+            document.getElementById('previewAddrDoc').classList.add('hidden');
             state.tempPhotoBase64 = "";
+            state.tempIdFrontBase64 = "";
+            state.tempIdBackBase64 = "";
+            state.tempAddrDocBase64 = "";
             updateIdFieldValidation();
         }
 
@@ -1196,7 +1300,6 @@
             var runningWk = getCalendarRunningWeek(b.startDate);
             var rates = calculateWeeklyRate(b.slab, runningWk);
 
-            // Ensure history is ordered properly: Security Deposit first, then Week 1, Week 2...
             if (b.paymentHistory) {
                 b.paymentHistory.sort(function(a, b) {
                     return (a.week !== undefined ? a.week : 0) - (b.week !== undefined ? b.week : 0);
@@ -1216,6 +1319,15 @@
             document.getElementById('pvPermAddr').innerText = b.permAddr || 'N/A';
             document.getElementById('pvCurrAddr').innerText = b.currAddr || 'N/A';
             document.getElementById('pvAddrProof').innerText = (b.addrProofType || 'N/A') + ' [' + (b.addrProofNo || '') + ']';
+
+            // Document photos rendering in portfolio
+            var frontImg = document.getElementById('pvIdFrontImg');
+            var backImg = document.getElementById('pvIdBackImg');
+            var addrDocImg = document.getElementById('pvAddrDocImg');
+
+            frontImg.src = b.idFrontPhoto || 'https://placehold.co/300x200?text=No+Front+ID';
+            backImg.src = b.idBackPhoto || 'https://placehold.co/300x200?text=No+Back+ID';
+            addrDocImg.src = b.addrDocPhoto || 'https://placehold.co/300x200?text=No+Address+Doc';
 
             var totalPaid = 0;
             var histBody = document.getElementById('pvHistoryList');
@@ -1298,7 +1410,6 @@
                 date: date
             });
 
-            // Re-sort payment logs
             b.paymentHistory.sort(function(a, b) {
                 return (a.week !== undefined ? a.week : 0) - (b.week !== undefined ? b.week : 0);
             });
@@ -1511,6 +1622,7 @@
                 if (bIndex !== -1) {
                     var b = state.bookings[bIndex];
                     b.deletedAt = Date.now();
+                    b.recordType = 'Customer';
                     state.recycleBin.push(b);
                     state.bookings.splice(bIndex, 1);
 
@@ -1531,31 +1643,40 @@
         }
 
         function restoreFromBin(id) {
-            var bIndex = state.recycleBin.findIndex(function(item) { return item.id == id; });
+            var bIndex = state.recycleBin.findIndex(function(item) { return item.id == id || item.no == id; });
             if (bIndex !== -1) {
-                var b = state.recycleBin[bIndex];
-                delete b.deletedAt;
-                state.bookings.push(b);
+                var item = state.recycleBin[bIndex];
                 state.recycleBin.splice(bIndex, 1);
 
-                var v = state.fleet.find(function(item) { return item.no === b.veh; });
-                if (v) { 
-                    v.status = 'Active'; 
-                    if (db) db.collection("kd_fleet").doc(v.no).set(v).catch(function(){});
-                }
+                if (item.recordType === 'Vehicle') {
+                    delete item.deletedAt;
+                    delete item.recordType;
+                    item.status = 'Garage';
+                    state.fleet.push(item);
+                    if (db) db.collection("kd_fleet").doc(item.no).set(item).catch(function(){});
+                } else {
+                    delete item.deletedAt;
+                    delete item.recordType;
+                    state.bookings.push(item);
 
-                if (db) db.collection("kd_bookings").doc(String(b.id)).set(b).catch(function(){});
+                    var v = state.fleet.find(function(f) { return f.no === item.veh; });
+                    if (v) { 
+                        v.status = 'Active'; 
+                        if (db) db.collection("kd_fleet").doc(v.no).set(v).catch(function(){});
+                    }
+                    if (db) db.collection("kd_bookings").doc(String(item.id)).set(item).catch(function(){});
+                }
 
                 saveLocalData();
                 renderAll();
                 renderBin();
-                alert('Customer portfolio restored successfully!');
+                alert('Record restored successfully!');
             }
         }
 
         function permanentDeleteFromBin(id) {
             if (confirm('Are you sure you want to PERMANENTLY delete this record? This action cannot be undone.')) {
-                state.recycleBin = state.recycleBin.filter(function(item) { return item.id != id; });
+                state.recycleBin = state.recycleBin.filter(function(item) { return (item.id != id && item.no != id); });
                 saveLocalData();
                 renderBin();
             }
@@ -1569,34 +1690,53 @@
             }
 
             var now = Date.now();
-            container.innerHTML = state.recycleBin.map(function(b) {
-                var daysLeft = 30 - Math.floor((now - (b.deletedAt || now)) / (1000 * 60 * 60 * 24));
+            container.innerHTML = state.recycleBin.map(function(item) {
+                var daysLeft = 30 - Math.floor((now - (item.deletedAt || now)) / (1000 * 60 * 60 * 24));
                 if (daysLeft < 0) daysLeft = 0;
-                var userImg = b.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.name)}&background=f59e0b&color=fff&size=128`;
-                var runningWk = getCalendarRunningWeek(b.startDate);
 
-                return `<div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm space-y-3">
-                    <div class="flex justify-between items-start border-b pb-2">
-                        <div class="flex items-center gap-2.5">
-                            <img src="${userImg}" class="w-10 h-10 rounded-full object-cover border border-slate-300">
+                if (item.recordType === 'Vehicle') {
+                    return `<div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm space-y-3">
+                        <div class="flex justify-between items-start border-b pb-2">
                             <div>
-                                <h4 class="font-bold text-slate-900 text-sm">${b.name}</h4>
-                                <p class="text-xs text-slate-500">+91 ${b.phone} &bull; ${b.veh}</p>
+                                <h4 class="font-bold text-slate-900 text-sm"><i class="fa-solid fa-car-side text-amber-500 mr-1"></i> ${item.no}</h4>
+                                <p class="text-xs text-slate-500">Deleted Vehicle Record</p>
                             </div>
+                            <span class="text-[10px] bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded-full">${daysLeft} days left</span>
                         </div>
-                        <span class="text-[10px] bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded-full">${daysLeft} days left</span>
-                    </div>
-                    <div class="text-xs text-slate-600 bg-slate-50 p-2 rounded-lg">
-                        <p><strong>Tier:</strong> Slab ${b.slab} (Running Week ${runningWk})</p>
-                        <p><strong>Due:</strong> ₹${b.due} on ${b.dueDate}</p>
-                    </div>
-                    <div class="flex justify-between items-center pt-2 border-t text-xs">
-                        <button onclick="permanentDeleteFromBin(${b.id})" class="text-rose-600 hover:text-rose-800 font-bold">Delete Forever</button>
-                        <button onclick="restoreFromBin(${b.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1 rounded-lg shadow-sm flex items-center gap-1">
-                            <i class="fa-solid fa-rotate-left"></i> Restore Profile
-                        </button>
-                    </div>
-                </div>`;
+                        <div class="flex justify-between items-center pt-2 border-t text-xs">
+                            <button onclick="permanentDeleteFromBin('${item.no}')" class="text-rose-600 hover:text-rose-800 font-bold">Delete Forever</button>
+                            <button onclick="restoreFromBin('${item.no}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1 rounded-lg shadow-sm flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-left"></i> Restore Vehicle
+                            </button>
+                        </div>
+                    </div>`;
+                } else {
+                    var userImg = item.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(item.name)}&background=f59e0b&color=fff&size=128`;
+                    var runningWk = getCalendarRunningWeek(item.startDate);
+
+                    return `<div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm space-y-3">
+                        <div class="flex justify-between items-start border-b pb-2">
+                            <div class="flex items-center gap-2.5">
+                                <img src="${userImg}" class="w-10 h-10 rounded-full object-cover border border-slate-300">
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-sm">${item.name}</h4>
+                                    <p class="text-xs text-slate-500">+91 ${item.phone} &bull; ${item.veh}</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded-full">${daysLeft} days left</span>
+                        </div>
+                        <div class="text-xs text-slate-600 bg-slate-50 p-2 rounded-lg">
+                            <p><strong>Tier:</strong> Slab ${item.slab} (Running Week ${runningWk})</p>
+                            <p><strong>Due:</strong> ₹${item.due} on ${item.dueDate}</p>
+                        </div>
+                        <div class="flex justify-between items-center pt-2 border-t text-xs">
+                            <button onclick="permanentDeleteFromBin(${item.id})" class="text-rose-600 hover:text-rose-800 font-bold">Delete Forever</button>
+                            <button onclick="restoreFromBin(${item.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1 rounded-lg shadow-sm flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-left"></i> Restore Customer
+                            </button>
+                        </div>
+                    </div>`;
+                }
             }).join('');
         }
 
@@ -1803,7 +1943,7 @@
                             '<img src="' + userImg + '" onclick="event.stopPropagation(); openFullImage(\'' + userImg + '\')" class="w-10 h-10 rounded-full object-cover border border-amber-300 shadow-sm hover:scale-105 transition" alt="Photo">' +
                             '<div>' +
                                 '<h4 class="font-black text-slate-900 text-sm flex items-center gap-1">' + b.name + ' <i class="fa-solid fa-chevron-right text-[10px] text-amber-500"></i></h4>' +
-                                '<p class="text-xs text-slate-500"><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i>+91 ' + b.phone + '</p>' +
+                                '<p class="text-xs text-slate-500"><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i>+91 ' + b.phone + '</p> Cer' +
                             '</div>' +
                         '</div>' +
                         '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ' + badgeColor + '">' + rem.text + '</span>' +
