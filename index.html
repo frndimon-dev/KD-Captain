@@ -194,7 +194,7 @@
                         </label>
                         <div class="flex items-center gap-4">
                             <input type="file" id="selfPhoto" accept="image/*" required onchange="handleImageFile(event, 'formPhotoPreview', 'tempPhotoBase64')" class="text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer">
-                            <img id="formPhotoPreview" src="" class="w-10 h-10 rounded-full object-cover border border-amber-300 hidden">
+                            <img id="formPhotoPreview" src="" class="w-12 h-12 rounded-full object-cover border border-amber-400 hidden shadow-sm">
                         </div>
                     </div>
 
@@ -225,14 +225,14 @@
                                 <label class="text-[11px] font-bold text-slate-700 block mb-1">ID Card Front Side Photo *</label>
                                 <div class="flex items-center gap-2">
                                     <input type="file" id="selfIdFront" accept="image/*" required onchange="handleImageFile(event, 'previewIdFront', 'tempIdFrontBase64')" class="text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-slate-200 cursor-pointer">
-                                    <img id="previewIdFront" src="" class="w-8 h-8 rounded object-cover border border-amber-300 hidden">
+                                    <img id="previewIdFront" src="" class="w-10 h-10 rounded object-cover border border-amber-300 hidden">
                                 </div>
                             </div>
                             <div>
                                 <label class="text-[11px] font-bold text-slate-700 block mb-1">ID Card Back Side Photo *</label>
                                 <div class="flex items-center gap-2">
                                     <input type="file" id="selfIdBack" accept="image/*" required onchange="handleImageFile(event, 'previewIdBack', 'tempIdBackBase64')" class="text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-slate-200 cursor-pointer">
-                                    <img id="previewIdBack" src="" class="w-8 h-8 rounded object-cover border border-amber-300 hidden">
+                                    <img id="previewIdBack" src="" class="w-10 h-10 rounded object-cover border border-amber-300 hidden">
                                 </div>
                             </div>
                         </div>
@@ -277,7 +277,7 @@
                                 <label class="text-[11px] font-bold text-slate-700 block mb-1">Address Proof Document Photo *</label>
                                 <div class="flex items-center gap-2">
                                     <input type="file" id="selfAddrDocPhoto" accept="image/*" required onchange="handleImageFile(event, 'previewAddrDoc', 'tempAddrDocBase64')" class="text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-amber-100 file:text-amber-900 cursor-pointer">
-                                    <img id="previewAddrDoc" src="" class="w-8 h-8 rounded object-cover border border-amber-300 hidden">
+                                    <img id="previewAddrDoc" src="" class="w-10 h-10 rounded object-cover border border-amber-300 hidden">
                                 </div>
                             </div>
                         </div>
@@ -511,20 +511,20 @@
                 <p><strong>Primary ID:</strong> <span id="pvIdProof">-</span></p>
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <div>
-                        <span class="text-[10px] text-slate-500 block font-bold">ID Front Side:</span>
-                        <img id="pvIdFrontImg" src="" onclick="openFullImage(this.src)" class="w-full h-20 object-cover rounded border border-slate-300 cursor-pointer hover:opacity-90">
+                        <span class="text-[10px] text-slate-500 block font-bold mb-1">ID Front Side:</span>
+                        <img id="pvIdFrontImg" src="" onclick="openFullImage(this.src)" class="w-full h-24 object-cover rounded-lg border border-slate-300 cursor-pointer hover:opacity-90 shadow-sm">
                     </div>
                     <div>
-                        <span class="text-[10px] text-slate-500 block font-bold">ID Back Side:</span>
-                        <img id="pvIdBackImg" src="" onclick="openFullImage(this.src)" class="w-full h-20 object-cover rounded border border-slate-300 cursor-pointer hover:opacity-90">
+                        <span class="text-[10px] text-slate-500 block font-bold mb-1">ID Back Side:</span>
+                        <img id="pvIdBackImg" src="" onclick="openFullImage(this.src)" class="w-full h-24 object-cover rounded-lg border border-slate-300 cursor-pointer hover:opacity-90 shadow-sm">
                     </div>
                 </div>
                 <p class="pt-1 border-t"><strong>Permanent Address:</strong> <span id="pvPermAddr">-</span></p>
                 <p><strong>Present Address:</strong> <span id="pvCurrAddr">-</span></p>
                 <p><strong>Address Proof:</strong> <span id="pvAddrProof">-</span></p>
                 <div>
-                    <span class="text-[10px] text-slate-500 block font-bold">Address Proof Doc Photo:</span>
-                    <img id="pvAddrDocImg" src="" onclick="openFullImage(this.src)" class="w-full h-20 object-cover rounded border border-slate-300 cursor-pointer hover:opacity-90">
+                    <span class="text-[10px] text-slate-500 block font-bold mb-1">Address Proof Doc Photo:</span>
+                    <img id="pvAddrDocImg" src="" onclick="openFullImage(this.src)" class="w-full h-24 object-cover rounded-lg border border-slate-300 cursor-pointer hover:opacity-90 shadow-sm">
                 </div>
                 <p class="pt-1"><strong>Legal Agreement:</strong> <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-check"></i> Accepted & Digitally Signed</span></p>
             </div>
@@ -560,20 +560,21 @@
         </div>
     </div>
 
-    <!-- Modal 5: Edit Customer Details -->
+    <!-- Modal 5: Edit Customer Details (Full Document Upload & Slab Re-sync Enabled) -->
     <div id="editCustomerModal" style="display: none;" class="fixed inset-0 bg-slate-950/60 z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
             <div class="flex justify-between items-center border-b pb-2">
-                <h3 class="font-black text-slate-900 text-sm">Edit Full Customer Details</h3>
+                <h3 class="font-black text-slate-900 text-sm">Edit Full Customer Details & KYC Photos</h3>
                 <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-700 text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="editCustomerForm" onsubmit="saveCustomerEdit(event)" class="space-y-3 text-xs">
                 <input type="hidden" id="editCustId">
                 
+                <!-- Update Profile Photo -->
                 <div class="bg-slate-50 p-2.5 rounded-xl border flex items-center gap-3">
                     <img id="editPhotoPreview" src="" class="w-12 h-12 rounded-full object-cover border border-amber-400">
                     <div>
-                        <label class="font-bold text-slate-800 block mb-1">Update Customer Photo</label>
+                        <label class="font-bold text-slate-800 block mb-1">Update Customer Profile Photo</label>
                         <input type="file" id="editPhotoInput" accept="image/*" onchange="handleImageFile(event, 'editPhotoPreview', 'editTempPhotoBase64')" class="text-[11px] text-slate-600">
                     </div>
                 </div>
@@ -605,6 +606,34 @@
                     </div>
                 </div>
 
+                <!-- KYC Documents Edit & Upload Section -->
+                <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-200 space-y-2">
+                    <span class="font-bold text-amber-900 block uppercase text-[10px]">Update / Attach Document Photos</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="font-bold text-slate-700 block mb-1 text-[10px]">ID Front Photo</label>
+                            <div class="flex items-center gap-2">
+                                <input type="file" accept="image/*" onchange="handleImageFile(event, 'editIdFrontPrev', 'editTempIdFront')" class="text-[10px] w-full">
+                                <img id="editIdFrontPrev" src="" class="w-8 h-8 rounded object-cover border border-amber-300 hidden">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="font-bold text-slate-700 block mb-1 text-[10px]">ID Back Photo</label>
+                            <div class="flex items-center gap-2">
+                                <input type="file" accept="image/*" onchange="handleImageFile(event, 'editIdBackPrev', 'editTempIdBack')" class="text-[10px] w-full">
+                                <img id="editIdBackPrev" src="" class="w-8 h-8 rounded object-cover border border-amber-300 hidden">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-1.5 border-t border-amber-200">
+                        <label class="font-bold text-slate-700 block mb-1 text-[10px]">Address Proof Document Photo</label>
+                        <div class="flex items-center gap-2">
+                            <input type="file" accept="image/*" onchange="handleImageFile(event, 'editAddrDocPrev', 'editTempAddrDoc')" class="text-[10px] w-full">
+                            <img id="editAddrDocPrev" src="" class="w-8 h-8 rounded object-cover border border-amber-300 hidden">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="font-bold text-slate-700 block mb-1">Assigned Vehicle</label>
@@ -627,11 +656,11 @@
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="font-bold text-slate-700 block mb-1">Rental Slab</label>
-                        <select id="editCustSlab" class="w-full border rounded-lg p-2 bg-slate-50">
-                            <option value="1">Slab 1 (₹200/d)</option>
-                            <option value="2">Slab 2 (₹220/d)</option>
-                            <option value="3">Slab 3 (₹230/d)</option>
+                        <label class="font-bold text-slate-700 block mb-1">Rental Slab (Auto-Recalculate Bill)</label>
+                        <select id="editCustSlab" class="w-full border rounded-lg p-2 bg-slate-50 font-bold text-amber-900">
+                            <option value="1">Slab 1 (₹1500 Sec | ₹200/day)</option>
+                            <option value="2">Slab 2 (₹700 Sec | ₹220/day)</option>
+                            <option value="3">Slab 3 (₹500 Sec | ₹230/day)</option>
                         </select>
                     </div>
                     <div>
@@ -770,7 +799,10 @@
             tempIdFrontBase64: "",
             tempIdBackBase64: "",
             tempAddrDocBase64: "",
-            editTempPhotoBase64: ""
+            editTempPhotoBase64: "",
+            editTempIdFront: "",
+            editTempIdBack: "",
+            editTempAddrDoc: ""
         };
 
         // Mobile Safe Image Compression via Canvas
@@ -905,7 +937,7 @@
 
         function saveLocalData() {
             try {
-                localStorage.setItem('kd_captain_final_stable_v17', JSON.stringify({
+                localStorage.setItem('kd_captain_final_stable_v19', JSON.stringify({
                     fleet: state.fleet,
                     bookings: state.bookings,
                     recycleBin: state.recycleBin
@@ -922,7 +954,7 @@
         }
 
         function openFullImage(src) {
-            if (!src || src.indexOf('ui-avatars') !== -1) return;
+            if (!src || src.indexOf('ui-avatars') !== -1 || src.indexOf('placehold.co') !== -1) return;
             document.getElementById('fullImageView').src = src;
             document.getElementById('fullImageModal').style.display = 'flex';
         }
@@ -946,7 +978,7 @@
             updateIdFieldValidation();
             updateSelfSlabDetails();
 
-            var saved = localStorage.getItem('kd_captain_final_stable_v17') || localStorage.getItem('kd_captain_final_stable_v16') || localStorage.getItem('kd_captain_final_stable_v15') || localStorage.getItem('kd_captain_final_stable_v14') || localStorage.getItem('kd_captain_final_stable_v12');
+            var saved = localStorage.getItem('kd_captain_final_stable_v19') || localStorage.getItem('kd_captain_final_stable_v18') || localStorage.getItem('kd_captain_final_stable_v17') || localStorage.getItem('kd_captain_final_stable_v16');
             if (saved) {
                 try {
                     var parsed = JSON.parse(saved);
@@ -1271,7 +1303,6 @@
             document.getElementById('succCustPhone').innerText = '+91 ' + b.phone;
             document.getElementById('succCustPaid').innerText = '₹' + totalInitial + ' (Sec: ₹' + b.securityDeposit + ' + Week 1: ₹' + (totalInitial - b.securityDeposit) + ')';
 
-            // Direct WhatsApp button on Onboarding popup
             document.getElementById('succSendWhatsAppDirectBtn').onclick = function() {
                 openReceiptModal(b.id, 1);
                 setTimeout(function() {
@@ -1320,7 +1351,6 @@
             document.getElementById('pvCurrAddr').innerText = b.currAddr || 'N/A';
             document.getElementById('pvAddrProof').innerText = (b.addrProofType || 'N/A') + ' [' + (b.addrProofNo || '') + ']';
 
-            // Document photos rendering in portfolio
             var frontImg = document.getElementById('pvIdFrontImg');
             var backImg = document.getElementById('pvIdBackImg');
             var addrDocImg = document.getElementById('pvAddrDocImg');
@@ -1533,6 +1563,10 @@
             if (!b) return;
 
             state.editTempPhotoBase64 = "";
+            state.editTempIdFront = "";
+            state.editTempIdBack = "";
+            state.editTempAddrDoc = "";
+
             document.getElementById('editCustId').value = b.id;
             document.getElementById('editCustName').value = b.name;
             document.getElementById('editCustPhone').value = b.phone;
@@ -1548,6 +1582,15 @@
 
             var editImg = b.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.name)}&background=f59e0b&color=fff&size=128`;
             document.getElementById('editPhotoPreview').src = editImg;
+
+            var idFPrev = document.getElementById('editIdFrontPrev');
+            if (b.idFrontPhoto) { idFPrev.src = b.idFrontPhoto; idFPrev.classList.remove('hidden'); } else { idFPrev.classList.add('hidden'); }
+
+            var idBPrev = document.getElementById('editIdBackPrev');
+            if (b.idBackPhoto) { idBPrev.src = b.idBackPhoto; idBPrev.classList.remove('hidden'); } else { idBPrev.classList.add('hidden'); }
+
+            var addrDPrev = document.getElementById('editAddrDocPrev');
+            if (b.addrDocPhoto) { addrDPrev.src = b.addrDocPhoto; addrDPrev.classList.remove('hidden'); } else { addrDPrev.classList.add('hidden'); }
 
             var vehSelect = document.getElementById('editCustVeh');
             vehSelect.innerHTML = '';
@@ -1572,6 +1615,7 @@
 
             var oldVeh = b.veh;
             var newVeh = document.getElementById('editCustVeh').value;
+            var newSlab = parseInt(document.getElementById('editCustSlab').value);
 
             b.name = document.getElementById('editCustName').value;
             b.phone = document.getElementById('editCustPhone').value;
@@ -1580,15 +1624,30 @@
             b.startDate = document.getElementById('editCustStartDate').value;
             b.permAddr = document.getElementById('editCustPermAddr').value;
             b.currAddr = document.getElementById('editCustCurrAddr').value;
-            b.slab = parseInt(document.getElementById('editCustSlab').value);
             b.due = parseFloat(document.getElementById('editCustDue').value) || 0;
             b.dueDate = document.getElementById('editCustDueDate').value;
             b.status = document.getElementById('editCustStatus').value;
             b.veh = newVeh;
 
-            if (state.editTempPhotoBase64) {
-                b.photo = state.editTempPhotoBase64;
+            // Auto Re-sync Payment History if Slab changes
+            if (b.slab !== newSlab) {
+                b.slab = newSlab;
+                var ratesM1 = calculateWeeklyRate(newSlab, 1);
+                var sec = newSlab === 1 ? 1500 : newSlab === 2 ? 700 : 500;
+                b.securityDeposit = sec;
+
+                if (b.paymentHistory && b.paymentHistory.length > 0) {
+                    b.paymentHistory.forEach(function(p) {
+                        if (p.type.indexOf('Security') !== -1) p.amount = sec;
+                        if (p.type.indexOf('Week 1') !== -1) p.amount = ratesM1.weekly;
+                    });
+                }
             }
+
+            if (state.editTempPhotoBase64) b.photo = state.editTempPhotoBase64;
+            if (state.editTempIdFront) b.idFrontPhoto = state.editTempIdFront;
+            if (state.editTempIdBack) b.idBackPhoto = state.editTempIdBack;
+            if (state.editTempAddrDoc) b.addrDocPhoto = state.editTempAddrDoc;
 
             var runningWk = getCalendarRunningWeek(b.startDate);
             var rateInfo = calculateWeeklyRate(b.slab, runningWk);
@@ -1613,7 +1672,7 @@
 
             closeEditModal();
             renderAll();
-            alert('Customer updated successfully!');
+            alert('Customer profile updated & slab re-synchronized successfully!');
         }
 
         function deleteBooking(id) {
@@ -1943,7 +2002,7 @@
                             '<img src="' + userImg + '" onclick="event.stopPropagation(); openFullImage(\'' + userImg + '\')" class="w-10 h-10 rounded-full object-cover border border-amber-300 shadow-sm hover:scale-105 transition" alt="Photo">' +
                             '<div>' +
                                 '<h4 class="font-black text-slate-900 text-sm flex items-center gap-1">' + b.name + ' <i class="fa-solid fa-chevron-right text-[10px] text-amber-500"></i></h4>' +
-                                '<p class="text-xs text-slate-500"><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i>+91 ' + b.phone + '</p> Cer' +
+                                '<p class="text-xs text-slate-500"><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i>+91 ' + b.phone + '</p>' +
                             '</div>' +
                         '</div>' +
                         '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ' + badgeColor + '">' + rem.text + '</span>' +
